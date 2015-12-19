@@ -44,3 +44,4 @@ TODO
 
 ## Development Log
 - 2015-12-18: Project created, README.md added -- All
+- 2015-12-19: Database Manager completed, started API -- Yicheng W.
