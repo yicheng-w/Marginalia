@@ -1,3 +1,20 @@
+################################################################################
+# Backend Database management for Annotation project                           #
+#                                                                              #
+# Authors                                                                      #
+#  Yicheng Wang                                                                #
+#                                                                              #
+# Description                                                                  #
+#  Deals with database in various fashion                                      #
+#                                                                              #
+################################################################################
+
+# TODO
+#  TODO-List
+
+# Dev Log
+#  Project Created: 2015-12-19 15:00 - Yicheng W.
+
 import sqlite3
 from time import time, sleep
 
