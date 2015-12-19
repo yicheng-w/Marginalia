@@ -1,5 +1,5 @@
 import sqlite3
-from time import time
+from time import time, sleep
 
 def new_user(email, password_hash, first, last):
     """
@@ -40,7 +40,7 @@ def new_user(email, password_hash, first, last):
 
 def authenticate(email, password_hash):
     """
-    authenticate: authentics an user login
+    authenticate: authenticates an user login
 
     Args:
         email (string): the email to authenticate
@@ -84,12 +84,12 @@ def update_pwd(email, new_password):
 
     q = """SELECT * FROM users WHERE users.email = ?"""
 
-    result = c.execute(q, (email)).fetchall()
+    result = c.execute(q, (email,)).fetchall()
 
     if len(result) == 0:
         return False
 
-    q = """UPDATE users SET users.password = ? WHERE users.email = ?"""
+    q = """UPDATE users SET password = ? WHERE email = ?"""
 
     c.execute(q, (new_password, email))
 
@@ -112,6 +112,8 @@ def next_avaliable_id():
 
     result = c.execute(q).fetchall()
 
+    print result
+
     if (len(result) == 0):
         return 0
 
@@ -119,8 +121,8 @@ def next_avaliable_id():
         return 1
 
     for i in range(1, len(result)):
-        if result[i] - result[i - 1] != 1:
-            return result[i - 1] + 1
+        if result[i][0] - result[i - 1][0] != 1:
+            return result[i - 1][0] + 1
 
     return len(result)
 
@@ -140,14 +142,10 @@ def add_to_sites(email, site):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """INSERT INTO sites VALUES (?, ?, ?)"""
+    q = """INSERT INTO sites VALUES (?, ?, ?, ?)"""
 
-    try:
-        c.execute(q, (next_avaliable_id(), email, site))
-        conn.commit()
-        return True
-    except:
-        return False
+    c.execute(q, (next_avaliable_id(), email, site, int(time())))
+    conn.commit()
 
 def get_list_of_sites(email):
     """
@@ -165,7 +163,7 @@ def get_list_of_sites(email):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id, sites.site
+    q = """SELECT sites.id, sites.site, sites.t
     FROM sites
     WHERE sites.email = ?
     ORDER BY t DESC"""
@@ -196,11 +194,13 @@ def update_site(email, site_id, new_site):
     if (len(result) == 0):
         return False
 
-    q = """UPDATE sites SET sites.site = ? WHERE sites.id = ?"""
+    q = """UPDATE sites SET site = ?, t = ? WHERE id = ?"""
 
-    result = c.execute(q, (new_site, site_id))
+    c.execute(q, (new_site, int(time()), site_id))
 
     conn.commit()
+
+    return True
 
 def delete_site(email, site_id):
     """
@@ -224,8 +224,52 @@ def delete_site(email, site_id):
     if (len(result) == 0):
         return False
 
-    q = """REMOVE FROM sites WHERE sites.id = ?"""
+    q = """DELETE FROM sites WHERE sites.id = ?"""
 
     c.execute(q, (site_id,))
 
     conn.commit()
+
+    return True
+
+
+if __name__ == "__main__":
+    print "new_user test"
+    print new_user("alex.wyc2098@gmail.com", "12345", "Yicheng", "Wang")
+    print new_user("alex.wyc2098@gmail.com", "dgjsadkfhsa", "Yicheng", "Wang")
+    print new_user("alex.wyc2098@protonmail.ch", "ajdfsadfk", "Yicheng", "Wang")
+
+    print "\nauthentication test"
+    print authenticate("alex.wyc2098@gmail.com", "12345")
+    print authenticate("alex.wyc2098@protonmail.ch", "12345")
+    print authenticate("asdf@asdf.asdf", "12435")
+
+    print "\nchange password test"
+    print update_pwd("alex.wyc2098@gmail.com", "54321")
+    print update_pwd("asdf@asdf.com", "12345")
+
+    print authenticate("alex.wyc2098@gmail.com", "12345")
+    print authenticate("alex.wyc2098@gmail.com", "54321")
+
+    print "\nadd_to_sites test"
+    print add_to_sites("alex.wyc2098@gmail.com", "123456789")
+    print add_to_sites("alex.wyc2098@protonmail.ch", "fkjhsadgfkvasv")
+    print add_to_sites("alex.wyc2098@gmail.com", "12hsadffghas")
+
+    print get_list_of_sites("alex.wyc2098@gmail.com")
+    print get_list_of_sites("alex.wyc2098@protonmail.ch")
+
+    sleep(1)
+
+    print "\nupdate_site test"
+    print update_site("alex.wyc2098@gmail.com", "0", "new_site!")
+
+    print get_list_of_sites("alex.wyc2098@gmail.com")
+
+    print "\ndelete_site test"
+    print delete_site("alex.wyc2098@gmail.com", 2)
+    print delete_site("alex.wyc2098@gmail.com", 3)
+    
+    print add_to_sites("alex.wyc2098@gmail.com", "this is the new site 2")
+    
+    print get_list_of_sites("alex.wyc2098@gmail.com")

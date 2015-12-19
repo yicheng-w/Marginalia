@@ -27,6 +27,6 @@ create_base = "CREATE TABLE %s (%s)" # no user input needed, use %s
 c.execute(create_base % ("users", "email TEXT, password TEXT, first TEXT, last TEXT"))
 
 # note will be html source code with markup
-c.execute(create_base % ("sites", "id INTEGER, email TEXT, site TEXT, t TIMESTAMP DEFAULT (DATETIME('NOW'))"))
+c.execute(create_base % ("sites", "id INTEGER, email TEXT, site TEXT, t INTEGER"))
 
 conn.commit()
