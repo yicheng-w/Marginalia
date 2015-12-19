@@ -24,6 +24,9 @@ text as well as take general notes on a side panel.
 
 7. Export/print an annotated version of the article
 
+8. Allows users to get a permlink of their annotated article to share with the
+   world
+
 ###Toolset
 
 The login/user data system is written in sqlite3 and python
