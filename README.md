@@ -28,7 +28,7 @@ text as well as take general notes on a side panel.
 
 The login/user data system is written in sqlite3 and python
 
-The front end is written using [Materialize CSS](http://materializecss.com/)
+The front end is written with the help of [Materialize CSS](http://materializecss.com/)
 
 The javascript is written with the help of TODO
 
