@@ -12,6 +12,7 @@
 # TODO
 #  Jeffrey can you implement the change password function? See below in change_pwd
 #  Testing to make sure everything works
+#  Write error.html
 
 # Dev Log
 #  Project Created: 2015-12-19 14:57 - Yicheng W.
@@ -131,6 +132,16 @@ def api_delete_site(id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
+
+@app.route("/share/<int:id>") # ONLY NON-JSON FUNCTION, ACTUALLY RENDERS THE SHARED SITE
+def share(id):
+    site = get_site_for_sharing(id)
+
+    if site:
+        return render_template(site)
+
+    else:
+        return render_template("error.html") # TODO
 
 if __name__ == "__main__":
     app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))

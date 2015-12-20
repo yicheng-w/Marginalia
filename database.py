@@ -143,7 +143,6 @@ def next_avaliable_id():
 
     return len(result)
 
-
 def add_to_sites(email, site):
     """
     add_to_sites: add a site to the user's list
@@ -159,9 +158,9 @@ def add_to_sites(email, site):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """INSERT INTO sites VALUES (?, ?, ?, ?)"""
+    q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?)"""
 
-    c.execute(q, (next_avaliable_id(), email, site, int(time())))
+    c.execute(q, (next_avaliable_id(), email, site, 0, int(time()))) # default permission is private
     conn.commit()
 
 def get_list_of_sites(email):
@@ -174,19 +173,49 @@ def get_list_of_sites(email):
     Returns:
         a list of sites formatted in the following manner ranked by last edited
         time:
-        [(site-id1, site1), (site-id2, site2), ...]
+        [(site-id1, site1, permission1), (site-id2, site2, permission2), ...]
     """
 
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id, sites.site, sites.t
+    q = """SELECT sites.id, sites.site, sites.shared
     FROM sites
     WHERE sites.email = ?
     ORDER BY t DESC"""
 
     r = c.execute(q, (email,)).fetchall()
     return r
+
+def get_site_for_sharing(id):
+    """
+    get_site_for_sharing: get the content of one site for sharing, returns None
+    if the site doesn't exist or is private
+
+    Args:
+        id (int): the ID of the site
+    
+    Returns:
+        the content of the site if the retrival was successful, None if the
+        site-id doesn't exist or is private    
+    """
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.shared, sites.site
+    FROM sites
+    WHERE sites.id = ?"""
+
+    r = c.execute(q, (id, )).fetchall()
+
+    if (len(r) == 0):
+        return None
+
+    if (r[0][0] == 0): # if the site is private
+        return None
+
+    return r[0][1]
 
 def update_site(email, site_id, new_site):
     """
@@ -219,6 +248,42 @@ def update_site(email, site_id, new_site):
 
     return True
 
+def change_site_permission(email, id):
+    """
+    change_site_permission: changes the permission of a site (public -> private
+    or private -> public)
+
+    Args:
+        email (string): the user
+	id (int): the id of the site
+    
+    Returns:
+        True if successful, False if the id and the email doesn't match
+    """
+
+    conn = sqlite3.connect('./db/infos.db')
+    c = conn.cursor()
+
+    q = """SELECT sites.shared
+    FROM sites
+    WHERE sites.email = ? AND sites.id = ?"""
+
+    r = c.execute(q).fetchall()
+
+    if (len(r) != 1):
+        return False
+
+    q = """UPDATE sites
+    SET shared = ?
+    WHERE id = ?"""
+
+    if (r[0][0] == 0): # used to be private, now becomes public
+        c.execute(q, (1, id))
+    else: # used to be public, now becomes private
+        c.execute(q, (0, id))
+
+    conn.commit()
+
 def delete_site(email, site_id):
     """
     delete_site: deletes a site from the user's "library" according to id
@@ -248,6 +313,8 @@ def delete_site(email, site_id):
     conn.commit()
 
     return True
+
+
 
 
 if __name__ == "__main__":
