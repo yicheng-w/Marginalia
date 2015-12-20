@@ -59,4 +59,4 @@ target/
 .*~
 .*.swp
 
-db/*
+*.db

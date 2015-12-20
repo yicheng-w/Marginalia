@@ -11,6 +11,7 @@
 
 # TODO
 #  Jeffrey can you implement the change password function? See below in change_pwd
+#  Testing to make sure everything works
 
 # Dev Log
 #  Project Created: 2015-12-19 14:57 - Yicheng W.
