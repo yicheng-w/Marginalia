@@ -1,5 +1,7 @@
-# Annotation // Name TBD
-SoftDev Final Project -- annotation webapp
+# Marginalia
+
+"Marginalia," or marginal notes in Latin, is an application that lets people
+annotate articles online.
 
 ## Project Description
 
