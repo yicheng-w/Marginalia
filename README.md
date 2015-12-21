@@ -1,5 +1,7 @@
-# Annotation // Name TBD
-SoftDev Final Project -- annotation webapp
+# Marginalia
+
+"Marginalia," or marginal notes in Latin, is an application that lets people
+annotate articles online.
 
 ## Project Description
 
@@ -24,6 +26,9 @@ text as well as take general notes on a side panel.
 
 7. Export/print an annotated version of the article
 
+8. Allows users to get a permlink of their annotated article to share with the
+   world
+
 ###Toolset
 
 The login/user data system is written in sqlite3 and python
@@ -44,3 +49,4 @@ TODO
 
 ## Development Log
 - 2015-12-18: Project created, README.md added -- All
+- 2015-12-19: Database Manager completed, started API -- Yicheng W.
