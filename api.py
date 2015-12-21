@@ -97,12 +97,30 @@ def login():
             session["email"] = email
             return redirect(url_for("home"))
         else:
-            return render_template("login.html", err = "Incorrect email/passord combination")
+            return render_template("login.html", err = "Incorrect email/password combination")
 
 @app.route("/change_pwd", methods = ["GET", 'POST'])
 def change_pwd():
     # TODO jeffrey!
-    return
+    if request.method = "GET":
+        return redirect(url_for(change_password))
+    else:
+        email = request.form['email']
+        old_password = request.form['oldpass']
+
+        m = hashlib.sha256()
+        m.update(old_password)
+        passhash = m.hexdigest()
+        if (authenticate(email,passhash)):
+            new_password = request.form['newpass']
+            newhashed = haslib.sha256().update(new_password).hexdigest()
+            changed = update_pwd(email, newhashed)
+            if changed:
+                return redirect(url_for("home"))
+            else:
+                return render_template("changed.html", err = "There was a problem in changing the password")
+        else:
+            return render_template("changed.html", err = "Incorrect email/password combination")
 
 @app.route("/view") # view all sites of a user, username stored in cookie
 @login_required
@@ -145,7 +163,7 @@ def api_add_site():
 
     if add_to_sites(email, site):
         return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
-    
+
     return json.dumps({"status": 'failure', 'msg': 'Something went wrong :('})
 
 @app.route("/update/<int:id>", methods = ["GET", 'POST']) # update a specific site based on id, new site content passed via POST request, user info stored in session
@@ -157,7 +175,7 @@ def api_update_site(id):
     new_site = request.form['new_site']
     if update_site(email, id, new_site):
         return json.dumps({"status": 'success', 'msg': 'Your marks have been updated'})
-    
+
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
 
 @app.route("/change_perm/<int:id>") # changes sharing permission for a site, user info stored in session
@@ -173,7 +191,7 @@ def api_change_perm(id):
 @login_required
 def api_delete_site(id):
     email = session['email']
-    
+
     if delete_site(email, id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})
 
