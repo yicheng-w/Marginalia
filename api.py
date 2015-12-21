@@ -11,8 +11,9 @@
 
 # TODO
 #  Jeffrey can you implement the change password function? See below in change_pwd
+#  Write all the htmls
+#  Write a bunch of server-side stuff, such as home page, about, etc and stuff
 #  Testing to make sure everything works
-#  Write error.html
 
 # Dev Log
 #  Project Created: 2015-12-19 14:57 - Yicheng W.
@@ -35,10 +36,33 @@ def login_required(f):
         return f(*args, **kwargs)
     return decorated_function
 
+### HTML CALLS-------------------------------------------------------------####
+
+@app.route("/")
+@app.route("/home")
+def home():
+    # TODO this should have two versions, one version where the user is logged
+    # in, one version in which the user is not logged in
+    # if the user is logged in, this page should display his/her marked sites,
+    # otherwise it should be an ad-page with login infos
+    return
+
+@app.route("/about")
+def about():
+    return render_template("about.html") # TODO
+
+@app.route("/regist") # this is actually the register page
+def register_page():
+    return render_template("register.html") # TODO
+
+@app.route("/login") # login page
+def login_page():
+    return render_template("login.html") # TODO
+
 @app.route("/register", methods = ["GET", 'POST'])
 def register():
     if request.method == "GET":
-        return json.dumps({'status': 'failure', 'msg': 'Incorrect login method'})
+        return redirect(url_for("register_page"))
 
     else:
         email = request.form['email']
@@ -51,14 +75,15 @@ def register():
         passhash = m.hexdigest()
 
         if new_user(email, passhash, first, last):
-            return json.dumps({'status': 'success', 'msg': 'You have successfully registered an account, please log-in to continue'})
+            return render_template("register.html", status = "success")
+            # in register.html redirect them to login
         else:
-            return json.dumps({'status': 'failure', 'msg': 'Email already in use'})
+            return render_template("register.html", err = "Email already in use!")
 
 @app.route("/login", methods = ["GET", "POST"])
 def login():
     if request.method == "GET":
-        return json.dumps({'status': 'failure', "msg": 'Incorrect login method'})
+        return redirect(url_for("login_page"))
 
     else:
         email = request.form['email']
@@ -70,9 +95,9 @@ def login():
 
         if (authenticate(email, passhash)):
             session["email"] = email
-            return json.dumps({'status': 'success', 'msg': 'you are now logged in'})
+            return redirect(url_for("home"))
         else:
-            return json.dumps({'status': 'failure', 'msg': 'incorrect email and password combination'})
+            return render_template("login.html", err = "Incorrect email/passord combination")
 
 @app.route("/change_pwd", methods = ["GET", 'POST'])
 def change_pwd():
@@ -84,7 +109,7 @@ def change_pwd():
 def view_static():
     email = session['email']
     list_of_sites = get_list_of_sites(email)
-    return json.dumps({'status': 'success', 'result': list_of_sites})
+    return render_template("view.html", sites = list_of_sites)
 
 @app.route("/view/<int:id>") # grab a specific story based on id
 @login_required
@@ -93,9 +118,21 @@ def view_site(id):
     list_of_sites = get_list_of_sites(email)
     for site in list_of_sites:
         if site[0] == id:
-            return json.dumps({'status': 'success', 'result': site[1]})
-    
-    return json.dumps({'status': 'failure', 'msg': 'the site you requested does not exist'})
+            return render_template("view_one.html", site=site[1], shared=site[2])
+
+    return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you")
+
+@app.route("/share/<int:id>") # reders the site if shares, gives out error otherwise
+def share(id):
+    site = get_site_for_sharing(id)
+
+    if site:
+        return render_template(site)
+
+    else:
+        return render_template("error.html", msg = "Sorry this site is not up for sharing :(")
+
+### API CALLS -------------------------------------------------------------####
 
 @app.route("/new/", methods = ['GET', 'POST']) # adds a site to a user's collection, site passed via POST request, user info stored in session
 @login_required
@@ -123,6 +160,15 @@ def api_update_site(id):
     
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
 
+@app.route("/change_perm/<int:id>") # changes sharing permission for a site, user info stored in session
+@login_required
+def api_change_perm(id):
+    email = session['email']
+    if change_site_permission(email, id):
+        return json.dumps({"status": 'success', 'msg': "The permission of your site has been successfully changed"})
+
+    return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
+
 @app.route("/delete/<int:id>") # deletes a story based on id, user data stored in session
 @login_required
 def api_delete_site(id):
@@ -133,15 +179,6 @@ def api_delete_site(id):
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
-@app.route("/share/<int:id>") # ONLY NON-JSON FUNCTION, ACTUALLY RENDERS THE SHARED SITE
-def share(id):
-    site = get_site_for_sharing(id)
-
-    if site:
-        return render_template(site)
-
-    else:
-        return render_template("error.html") # TODO
-
 if __name__ == "__main__":
+    app.secret_key = argv[argv.index('--key') + 1]
     app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))
