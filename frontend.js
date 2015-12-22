@@ -1,3 +1,28 @@
+/*-----------------------------------------------------
+ * Frontend javascript for the Annotation project. 
+ * 
+ * Authors
+ *  Ariel Levy
+ *
+ * Description
+ *  Formats article text, displays comments and notes.
+ *
+ *-----------------------------------------------------*/
+
+/** TODO
+ * 		Align comments with commented on text. -- see offset()
+ * 		Highlight comment/commented text when hovering over partner. -- add unique comment id/classes shared by partners
+ * 		Scrollfire for comments.
+ * 		Notes formatting.
+ * 		Functionality to add comment.
+ * 		Functionality to add notes.
+ */
+
+/** Dev Log
+ * 		Basic Page Structure: 2015-12-20 13:00 - Ariel L.
+ * 		Integration with Materialize: 2015-12-20 23:00 - Ariel L.
+ */ 
+
 /** Load Google Material Design files.
  */ 
 var loadMaterialize = function loadMaterialize() {
@@ -59,5 +84,8 @@ var runMarginalia = function runMarginalia() {
 	formatComments();
 };
 runMarginalia();
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> backend
