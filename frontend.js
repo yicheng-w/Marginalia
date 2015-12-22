@@ -84,8 +84,3 @@ var runMarginalia = function runMarginalia() {
 	formatComments();
 };
 runMarginalia();
-<<<<<<< HEAD
-
-
-=======
->>>>>>> backend
