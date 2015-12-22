@@ -12,6 +12,7 @@
 /** TODO
  * 		Align comments with commented on text. -- see offset()
  * 		Highlight comment/commented text when hovering over partner. -- add unique comment id/classes shared by partners
+ * 		Scrollfire for comments.
  * 		Notes formatting.
  * 		Functionality to add comment.
  * 		Functionality to add notes.
