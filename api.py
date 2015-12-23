@@ -102,7 +102,7 @@ def login():
 @app.route("/change_pwd", methods = ["GET", 'POST'])
 def change_pwd():
     # TODO jeffrey!
-    if request.method = "GET":
+    if request.method == "GET":
         return redirect(url_for(change_password))
     else:
         email = request.form['email']
