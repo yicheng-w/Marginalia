@@ -2,7 +2,7 @@
 # API for the Annotation project, handles AJAX calls and gives out JSON        #
 #                                                                              #
 # Authors                                                                      #
-#  Yicheng Wang                                                                #
+#  Yicheng Wang, Jeffrey Zou                                                   #
 #                                                                              #
 # Description                                                                  #
 #  Handles AJAX calls and database management                                  #
