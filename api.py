@@ -18,6 +18,7 @@
 # Dev Log
 #  Project Created: 2015-12-19 14:57 - Yicheng W.
 #  Most API stuff are done: 2015-12-20 18:23 - Yicheng W.
+#  Template inheritance and basic HTML setup: 2015-12-27 17:17 - Ariel L.
 
 from flask import Flask, request, render_template, session, redirect, url_for
 from database import *

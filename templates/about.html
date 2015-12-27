@@ -1,4 +1,5 @@
 {% extends "master.html" %}
+{% set active_page = "about" %}
 
 {% block title %}TITLE{% endblock %}
 
@@ -7,4 +8,43 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+	<div class="card-panel white-text teal"><h5 class="flow-text" style="text-align:justify">Marginalia is a chrome extension used to annotate articles. There are many extensions and webapps that allows people to take notes on articles, however, almost none of them allows for annotation. With this extension, you can freely markup the text as well as take general notes on a side panel.</h5></div>
+	
+	<h4>Example Articles</h4>
+	<!-- 2 or 3 image cards for example annotations -->
+
+	<h4>Team Members</h4>
+	<table class="bordered">
+		<thread>
+			<tr>
+				<th>Role</th>
+				<th>Name</th>
+				<th>GitHub</th>
+			</tr>
+		</thread>
+		<tbody>
+			<tr>
+				<td>Leader</td>
+				<td>Yicheng Wang</td>
+				<td><a href="https://github.com/alex-wyc">alex-wyc</a></td>
+			</tr>
+			<tr>
+				<td>Frontend</td>
+				<td>Ariel Levy</td>
+				<td><a href="https://github.com/askyel">askyel</a></td>
+			</tr>
+			<tr>
+				<td>Middleware & Backend</td>
+				<td>Alice Xue</td>
+				<td><a href="https://github.com/JeffreyZou13">JeffreyZou13</a></td>
+			</tr>
+			<tr>
+				<td>Middleware & Backend</td>
+				<td>Jeffrey Zou</td>
+				<td><a href="https://github.com/alicexue">alicexue</a></td>
+			</tr>
+		</tbody>
+	</table>
+</div>
 {% endblock %}
