@@ -1,0 +1,17 @@
+{% extends "master.html" %}
+{% set active_page = "index" %}
+
+{% block title %}TITLE{% endblock %}
+
+{% block head %}
+	{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="row">
+	<div class="col s12 teal white-text center" style="height:40vh;">
+		<h1 class="valign" style="margin-top:10vh">Welcome to Marginalia!</h1>
+		<a class="waves-effect waves-light btn-large teal lighten-2>Get Started</a>
+	</div>
+</div>
+{% endblock %}
