@@ -45,7 +45,7 @@ def home():
     # in, one version in which the user is not logged in
     # if the user is logged in, this page should display his/her marked sites,
     # otherwise it should be an ad-page with login infos
-    return
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
@@ -198,5 +198,6 @@ def api_delete_site(id):
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
 if __name__ == "__main__":
-    app.secret_key = argv[argv.index('--key') + 1]
-    app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))
+    #app.secret_key = argv[argv.index('--key') + 1]
+	app.secret_key = "ariel can't figure out the argv thing"
+	app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))
