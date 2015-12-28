@@ -132,8 +132,9 @@ def view_static():
 	return render_template("view.html", sites = list_of_sites)
 
 @app.route("/view/<int:id>") # grab a specific story based on id
-@login_required
+#@login_required
 def view_site(id):
+	'''
     email = session['email']
     list_of_sites = get_list_of_sites(email)
     for site in list_of_sites:
@@ -141,6 +142,8 @@ def view_site(id):
             return render_template("view_one.html", site=site[1], shared=site[2])
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you")
+	'''
+	return render_template("view_one.html")
 
 @app.route("/share/<int:id>") # reders the site if shares, gives out error otherwise
 def share(id):

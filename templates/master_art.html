@@ -40,8 +40,26 @@
 		</ul>
 	</div></nav></div>
 
-	<div id="content">{% block content %}{% endblock %}</div>
+	<div id="content" class="grey lighten-3">
+		<div class="row">
+			<div id='mar-notes' class='col s4'>
+				<button class="btn waves-effect waves-light" type="button" name="action" id="add-note">Add Note
+					<i class="material-icons right">mode_edit</i>
+				</button>
+				<div id='note-panel' class="card-panel yellow lighten-3 scroll">
+					{% block notes %}{% endblock %}
+				</div>
+			</div>
+			<div id='mar-text' class='col s4 offset-s4 white'>
+				{% block text %}{% endblock %}
+			</div>
+			<div id='mar-comments' class='col s4'>
+				{% block comments %}{% endblock %}
+			</div>
+		</div>
+	</div>
 
+	<script type='text/javascript' src='../static/frontend.js'></script>
 	<script type='text/javascript' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js'></script>
 </body>
 
