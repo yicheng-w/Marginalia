@@ -104,9 +104,11 @@ var clickAddNote = function clickAddNote() {
 	$("#add-note").click(function() {
 		if ( !showInput ) {
 			$("#add-note")[0].type = 'submit';
-			$("#add-note").html('<i class="material-icons right">mode_edit</i>');
+			$("#add-note").html('<i class="material-icons right">create</i>');
 			$("#add-note").find("i").removeClass("right");
-
+			var b = "<button class='btn waves-effect waves-light red' type='button' name='action' id='clear-note'>";
+			b += "<i class='material-icons'>clear</i></button>";
+			$("#add-note").after(b);
 			var t = "<div class='row' id='note-input'>";
 			t += "<form class='col s12'>";
 			t += "<div class='row'>";
@@ -117,18 +119,33 @@ var clickAddNote = function clickAddNote() {
 			showInput = true;
 		}
 		else {
+			clickClearNote();
 			var newNote = $("#note-text").val();
 			if ( newNote.trim() ) {  // note is not empty
 				$("#note-list").append("<li>"+newNote+"</li>");
 			}
 			$("#add-note")[0].type = 'button';
-			$("#add-note").html('Add Note<i class="material-icons right">mode_edit</i>');
+			$("#add-note").html('Add Note<i class="material-icons right">create</i>');
 			$("#add-note").find("i").addClass("right");
 			$("#note-input").remove();
+			$("#clear-note").remove();
 			showInput = false;
 		}
 	});
 };
+
+var clickClearNote = function clickClearNote() {
+	$("#clear-note").click(function() {
+		console.log("exec");
+		$("#add-note")[0].type = 'button';
+		$("#add-note").html('Add Note<i class="material-icons right">create</i>');
+		$("#add-note").find("i").addClass("right");
+		$("#note-input").remove();
+		$("#clear-note").remove();
+		showInput = false;
+	});
+};
+	
 
 /** Runs all necessary functions for Marginalia.
  */
@@ -136,5 +153,6 @@ var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
 	clickAddNote();
+//	clickClearNote();
 };
 runMarginalia();
