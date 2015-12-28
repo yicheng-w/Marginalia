@@ -20,7 +20,7 @@
 			('/about', 'about', 'About'),
 			('/view', 'view', 'My Pages'),
 		] -%}
-		{% set active_page = active_page|default('index') -%}
+		{% set active_page = active_page -%}
 		<ul class="left">
 			{% for href, id, caption in navigation_bar %}
 				<li{% if id == active_page %} class="active"{% endif %}>
@@ -34,7 +34,7 @@
 				<label for="search"><i class="material-icons">search</i></label>
 				<i class="material-icons">close</i>
 			</div></form></li>
-			<li><a href="#">Log In</a></li>
+			<li><a href="login">Log In</a></li>
 		</ul>
 	</div></nav></div>
 

@@ -1,4 +1,7 @@
+<!-- Displays all sites of user -->
+
 {% extends "master.html" %}
+{% set active_page="view" %}
 
 {% block title %}TITLE{% endblock %}
 
@@ -7,4 +10,18 @@
 {% endblock %}
 
 {% block content %}
+<div class="container">
+	<h4 style="padding-top:5vh">NAME's Pages</h4>
+
+	<div class="collection" style="height:65vh;overflow:scroll">
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+		<a href="#" class="collection-item avatar"><i class="material-icons circle teal">comment</i><h5 class="black-text">Page Title</h5></a>
+	</div>
+</div>
 {% endblock %}

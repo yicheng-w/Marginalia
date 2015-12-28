@@ -54,11 +54,11 @@ def about():
 
 @app.route("/regist") # this is actually the register page
 def register_page():
-    return render_template("register.html") # TODO
+    return render_template("register.html") 
 
 @app.route("/login") # login page
 def login_page():
-    return render_template("login.html") # TODO
+    return render_template("login.html") 
 
 @app.route("/register", methods = ["GET", 'POST'])
 def register():
@@ -124,11 +124,12 @@ def change_pwd():
             return render_template("changed.html", err = "Incorrect email/password combination")
 
 @app.route("/view") # view all sites of a user, username stored in cookie
-@login_required
+#@login_required
 def view_static():
-    email = session['email']
-    list_of_sites = get_list_of_sites(email)
-    return render_template("view.html", sites = list_of_sites)
+#    email = session['email']
+#    list_of_sites = get_list_of_sites(email)
+	list_of_sites = []
+	return render_template("view.html", sites = list_of_sites)
 
 @app.route("/view/<int:id>") # grab a specific story based on id
 @login_required
