@@ -89,8 +89,8 @@ def update_pwd(email, new_password):
     update_pwd: updates password for an user
 
     Args:
-        email (type): TODO
-	new_password (type): TODO
+        email (string): the user
+	new_password (string): the new password
     
     Returns:
         True if successful, False otherwise

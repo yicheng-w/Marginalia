@@ -25,6 +25,10 @@ from functools import wraps
 from hashlib import sha256
 import json
 from sys import argv
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+from random import choice
+from string import ascii_letters, digits
 
 app = Flask(__name__)
 
@@ -35,6 +39,10 @@ def login_required(f):
             return json.dumps({'status': 'failure', 'error': 'Login Required'})
         return f(*args, **kwargs)
     return decorated_function
+
+co_email = "marginalia.overlords@gmail.com"
+co_pass = open("password.txt", 'r').read()[:-1]
+alphabet = ascii_letters + digits
 
 ### HTML CALLS-------------------------------------------------------------####
 
@@ -99,7 +107,27 @@ def login():
         else:
             return render_template("login.html", err = "Incorrect email/password combination")
 
+@app.route("/forget_pwd")
+def forget_pwd_page():
+    return render_template("forget_pwd.html")
+
+@app.route("/forget_pwd", methods = ["GET", 'POST'])
+def forget_pwd():
+    if request.method == "GET":
+        return redirect(url_for("forget_pwd_page"))
+
+    else:
+        email = request.form['email']
+        new_pass = ''.join(choice(alphabet) for i in range(10))
+        m = sha256()
+
+@app.route("/change_pwd")
+@login_required
+def change_pwd_page():
+    return render_template("change_pwd.html")
+
 @app.route("/change_pwd", methods = ["GET", 'POST'])
+@login_required
 def change_pwd():
     # TODO jeffrey!
     if request.method == "GET":
