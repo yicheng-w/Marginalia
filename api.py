@@ -26,6 +26,7 @@ from functools import wraps
 from hashlib import sha256
 import json
 from sys import argv
+from smtplib import SMTP
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from random import choice
@@ -135,7 +136,37 @@ def forget_pwd():
     else:
         email = request.form['email']
         new_pass = ''.join(choice(alphabet) for i in range(10))
+
         m = sha256()
+        m.update(new_pass)
+        passhash = m.hexdigest()
+
+        if update_pwd(email, passhash):
+            return render_template("forget_pwd.html", err = "The email you entered is not registered")
+
+        s = SMTP("smtp.gmail.com", 587)
+        s.ehlo()
+        s.starttls()
+        s.ehlo()
+        s.login(co_email, co_pass)
+
+        msg = """To: %s
+From: %s
+Subject: Marginalia Password Change Request
+
+Dear %s,
+
+You have requested a password change, here is your new password: %s
+
+If you did not request this change, please still login and then change your password immediately.
+
+Sincerely,
+The Marginalia Overlords""" % (email, co_email, get_name_from_email(email), new_pass)
+
+        s.sendmail(co_email, email, msg)
+        s.close()
+
+        return render_template("forget_pwd.html", status = "success")
 
 @app.route("/change_pwd")
 @login_required
@@ -145,7 +176,6 @@ def change_pwd_page():
 @app.route("/change_pwd", methods = ["GET", 'POST'])
 @login_required
 def change_pwd():
-    # TODO jeffrey!
     if request.method == "GET":
         return redirect(url_for(change_password))
     else:
@@ -167,17 +197,15 @@ def change_pwd():
             return render_template("changed.html", err = "Incorrect email/password combination")
 
 @app.route("/view") # view all sites of a user, username stored in cookie
-#@login_required
+@login_required
 def view_static():
-#    email = session['email']
-#    list_of_sites = get_list_of_sites(email)
-	list_of_sites = []
-	return render_template("view.html", sites = list_of_sites)
+    email = session['email']
+    list_of_sites = get_list_of_sites(email)
+    return render_template("view.html", sites = list_of_sites)
 
 @app.route("/view/<int:id>") # grab a specific story based on id
-#@login_required
+@login_required
 def view_site(id):
-	'''
     email = session['email']
     list_of_sites = get_list_of_sites(email)
     for site in list_of_sites:
@@ -185,8 +213,6 @@ def view_site(id):
             return render_template("view_one.html", site=site[1], shared=site[2])
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you")
-	'''
-	return render_template("view_one.html")
 
 @app.route("/share/<int:id>") # reders the site if shares, gives out error otherwise
 def share(id):
