@@ -68,17 +68,32 @@ def register():
     else:
         email = request.form['email']
         password = request.form['password']
+        confirm = request.form['confirm']
         first = request.form['first']
         last = request.form['last']
 
-        m = hashlib.sha256()
+        if email == "":
+            return render_template("register.html", err = "Please enter your email!")
+
+        if password == "":
+            return render_template("register.html", err = "Password cannot be empty!")
+
+        if password != confirm:
+            return render_template("register.html", err = "Password does not match the confirm password!")
+
+        if first == "" or last == "":
+            return render_template("register.html", err = "Please enter your name!")
+
+        m = sha256()
         m.update(password)
         passhash = m.hexdigest()
 
         if new_user(email, passhash, first, last):
+            print "success"
             return render_template("register.html", status = "success")
             # in register.html redirect them to login
         else:
+            print "failed"
             return render_template("register.html", err = "Email already in use!")
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -90,7 +105,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        m = hashlib.sha256()
+        m = sha256()
         m.update(password)
         passhash = m.hexdigest()
 
@@ -109,7 +124,7 @@ def change_pwd():
         email = request.form['email']
         old_password = request.form['oldpass']
 
-        m = hashlib.sha256()
+        m = sha256()
         m.update(old_password)
         passhash = m.hexdigest()
         if (authenticate(email,passhash)):

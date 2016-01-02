@@ -5,6 +5,14 @@
 {% block title %}TITLE{% endblock %}
 
 {% block head %}
+    {% if status %}
+    <script>
+    window.setTimeout(function() {
+        location.href = document.getElementById("link").href;
+    }, 2000);
+    </script>
+    {% endif %}
+
 	{{ super() }}
 {% endblock %}
 
@@ -12,7 +20,19 @@
 <div class="container">
 	<h4 class="center-align" style="padding-top:7vh">Register for Marginalia</h4>
 	<div class="row center">
-		<form class="col s6 offset-s3">
+        {% if err %}
+        <script>
+        var $toastContent = $('<span><strong>Registration Failed!</strong> {{ err }}</span>');
+        Materialize.toast($toastContent, 5000);
+        </script>
+        {% endif %}
+        {% if status %}
+        <script>
+        var $toastContent = $('<span><strong>Registration Successful!</strong> You will be redirected to <a id="link" href="/login">login</a> shortly</span>');
+        Materialize.toast($toastContent, 5000);
+        </script>
+        {% endif %}
+		<form class="col s6 offset-s3" method="post" action="/register">
 			<div class="row">
 				<div class="input-field col s6">
 					<i class="material-icons prefix">account_circle</i>

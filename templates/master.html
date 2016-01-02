@@ -7,13 +7,15 @@
 	<title>{% block title %}{% endblock %} - Marginalia</title>
 	<link href='http://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'></link>
 	<link type='text/css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/css/materialize.min.css' media='screen,projection'></link>
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'></meta>
-	<script src="../static/jquery.js"></script>
 	<link type='text/css' rel='stylesheet' href="../static/main.css"></link>
+	<meta name='viewport' content='width=device-width, initial-scale=1.0'></meta>
+    <!-- <script src="../static/jquery.js"></script> -->
 	{% endblock %}
 </head>
 
 <body>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+	<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js'></script>
 	<div class="navbar-fixed"><nav><div class="nav-wrapper">
 		<a href="/" class="brand-logo center">MARGINALIA</a>
 		<!-- List of tabs (href, id, caption) -->
@@ -41,8 +43,6 @@
 	</div></nav></div>
 
 	<div id="content">{% block content %}{% endblock %}</div>
-
-	<script type='text/javascript' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js'></script>
 </body>
 
 </html>
