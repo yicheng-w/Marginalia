@@ -1,0 +1,42 @@
+<!-- Login page -->
+
+{% extends "master.html" %}
+
+{% block title %}TITLE{% endblock %}
+
+{% block head %}
+	{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h4 class="center-align" style="padding-top:15vh">Sign In to Marginalia</h4>
+	<div class="row center">
+        {% if err %}
+        <script>
+        var $toastContent = $('<span><strong>Login Failed!</strong> {{ err }}</span>');
+        Materialize.toast($toastContent, 5000);
+        </script>
+        {% endif %}
+
+		<form class="col s6 offset-s3" method="post">
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">email</i>
+					<input id="email" name="email" type="text" class="validate" placeholder="Email">
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">lock</i>
+					<input id="password" name="password" type="password" class="validate" placeholder="Password">
+				</div>
+			</div>
+			<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+				<i class="material-icons right">send</i>
+			</button>
+			<p class="center-align">Or, <a href="/register">register</a> for a new account.</p>
+		</form>
+	</div>
+</div>
+{% endblock %}

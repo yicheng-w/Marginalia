@@ -64,17 +64,62 @@ var formatComments = function formatComments() {
 	var colors = ["pink", "indigo", "cyan", "light-green", "deep-orange"];
 	var i = 0;
 	$(".comment").each(function() {
+		var ctag = "com-"+i;
 		var col = colors[i%5]; 
-		var c = "<div class='comment-block white-text darken-4 "+col+"'>";
+
+		$(this).addClass(col+"-text text-darken-4 "+ctag);
+
+		var c = "<div class='comment-block white-text darken-4 "+col+" "+ctag+"'>";
 	   	c += $(this).find(".comment-text").text();
 		c += "</div>";
 		$("#mar-comments").append(c);
-		$(this).addClass(col+"-text text-darken-4");
+
 		i++;
 	})
 	$("#mar-text .comment-text").remove();
-	
 	$(".comment-block").addClass("card-panel hoverable");
+
+	var tbaseOffset = $("#mar-text").offset()["top"];					   // top of the text column
+//	var cbaseOffset = $("#mar-comments").find(".com-"+0).offset()["top"];  // top of the comment column
+	var cbaseOffset = $("#mar-comments").offset()["top"];
+	i = 0;
+	var textOffsets = [];
+	var origOffsets = []; 
+	$(".comment").each(function() {
+		var ctag = "com-"+i;
+		origOffsets[i] = $("#mar-comments").find("."+ctag).offset()["top"];  // original offset from top of column
+		textOffsets[i] = $("#mar-text").find("."+ctag).offset()["top"];      // offset of commented on text
+		i++;
+	})	
+	i = 0;
+	
+	$(".comment").each(function() {
+		if (i == 0) {
+			$("#mar-comments").find(".com-0").offset({"top":cbaseOffset-tbaseOffset+textOffsets[0]});
+		}
+		else {
+			var prevDif = origOffsets[i] - origOffsets[i-1];
+			var textDif = textOffsets[i] - textOffsets[i-1];
+			if (textDif > prevDif) {
+				var init = $("#mar-comments").find(".com-"+(i-1)).offset()["top"];
+				$("#mar-comments").find(".com-"+i).offset({"top":init+textDif});
+			}
+		}
+		i++;
+	})
+	/**
+	$(".comment").each(function() {
+		var ctag = "com-"+i;
+		var origOffset = $("#mar-comments").find("."+ctag).offset()["top"];  // original offset from top of column 
+		var textOffset = $("#mar-text").find("."+ctag).offset()["top"];  	 // offset of commented on text
+		var newOffset = (cbaseOffset-tbaseOffset) + textOffset;				 // ideal offset to line up comment and text
+		console.log(i+" --- "+cbaseOffset+", "+tbaseOffset+", "+textOffset+", "+newOffset+", "+origOffset);
+		if (newOffset > textOffset) { 
+			$("#mar-comments").find("."+ctag).offset({"top":newOffset});
+		}
+		i++;
+	})
+	*/
 };
 
 /** Runs all necessary functions for Marginalia.

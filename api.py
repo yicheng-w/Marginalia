@@ -18,6 +18,7 @@
 # Dev Log
 #  Project Created: 2015-12-19 14:57 - Yicheng W.
 #  Most API stuff are done: 2015-12-20 18:23 - Yicheng W.
+#  Template inheritance and basic HTML setup: 2015-12-27 17:17 - Ariel L.
 
 from flask import Flask, request, render_template, session, redirect, url_for
 from database import *
@@ -53,7 +54,7 @@ def home():
     # in, one version in which the user is not logged in
     # if the user is logged in, this page should display his/her marked sites,
     # otherwise it should be an ad-page with login infos
-    return
+    return render_template("index.html")
 
 @app.route("/about")
 def about():
@@ -61,11 +62,11 @@ def about():
 
 @app.route("/regist") # this is actually the register page
 def register_page():
-    return render_template("register.html") # TODO
+    return render_template("register.html") 
 
 @app.route("/login") # login page
 def login_page():
-    return render_template("login.html") # TODO
+    return render_template("login.html") 
 
 @app.route("/register", methods = ["GET", 'POST'])
 def register():
@@ -75,17 +76,32 @@ def register():
     else:
         email = request.form['email']
         password = request.form['password']
+        confirm = request.form['confirm']
         first = request.form['first']
         last = request.form['last']
 
-        m = hashlib.sha256()
+        if email == "":
+            return render_template("register.html", err = "Please enter your email!")
+
+        if password == "":
+            return render_template("register.html", err = "Password cannot be empty!")
+
+        if password != confirm:
+            return render_template("register.html", err = "Password does not match the confirm password!")
+
+        if first == "" or last == "":
+            return render_template("register.html", err = "Please enter your name!")
+
+        m = sha256()
         m.update(password)
         passhash = m.hexdigest()
 
         if new_user(email, passhash, first, last):
+            print "success"
             return render_template("register.html", status = "success")
             # in register.html redirect them to login
         else:
+            print "failed"
             return render_template("register.html", err = "Email already in use!")
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -97,7 +113,7 @@ def login():
         email = request.form['email']
         password = request.form['password']
 
-        m = hashlib.sha256()
+        m = sha256()
         m.update(password)
         passhash = m.hexdigest()
 
@@ -136,7 +152,7 @@ def change_pwd():
         email = request.form['email']
         old_password = request.form['oldpass']
 
-        m = hashlib.sha256()
+        m = sha256()
         m.update(old_password)
         passhash = m.hexdigest()
         if (authenticate(email,passhash)):
@@ -151,15 +167,17 @@ def change_pwd():
             return render_template("changed.html", err = "Incorrect email/password combination")
 
 @app.route("/view") # view all sites of a user, username stored in cookie
-@login_required
+#@login_required
 def view_static():
-    email = session['email']
-    list_of_sites = get_list_of_sites(email)
-    return render_template("view.html", sites = list_of_sites)
+#    email = session['email']
+#    list_of_sites = get_list_of_sites(email)
+	list_of_sites = []
+	return render_template("view.html", sites = list_of_sites)
 
 @app.route("/view/<int:id>") # grab a specific story based on id
-@login_required
+#@login_required
 def view_site(id):
+	'''
     email = session['email']
     list_of_sites = get_list_of_sites(email)
     for site in list_of_sites:
@@ -167,6 +185,8 @@ def view_site(id):
             return render_template("view_one.html", site=site[1], shared=site[2])
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you")
+	'''
+	return render_template("view_one.html")
 
 @app.route("/share/<int:id>") # reders the site if shares, gives out error otherwise
 def share(id):
@@ -226,5 +246,6 @@ def api_delete_site(id):
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
 if __name__ == "__main__":
-    app.secret_key = argv[argv.index('--key') + 1]
-    app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))
+    #app.secret_key = argv[argv.index('--key') + 1]
+	app.secret_key = "ariel can't figure out the argv thing"
+	app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))
