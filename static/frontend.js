@@ -109,6 +109,7 @@ var clickAddNote = function clickAddNote() {
 			var b = "<button class='btn waves-effect waves-light red' type='button' name='action' id='clear-note'>";
 			b += "<i class='material-icons'>clear</i></button>";
 			$("#add-note").after(b);
+			clickClearNote();
 			var t = "<div class='row' id='note-input'>";
 			t += "<form class='col s12'>";
 			t += "<div class='row'>";
@@ -119,7 +120,6 @@ var clickAddNote = function clickAddNote() {
 			showInput = true;
 		}
 		else {
-			clickClearNote();
 			var newNote = $("#note-text").val();
 			if ( newNote.trim() ) {  // note is not empty
 				$("#note-list").append("<li>"+newNote+"</li>");
