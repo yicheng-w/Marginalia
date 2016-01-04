@@ -165,8 +165,8 @@ var addCommentOption = function addCommentOption() {
 	}
 }
 
-document.onmouseup = doSomethingWithSelectedText;
-document.onkeyup = doSomethingWithSelectedText;
+//document.onmouseup = doSomethingWithSelectedText;
+//document.onkeyup = doSomethingWithSelectedText;
 	
 
 /** Runs all necessary functions for Marginalia.
@@ -175,6 +175,6 @@ var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
 	clickAddNote();
-	getSelectionText();
+	getSelectedText();
 };
 runMarginalia();
