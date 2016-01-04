@@ -145,6 +145,28 @@ var clickClearNote = function clickClearNote() {
 		showInput = false;
 	});
 };
+
+var getSelectedText = function getSelectedText() {
+    var text = "";
+	if (window.getSelection) {
+		text = window.getSelection().toString();
+	} else if (document.selection && document.selection.type != "Control") {
+		text = document.selection.createRange().text;
+	}
+	console.log(text);
+	return text;
+};
+
+var addCommentOption = function addCommentOption() {
+	var selectedText = getSelectedText();
+	if (selectedText) {
+//		alert("Got selected text " + selectedText);
+//
+	}
+}
+
+document.onmouseup = doSomethingWithSelectedText;
+document.onkeyup = doSomethingWithSelectedText;
 	
 
 /** Runs all necessary functions for Marginalia.
@@ -153,6 +175,6 @@ var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
 	clickAddNote();
-//	clickClearNote();
+	getSelectionText();
 };
 runMarginalia();
