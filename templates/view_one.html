@@ -18,7 +18,7 @@
 {% block text %}
 	<h1>Lorem <span class="comment">Ipsum</span></h1>
 
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <span class="comment">Maecenas aliquet mauris elit, id tristique est rhoncus quis. Nullam vel dolor sit amet lorem ultrices feugiat. In vitae ultrices odio, et venenatis nibh.</span> Praesent dignissim ornare ornare. Pellentesque tempus at elit a gravida. Maecenas non gravida neque. Suspendisse tristique mi id massa malesuada, nec malesuada velit iaculis. Fusce massa magna, elementum id tortor et, elementum blandit magna. Ut sed risus sem. Praesent ex diam, dapibus a mi sed, luctus dignissim enim.</p>
+	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <span class="comment">Maecenas aliquet mauris elit, id tristique est rhoncus quis. Nullam vel dolor sit amet lorem ultrices feugiat. In vitae ultrices odio, et venenatis nibh.</span> <span class="comment">Praesent</span> dignissim ornare ornare. Pellentesque tempus at elit a gravida. Maecenas non gravida neque. Suspendisse tristique mi id massa malesuada, nec malesuada velit iaculis. Fusce massa magna, elementum id tortor et, elementum blandit magna. Ut sed risus sem. Praesent ex diam, dapibus a mi sed, luctus dignissim enim.</p>
 
 	<p>Suspendisse bibendum est pharetra ligula ullamcorper, nec ultricies urna pellentesque. Nunc in laoreet elit, a tincidunt tellus. In hac habitasse platea dictumst. Nullam augue eros, tristique eu accumsan in, molestie sed urna. In auctor nec quam ut volutpat. Mauris vitae massa at ante placerat ornare. Nunc dapibus dignissim ligula. <span class="comment">Lorem ipsum</span> dolor sit amet, consectetur adipiscing elit. Proin in lectus vel urna semper pellentesque. Aliquam diam sapien, suscipit non accumsan sit amet, consequat nec leo. Morbi placerat malesuada massa ac hendrerit. Vestibulum id tristique tortor. Fusce tristique ipsum sed lectus commodo tincidunt. Nullam hendrerit mi enim, at lobortis tortor faucibus non.</p>
 
@@ -31,6 +31,7 @@
 {% endblock %}
 
 {% block comments %}
+<div class='comment-block white-text darken-4 black card-panel hoverable'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
 <div class='comment-block white-text darken-4 black card-panel hoverable'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
 <div class='comment-block white-text darken-4 black card-panel hoverable'>Aliquam ut velit mi.</div>
 <div class='comment-block white-text darken-4 black card-panel hoverable'>Aliquam diam sapien, suscipit non accumsan sit amet, consequat nec leo. Morbi placerat malesuada massa ac hendrerit. Vestibulum id tristique tortor. Fusce tristique ipsum sed lectus commodo tincidunt. Nullam hendrerit mi enim, at lobortis tortor faucibus non.</div>
