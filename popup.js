@@ -1,20 +1,12 @@
-chrome.runtime.onMessage.addListener(function(request, sender) {
-  if (request.action == "getSource") {
-    message.innerText = request.source;
-  }
+console.log("loaded popup.js");
+
+chrome.tabs.query({currentWindow: true, active: true}, function(tabArray) {
+    currentTabID = tabArray[0].id;
+    chrome.tabs.sendMessage(currentTabID, {method: "getHTML"}, function(response) {
+        if(response.method=="getHTML"){
+	    console.log(currentTabID);
+            alltext = response.data;
+	    console.log(alltext);
+        }
+    });
 });
-
-function onWindowLoad() {
-  var message = document.querySelector('#message');
-
-  chrome.tabs.executeScript(null, {
-    file: "getArticleHTML.js"
-  }, function() {
-    if (chrome.runtime.lastError) {
-      message.innerText = 'There was an error injecting script : \n' + chrome.runtime.lastError.message;
-    }
-  });
-
-}
-
-window.onload = onWindowLoad;

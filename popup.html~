@@ -1,0 +1,10 @@
+<html>
+
+Added to Marginalia!
+
+<button>Take notes now!</button>
+
+<script src = "frontend.js"></script>
+<script src = "popup.js"></script>
+
+</html>
