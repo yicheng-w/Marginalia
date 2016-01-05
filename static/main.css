@@ -1,0 +1,43 @@
+.ad-col i {
+	padding-top: 30px;
+}
+
+.ad-col p {
+	font-size: 20px;
+	padding: 0px 40px 10px;
+}
+
+.scroll {
+	overflow: scroll;
+}
+
+#content #mar-notes {
+	min-height: 100vh;
+	position: fixed;
+}
+
+#mar-notes #add-note, #mar-notes #write-note {
+	margin-top: 10px;
+}
+
+#mar-notes #note-input {
+	width: 80%;
+	float: left;
+}
+
+#mar-notes #note-panel {
+	height: 500px;
+	clear: both;
+}
+
+#note-list li {
+	border-bottom: 1px solid SkyBlue;
+}
+
+.comment {
+	text-decoration: underline;
+}
+
+#content #mar-comments {
+	min-height: 100vh;
+}
