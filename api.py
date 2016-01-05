@@ -185,7 +185,7 @@ def change_pwd():
     if request.method == "GET":
         return redirect(url_for("change_password"))
     else:
-        email = request.form['email']
+        email = session['email']
         old_password = request.form['oldpass']
 
         m = sha256()
@@ -193,10 +193,17 @@ def change_pwd():
         passhash = m.hexdigest()
         if (authenticate(email,passhash)):
             new_password = request.form['newpass']
-            newhashed = haslib.sha256().update(new_password).hexdigest()
+            confirmed = request.form['confirm']
+
+            if new_password != confirmed:
+                return render_template("change_pwd.html", err = "The new password did match its confirmation", email = email)
+
+            m = sha256()
+            m.update(new_password)
+            newhashed = m.hexdigest()
             changed = update_pwd(email, newhashed)
             if changed:
-                return redirect("change_pwd.html", status = "success", email = session['email'])
+                return render_template("change_pwd.html", status = "success", email = session['email'])
             else:
                 return render_template("change_pwd.html", err = "There was a problem in changing the password", email = session['email'])
         else:
