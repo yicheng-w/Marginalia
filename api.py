@@ -56,13 +56,16 @@ def home():
     # if the user is logged in, this page should display his/her marked sites,
     # otherwise it should be an ad-page with login infos
     if 'email' in session:
-        return render_template("index.html", email = session['email'])
+        return render_template("index.html", name = session['name'])
 
     return render_template("index.html")
 
 @app.route("/about")
 def about():
-    return render_template("about.html") # TODO
+    if 'name' in session:
+        return render_template("about.html", name = session['name'])
+
+    return render_template("about.html")
 
 @app.route("/regist") # this is actually the register page
 def register_page():
@@ -123,6 +126,7 @@ def login():
 
         if (authenticate(email, passhash)):
             session["email"] = email
+            session['name'] = get_name_from_email(email)
             return redirect(url_for("home"))
         else:
             return render_template("login.html", err = "Incorrect email/password combination")
@@ -177,7 +181,7 @@ The Marginalia Overlords""" % (email, co_email, get_name_from_email(email), new_
 @app.route("/change_pwd")
 @login_required
 def change_pwd_page():
-    return render_template("change_pwd.html", email = session['email'])
+    return render_template("change_pwd.html", name = session['name'])
 
 @app.route("/change_pwd", methods = ["GET", 'POST'])
 @login_required
@@ -196,25 +200,25 @@ def change_pwd():
             confirmed = request.form['confirm']
 
             if new_password != confirmed:
-                return render_template("change_pwd.html", err = "The new password did match its confirmation", email = email)
+                return render_template("change_pwd.html", err = "The new password did match its confirmation", name = session['name'])
 
             m = sha256()
             m.update(new_password)
             newhashed = m.hexdigest()
             changed = update_pwd(email, newhashed)
             if changed:
-                return render_template("change_pwd.html", status = "success", email = session['email'])
+                return render_template("change_pwd.html", status = "success", name = session['name'])
             else:
-                return render_template("change_pwd.html", err = "There was a problem in changing the password", email = session['email'])
+                return render_template("change_pwd.html", err = "There was a problem in changing the password", name = session['name'])
         else:
-            return render_template("change_pwd.html", err = "Incorrect old password", email = session['email'])
+            return render_template("change_pwd.html", err = "Incorrect old password", name = session['name'])
 
 @app.route("/view") # view all sites of a user, username stored in cookie
 @login_required
 def view_static():
     email = session['email']
     list_of_sites = get_list_of_sites(email)
-    return render_template("view.html", sites = list_of_sites, email = email)
+    return render_template("view.html", sites = list_of_sites, name = session['name'])
 
 @app.route("/view/<int:id>") # grab a specific story based on id
 @login_required
@@ -223,14 +227,15 @@ def view_site(id):
     list_of_sites = get_list_of_sites(email)
     for site in list_of_sites:
         if site[0] == id:
-            return render_template("view_one.html", site=site[1], shared=site[2], email = email)
+            return render_template("view_one.html", site=site[1], shared=site[2], name = session['name'])
 
-    return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you", email = email)
+    return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you", name = session['name'])
 
 @app.route("/logout")
 @login_required
 def logout():
     del session['email']
+    del session['name']
     return redirect(url_for("home"))
 
 @app.route("/share/<int:id>") # reders the site if shares, gives out error otherwise
@@ -238,10 +243,10 @@ def share(id):
     site = get_site_for_sharing(id)
 
     if site:
-        return render_template("view_one.html", site = site, email = email)
+        return render_template("view_one.html", site = site, name = session['name'])
 
     else:
-        return render_template("error.html", msg = "Sorry this site is not up for sharing :(", email = email);
+        return render_template("error.html", msg = "Sorry this site is not up for sharing :(", name = session['name']);
 
 ### API CALLS -------------------------------------------------------------####
 
