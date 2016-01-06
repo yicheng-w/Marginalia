@@ -89,8 +89,8 @@ def update_pwd(email, new_password):
     update_pwd: updates password for an user
 
     Args:
-        email (type): TODO
-	new_password (type): TODO
+        email (string): the user
+	new_password (string): the new password
     
     Returns:
         True if successful, False otherwise
@@ -113,6 +113,34 @@ def update_pwd(email, new_password):
     conn.commit()
     
     return True
+
+def get_name_from_email(email):
+    """
+    get_name_from_email: returns the name of the client based on the email
+    entered
+
+    Args:
+        email (string): the email you are looking for
+    
+    Returns:
+        a string of the form "first last", empty string if the email doesn't
+        exist
+    
+    Example:
+        get_name_from_email("alex.wyc2098@gmail.com") --> Yicheng Wang    
+    """
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT users.first, users.last FROM users WHERE users.email = ?"""
+
+    result = c.execute(q, (email,)).fetchall()
+
+    if len(result) == 0:
+        return ""
+
+    return result[0][0] + " " + result[0][1]
 
 def next_avaliable_id():
     """
