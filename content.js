@@ -6,8 +6,8 @@ chrome.runtime.onMessage.addListener(
 	console.log(sender);
 	console.log(sendResponse);
         if(request.method == "getHTML"){
-	    console.log(document.all[0].innerText);
-            sendResponse({data: document.all[0].innerText,  method: "getHTML"});
+	    console.log(document.body.outerHTML);
+            sendResponse({data: document.body.outerHTML,  method: "getHTML"});
         }
     }
 );
