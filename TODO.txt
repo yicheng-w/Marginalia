@@ -1,3 +1,4 @@
+TODO
 crapping website - ALICE
 Connecting frontend/backend - YEECH
 Writing Chrome extension - ALICE/JEFF
@@ -11,4 +12,6 @@ Materialize logo (for extension button) - ARIEL
 little button dropdown menu - ALICE/JEFF
 Change Log In button once logged in - YEECH
 Change password page - ARIEL
+
+DONE
 New color scheme - ARIEL -_-

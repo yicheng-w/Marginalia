@@ -48,12 +48,12 @@ var cleanPage = function cleanPage() {
  * 		Lines up comments and text sections.
  */
 var formatComments = function formatComments() {
-	var colors = ["pink", "indigo", "cyan", "light-green", "deep-orange"];
+	var colors = ["pink", "indigo", "purple", "light-blue", "teal"];
 	var i = 0;
 	$(".comment").each(function() {
 		var ctag = "com-"+i;
 		var col = colors[i%5]; 
-		$(this).addClass(col+"-text text-darken-4 "+ctag);
+		$(this).addClass(col+"-text text-darken-3 "+ctag);
 		i++;
 	})
 	i = 0;
@@ -94,58 +94,6 @@ var formatComments = function formatComments() {
 	
 };
 
-/** Function to animate "Add Note" button.
- * 		Button slides left.
- * 		Shortens to just icon.
- * 		Changes ID to '#write-note'.
- */
-var showInput = false;
-var clickAddNote = function clickAddNote() {
-	$("#add-note").click(function() {
-		if ( !showInput ) {
-			$("#add-note")[0].type = 'submit';
-			$("#add-note").html('<i class="material-icons right">create</i>');
-			$("#add-note").find("i").removeClass("right");
-			var b = "<button class='btn waves-effect waves-light red' type='button' name='action' id='clear-note'>";
-			b += "<i class='material-icons'>clear</i></button>";
-			$("#add-note").after(b);
-			clickClearNote();
-			var t = "<div class='row' id='note-input'>";
-			t += "<form class='col s12'>";
-			t += "<div class='row'>";
-			t += "<div class='input-field col s12'>";
-			t += "<textarea id='note-text' class='materialize-textarea' placeholder='Note'></textarea>";
-			t += "</div></div></form></div>";
-			$("#mar-notes").prepend(t);
-			showInput = true;
-		}
-		else {
-			var newNote = $("#note-text").val();
-			if ( newNote.trim() ) {  // note is not empty
-				$("#note-list").append("<li>"+newNote+"</li>");
-			}
-			$("#add-note")[0].type = 'button';
-			$("#add-note").html('Add Note<i class="material-icons right">create</i>');
-			$("#add-note").find("i").addClass("right");
-			$("#note-input").remove();
-			$("#clear-note").remove();
-			showInput = false;
-		}
-	});
-};
-
-var clickClearNote = function clickClearNote() {
-	$("#clear-note").click(function() {
-		console.log("exec");
-		$("#add-note")[0].type = 'button';
-		$("#add-note").html('Add Note<i class="material-icons right">create</i>');
-		$("#add-note").find("i").addClass("right");
-		$("#note-input").remove();
-		$("#clear-note").remove();
-		showInput = false;
-	});
-};
-
 var getSelectedText = function getSelectedText() {
     var text = "";
 	if (window.getSelection) {
@@ -174,7 +122,6 @@ var addCommentOption = function addCommentOption() {
 var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
-	clickAddNote();
 	getSelectedText();
 };
 runMarginalia();
