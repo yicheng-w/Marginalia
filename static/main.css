@@ -13,6 +13,15 @@
 	background-color: #dbc3d0;
 }
 
+#main-head {
+	background-image:url('../static/back2.png');
+	background-size:cover;
+}
+
+.ad-col {
+	background-color: rgba(255,255,255, 0.75);
+}
+
 .ad-col i {
 	padding-top: 30px;
 }

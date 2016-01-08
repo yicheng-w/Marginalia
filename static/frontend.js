@@ -11,6 +11,7 @@
 
 /** TODO
  * 		Highlight comment/commented text when hovering over partner. -- add unique comment id/classes shared by partners
+ * 		Fix comment overlapping.
  * 		Scrollfire for comments.
  * 		Functionality to add comment.
  */
@@ -94,6 +95,50 @@ var formatComments = function formatComments() {
 	
 };
 
+/** Formats comment and comment block when hovered over.
+ *		Highlights comment in grey.
+ *		Makes comment block italic and gives it depth.
+ */
+var commentHoverOn = function commentHoverOn(num) {
+	var ctag = ".com-"+num;
+	$(".comment"+ctag).addClass("grey lighten-2");
+	$(".comment-block"+ctag).css("font-style","italic");
+	$(".comment-block"+ctag).addClass("z-depth-5");
+};
+
+/** Undos hover formatting for comment and comment block.
+ */	
+var commentHoverOff = function commentHoverOff(num) {
+	var ctag = ".com-"+num;
+	$(".comment"+ctag).removeClass("grey lighten-2");
+	$(".comment-block"+ctag).css("font-style","normal");
+	$(".comment-block"+ctag).removeClass("z-depth-5");
+};
+
+var hoverAll = function hoverAll() {
+	var len = $(".comment").length;
+	$(".comment").each(function() {
+		var className = $(this).attr('class');
+		var num = className[className.length-1];
+		$(this).hover(function() {
+			commentHoverOn(num);
+		},function() {
+			commentHoverOff(num);
+		})
+	})
+	/**
+	for (i = 0; i < len; i++) { 
+		console.log(i);
+		var ctag = ".com-"+i;
+		$(".comment"+ctag).hover(function() {
+			commentHoverOn(i);	
+		},function() {
+			commentHoverOff(i);	
+		})
+	}
+	*/
+};
+
 var getSelectedText = function getSelectedText() {
     var text = "";
 	if (window.getSelection) {
@@ -122,6 +167,7 @@ var addCommentOption = function addCommentOption() {
 var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
+	hoverAll();
 	getSelectedText();
 };
 runMarginalia();
