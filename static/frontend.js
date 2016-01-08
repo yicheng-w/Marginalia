@@ -126,17 +126,15 @@ var hoverAll = function hoverAll() {
 			commentHoverOff(num);
 		})
 	})
-	/**
-	for (i = 0; i < len; i++) { 
-		console.log(i);
-		var ctag = ".com-"+i;
-		$(".comment"+ctag).hover(function() {
-			commentHoverOn(i);	
+	$(".comment-block").each(function() {
+		var className = $(this).attr('class');
+		var num = className[className.length-1];
+		$(this).hover(function() {
+			commentHoverOn(num);
 		},function() {
-			commentHoverOff(i);	
+			commentHoverOff(num);
 		})
-	}
-	*/
+	})
 };
 
 var getSelectedText = function getSelectedText() {
