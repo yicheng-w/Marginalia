@@ -66,6 +66,12 @@ var formatComments = function formatComments() {
 	
 	var tbaseOffset = $("#mar-text").offset()["top"];	   // top of the text column
 	var cbaseOffset = $("#mar-comments").offset()["top"];  // top of the comment column
+	var location_avaliable = Array($('#mar-comments').height());
+
+	for (var j = 0 ; j < $("#mar-comments").height() ; j++) {
+        location_avaliable[j] = 0;
+    }
+
 	i = 0;
 	var textOffsets = [];
 	var origOffsets = []; 
@@ -80,14 +86,32 @@ var formatComments = function formatComments() {
 	$(".comment").each(function() {
 		if (i == 0) {
 			$("#mar-comments").find(".com-0").offset({"top":cbaseOffset-tbaseOffset+textOffsets[0]});
+			for (var j = 0 ; j < $("#mar-comments").find(".com-0").height() ; j++) {
+    			location_avaliable[textOffsets[0] + j] = 1;
+            }
 		}
 		else {
 			var prevDif = origOffsets[i] - origOffsets[i-1];
 			var textDif = textOffsets[i] - textOffsets[i-1];
 			if (textDif > prevDif) {
 				var init = $("#mar-comments").find(".com-"+(i-1)).offset()["top"];
-				$("#mar-comments").find(".com-"+i).offset({"top":init+textDif});
+				var tentative = init+textDif;
+
+				while (location_avaliable[tentative] == 1) { // while the spot is occupied
+                    tentative++; // move down
+                }
+				$("#mar-comments").find(".com-"+i).offset({"top":tentative});
+
+				console.log("comment");
+				console.log(tentative);
+				console.log(tentative + $("mar-comments").find(".com-"+i).height());
+
+				for (var j = 0 ; j < $("mar-comments").find(".com-"+i).height() ; j++) {
+                    location_avaliable[tentative + j] = 1;
+                }
 			}
+
+			//console.log(location_avaliable);
 		}
 		i++;
 	})

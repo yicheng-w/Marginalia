@@ -231,6 +231,10 @@ def view_site(id):
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you", name = session['name'])
 
+@app.route("/view/test")
+def view_test():
+    return render_template("view_one.html")
+
 @app.route("/logout")
 @login_required
 def logout():
