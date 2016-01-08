@@ -20,6 +20,7 @@ chrome.runtime.onMessage.addListener(
         if(request.method == "getHTML"){
           //console.log(document.getElementsByTagName("p"));
           var paragraphs = document.getElementsByTagName("p");
+          var title = document.title;
           var onlyP = [];
           var pText = [];
           for (i=0;i<paragraphs.length;i++) {
@@ -30,11 +31,17 @@ chrome.runtime.onMessage.addListener(
                 pText.push(paragraphs[i].innerText);
             }
           }
-          console.log("--------------------------");
+          //console.log("--------------------------");
+          console.log("---------title------------");
+          console.log(title);
+          console.log("-------Paragraphs---------");
           console.log(pText);
-          sendResponse({data: document.getElementsByTagName("p"),  method: "getHTML"});
-	    //console.log(document.body.outerHTML);
-            //sendResponse({data: document.body.outerHTML,  method: "getHTML"});
+          var data = {
+            title:title,
+            p:paragraphs,
+            method:"getHTML"
+          };
+          sendResponse(data);
         }
     }
 );
