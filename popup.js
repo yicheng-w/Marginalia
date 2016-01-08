@@ -1,3 +1,14 @@
+/*-----------------------------------------------------------------------------
+ * Popup Script
+ *
+ * Authors
+ *  Alice Xue, Jeffrey Zou
+ *
+ * Description
+ *  Receives HTML from content.js when the extension is clicked
+ *
+ *-----------------------------------------------------------------------------*/
+
 console.log("loaded popup.js");
 
 chrome.tabs.query({currentWindow: true, active: true}, function(tabArray) {
