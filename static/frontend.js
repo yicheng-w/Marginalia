@@ -10,8 +10,9 @@
  *-----------------------------------------------------*/
 
 /** TODO
- * 		Highlight comment/commented text when hovering over partner. -- add unique comment id/classes shared by partners
+ * 		Fix comment overlapping.
  * 		Scrollfire for comments.
+ * 		Saving notes.
  * 		Functionality to add comment.
  */
 
@@ -19,6 +20,7 @@
  * 		Basic Page Structure: 2015-12-20 13:00 - Ariel L.
  * 		Integration with Materialize: 2015-12-20 23:00 - Ariel L.
  * 		Note and Comment Structure: 2015-12-28 17:00 - Ariel L.
+ * 		Hover Highlighting: 2016-01-08 10:09 - Ariel L.
  */ 
 
 /** Nicely formats webpage.
@@ -118,6 +120,50 @@ var formatComments = function formatComments() {
 	
 };
 
+/** Formats comment and comment block when hovered over.
+ *		Highlights comment in grey.
+ *		Makes comment block italic and gives it depth.
+ */
+var commentHoverOn = function commentHoverOn(num) {
+	var ctag = ".com-"+num;
+	$(".comment"+ctag).addClass("grey lighten-2");
+	$(".comment-block"+ctag).css("font-style","italic");
+	$(".comment-block"+ctag).addClass("z-depth-5");
+};
+
+/** Undos hover formatting for comment and comment block.
+ */	
+var commentHoverOff = function commentHoverOff(num) {
+	var ctag = ".com-"+num;
+	$(".comment"+ctag).removeClass("grey lighten-2");
+	$(".comment-block"+ctag).css("font-style","normal");
+	$(".comment-block"+ctag).removeClass("z-depth-5");
+};
+
+/** Adds hover command to comments and comment blocks.
+ */
+var hoverAll = function hoverAll() {
+	var len = $(".comment").length;
+	$(".comment").each(function() {
+		var className = $(this).attr('class');
+		var num = className[className.length-1];
+		$(this).hover(function() {
+			commentHoverOn(num);
+		},function() {
+			commentHoverOff(num);
+		})
+	})
+	$(".comment-block").each(function() {
+		var className = $(this).attr('class');
+		var num = className[className.length-1];
+		$(this).hover(function() {
+			commentHoverOn(num);
+		},function() {
+			commentHoverOff(num);
+		})
+	})
+};
+
 var getSelectedText = function getSelectedText() {
     var text = "";
 	if (window.getSelection) {
@@ -146,6 +192,7 @@ var addCommentOption = function addCommentOption() {
 var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
+	hoverAll();
 	getSelectedText();
 };
 runMarginalia();
