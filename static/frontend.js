@@ -10,9 +10,9 @@
  *-----------------------------------------------------*/
 
 /** TODO
- * 		Highlight comment/commented text when hovering over partner. -- add unique comment id/classes shared by partners
  * 		Fix comment overlapping.
  * 		Scrollfire for comments.
+ * 		Saving notes.
  * 		Functionality to add comment.
  */
 
@@ -20,6 +20,7 @@
  * 		Basic Page Structure: 2015-12-20 13:00 - Ariel L.
  * 		Integration with Materialize: 2015-12-20 23:00 - Ariel L.
  * 		Note and Comment Structure: 2015-12-28 17:00 - Ariel L.
+ * 		Hover Highlighting: 2016-01-08 10:09 - Ariel L.
  */ 
 
 /** Nicely formats webpage.
@@ -115,6 +116,8 @@ var commentHoverOff = function commentHoverOff(num) {
 	$(".comment-block"+ctag).removeClass("z-depth-5");
 };
 
+/** Adds hover command to comments and comment blocks.
+ */
 var hoverAll = function hoverAll() {
 	var len = $(".comment").length;
 	$(".comment").each(function() {
