@@ -20,19 +20,35 @@ chrome.runtime.onMessage.addListener(
         if(request.method == "getHTML"){
 	    var metadata = document.getElementsByTagName("meta");
 	    var divs = document.getElementsByTagName("div");
-	    var spans = document.getElementsByTagName("span");
-            var paragraphs = document.getElementsByTagName("p");
+            //var paragraphs = document.getElementsByTagName("p");
             var title = document.title;
-	    var dates = document.getElementsByTagName("time");
 	    var datePublished = "";
-	    if (typeof dates[0] != "undefined") {
-		datePublished = dates[0].innerText;
-	    }
+
+	    dates = document.querySelectorAll("time, [itemprop=datePublished], span[class=timeago], span[class=timestamp]");
+	    authors = document.querySelectorAll("[name=author], .byline-author, [itemprop=author], h3[class=article-author-title] > a");
+	    paragraphs = document.querySelectorAll("p[itemprop=articleBody], p[class=p1], div[itemprop=articleBody] > p, div[id=article-body] > p, div[class=article-entry] > p, span[class=focusParagraph] > p, span[id=articleText] > p");   
+
 	    for (i=0;i<dates.length;i++) {
-		if (dates[i].getAttribute("itemprop") == "datePublished") {
-		    datePublished = dates[i].innerText;
+		datePublished = dates[i].innerText;
+		if (typeof datePublished == "undefined" || datePublished == "" || datePublished == null) {
+		    datePublished = dates[i].getAttribute("content");
+		}
+		if (typeof datePublished != "undefined" & datePublished != "" & datePublished != null) {
+		    break;
 		}
 	    }
+	    
+	    var author = "";	 
+	    for (i=0;i<authors.length;i++) {
+		author = authors[i].innerText;
+		if (typeof author == "undefined" || author == "" || author == null) {
+		    author = authors[i].getAttribute("content");
+		}
+		if (typeof author != "undefined" & author != "" & author != null) {
+		    break;
+		}
+	    }
+
 	    if (datePublished == "") {
 		for (i=0;i<metadata.length;i++) {
 		    if (metadata[i].getAttribute("property") == "article:published_time") {
@@ -43,62 +59,32 @@ chrome.runtime.onMessage.addListener(
 		    }
 		}
 	    }
-	    console.log(datePublished);
-	    var author = "";
-	    for (i=0;i<metadata.length;i++) {
-		if (metadata[i].getAttribute("name") == "author") {
-		    author = metadata[i].getAttribute("content");
-		    break;
-		}
-	    }
-	    if (author == "") {
-		for (i=0;i<spans.length;i++) {
-		    if (spans[i].class == "byline-author") {
-			author = spans[i].innerText;
-			break;
-		    }
-		}
-	    }
-	    if (author == "") {
-		var anchors = document.getElementsByTagName("a");
-		for (i=0;i<anchors.length;i++) {
-		    if (anchors[i].getAttribute("itemprop") == "author") {
-			author = anchors[i].innerText;
-		    }
-		}
-	    }
-	    console.log(author);
+
             var onlyP = [];
             var pText = [];
-            for (i=0;i<paragraphs.length;i++) {
-		if (paragraphs[i].getAttribute("itemprop") == "articleBody") {
+
+
+	    for (i=0;i<paragraphs.length;i++) {
+		if (paragraphs[i].tagName == "P") {
 		    onlyP.push(paragraphs[i]);
-		    //Take the text and put it into array
-		    //NOTE: Firefox does NOT support innerText!
 		    pText.push(paragraphs[i].innerHTML);
-		}
-            }
-	    if (pText.length == 0) {
-		for (i=0;i<divs.length;i++) {
-		    if (divs[i].getAttribute("itemprop") == "articleBody" || divs[i].getAttribute("id") == "article-body") {
-			divParagraphs = divs[i].children;
-			console.log(divParagraphs);
-			for (j=0;j<divParagraphs.length;j++) {
-			    if (divParagraphs[j].tagName == "P") {
-				console.log(divParagraphs[j]);
-				console.log(divParagraphs[j].tagName);
-				onlyP.push(divParagraphs[j]);
-				pText.push(divParagraphs[j].innerHTML);
-			    }
-			}
-		    }
 		}
 	    }
 	    if (pText.length == 0) {
-		for (i=0;i<spans.length;i++) {
-		    if (spans[i].class == "s1") {
-			onlyP.push(spans[i]);
-			pText.push(spans[i].innerHTML);
+		for (i=0;i<divs.length;i++) { 
+		    divParagraphs = divs[i].children;
+		    for (j=0;j<divParagraphs.length;j++) {
+			if (divParagraphs[j].tagName == "P") {
+			    onlyP.push(divParagraphs[j]);
+			    pText.push(divParagraphs[j].innerHTML);
+			} 
+			if (divParagraphs[j].tagName == "SECTION") {
+			    sectionParagraphs = divParagraphs[j].children;
+			    for (k=0;k<sectionParagraphs.length;k++) {
+				onlyP.push(sectionParagraphs[k]);
+				pText.push(sectionParagraphs[k].innerHTML);
+			    }
+			}
 		    }
 		}
 	    }
@@ -107,6 +93,10 @@ chrome.runtime.onMessage.addListener(
             console.log("---------title------------");
             console.log(title);
 	    
+	    console.log("---------Date------------");
+	    console.log(datePublished);
+	    console.log("---------Author------------");
+	    console.log(author);
 	    
 	    
             console.log("-------Paragraphs---------");
