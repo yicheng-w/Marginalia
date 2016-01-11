@@ -54,12 +54,12 @@
 	clear: both;
 }
 
-#note-list li {
-	border-bottom: 1px solid SkyBlue;
-}
-
 .comment {
 	text-decoration: underline;
+}
+
+#mar-comments .comment-block {
+	opacity: 0.85;
 }
 
 #content #mar-comments {
