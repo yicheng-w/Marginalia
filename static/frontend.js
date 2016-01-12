@@ -10,7 +10,6 @@
  *-----------------------------------------------------*/
 
 /** TODO
- * 		Fix comment overlapping.
  * 		Scrollfire for comments.
  * 		Saving notes.
  * 		Functionality to add comment.
@@ -153,6 +152,36 @@ var hoverAll = function hoverAll() {
 	})
 };
 
+var insertComment = function insertComment() {
+	var newCom = $(".comment.new-com");
+	var newInd = $(".comment").index(newCom);
+	var newBlock = $(".comment-block.new-com");
+	$(".mar-comments").remove(".new-com");
+	if (newInd == 0) {
+		$(".comment-block.com-0").before(newBlock);
+	}
+	else {
+		$(".comment-block.com-"+(newInd-1)).after(newBlock);
+	}
+	$(".new-com").removeClass(".new-com");
+	
+	// clear original indices
+	var i = 0;
+	$(".comment").each(function() {
+		var ctag = ".com-"+i;
+		$(this).removeClass(ctag);
+		i++;
+	});
+	i = 0;
+	$(".comment-block").each(function() {
+		var ctag = ".com-"+i;
+		$(this).removeClass(ctag);
+		i++;
+	});
+
+	formatComments();
+};
+
 var getSelectedText = function getSelectedText() {
     var text = "";
 	if ($(window).getSelection) {
@@ -171,6 +200,12 @@ var addCommentOption = function addCommentOption() {
 //
 	}
 }
+
+var addComment = function addComment() {
+	var selectedText = getSelectedText();
+	var spanText = '<span class="comment new-com">'+selectedText+"</span>";
+	$(p).html($(this).html().replace(selectedText, spanText));
+};
 
 //document.onmouseup = doSomethingWithSelectedText;
 //document.onkeyup = doSomethingWithSelectedText;

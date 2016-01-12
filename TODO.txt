@@ -1,10 +1,8 @@
 TODO
-crapping website - ALICE
+scrapping website - ALICE
 Connecting frontend/backend - YEECH
 Writing Chrome extension - ALICE/JEFF
-Notes textarea - ARIEL
 Scrollfire - ARIEL
-Comment overlaps - ARIEL
 Researchy? - combining comments - YEECH
 Sharing articles - JEFF
 Search article feature - ?
@@ -15,3 +13,5 @@ Change password page - ARIEL
 
 DONE
 New color scheme - ARIEL -_-
+Notes textarea - ARIEL
+Comment overlaps - YEECH
