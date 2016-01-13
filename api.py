@@ -38,9 +38,18 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "email" not in session:
+            return render_template("login.html", err = "You must login to continue.")
+        return f(*args, **kwargs)
+    return decorated_function
+
+def login_required_api(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "email" not in session:
             return json.dumps({'status': 'failure', 'error': 'Login Required'})
         return f(*args, **kwargs)
     return decorated_function
+
 
 co_email = "marginalia.overlords@gmail.com"
 co_pass = open("password.txt", 'r').read()[:-1]
@@ -104,11 +113,9 @@ def register():
         passhash = m.hexdigest()
 
         if new_user(email, passhash, first, last):
-            print "success"
             return render_template("register.html", status = "success")
             # in register.html redirect them to login
         else:
-            print "failed"
             return render_template("register.html", err = "Email already in use!")
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -144,8 +151,6 @@ def forget_pwd():
         email = request.form['email']
         new_pass = ''.join(choice(alphabet) for i in range(10))
 
-        print "asdjfhasjdklfhal"
-
         m = sha256()
         m.update(new_pass)
         passhash = m.hexdigest()
@@ -175,7 +180,6 @@ The Marginalia Overlords""" % (email, co_email, get_name_from_email(email), new_
         s.sendmail(co_email, email, msg)
         s.close()
 
-        print "adjksfhsalkjd"
         return render_template("forget_pwd.html", status = "success")
 
 @app.route("/change_pwd")
@@ -235,6 +239,15 @@ def view_site(id):
 def view_test():
     return render_template("view_one.html")
 
+@app.route("/search", methods = ['GET'])
+@login_required
+def search():
+    search_string = request.args.get('search', '')
+    result = search_user_sites(session['email'], search_string)
+
+    print result
+    return "lol"
+
 @app.route("/logout")
 @login_required
 def logout():
@@ -255,7 +268,7 @@ def share(id):
 ### API CALLS -------------------------------------------------------------####
 
 @app.route("/new/", methods = ['GET', 'POST']) # adds a site to a user's collection, site passed via POST request, user info stored in session
-@login_required
+@login_required_api
 def api_add_site():
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
@@ -269,7 +282,7 @@ def api_add_site():
     return json.dumps({"status": 'failure', 'msg': 'Something went wrong :('})
 
 @app.route("/update/<int:id>", methods = ["GET", 'POST']) # update a specific site based on id, new site content passed via POST request, user info stored in session
-@login_required
+@login_required_api
 def api_update_site(id):
     if request.method == 'GET':
         return json.dumps({"status": 'failure', 'msg': 'Incorrect request method'})
@@ -281,7 +294,7 @@ def api_update_site(id):
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
 
 @app.route("/change_perm/<int:id>") # changes sharing permission for a site, user info stored in session
-@login_required
+@login_required_api
 def api_change_perm(id):
     email = session['email']
     if change_site_permission(email, id):
@@ -290,7 +303,7 @@ def api_change_perm(id):
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
 @app.route("/delete/<int:id>") # deletes a story based on id, user data stored in session
-@login_required
+@login_required_api
 def api_delete_site(id):
     email = session['email']
 

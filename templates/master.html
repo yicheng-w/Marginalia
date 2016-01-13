@@ -40,12 +40,13 @@
 			{% endfor %}
 		</ul>
 		<ul class="right">
-			<li><form><div class="input-field">
-				<input id="search" type="search" required>
+            {% if name %}
+
+			<li><form method = 'get' action="/search"><div class="input-field">
+                <input id="search" name="search" type="search" required></input>
 				<label for="search"><i class="material-icons">search</i></label>
 				<i class="material-icons">close</i>
                 </div></form></li>
-            {% if name %}
             <li>
                 <a class="dropdown-button" href="#!" data-activates="dropdown1" data-beloworigin='true'>{{ name }}<i class="material-icons right">arrow_drop_down</i></a>
             </li>
