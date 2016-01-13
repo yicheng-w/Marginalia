@@ -171,13 +171,15 @@ def next_avaliable_id():
 
     return len(result)
 
-def add_to_sites(email, site):
+def add_to_sites(email, site, comments, notes):
     """
     add_to_sites: add a site to the user's list
 
     Args:
         email (string): the user
-	site (string): the marked up html of the site
+	site (string): the html of the site
+        comments (string): the comments on the site
+        notes (string): the notes on the site
     
     Returns:
         True if successful, False otherwise
@@ -186,9 +188,9 @@ def add_to_sites(email, site):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?)"""
+    q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
 
-    c.execute(q, (next_avaliable_id(), email, site, 0, int(time()))) # default permission is private
+    c.execute(q, (next_avaliable_id(), email, site, comments, notes, 0, int(time()))) # default permission is private
     conn.commit()
 
 def get_list_of_sites(email):
@@ -231,7 +233,7 @@ def get_site_for_sharing(id):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.shared, sites.site
+    q = """SELECT sites.shared, sites.site, sites.comments, sites.notes
     FROM sites
     WHERE sites.id = ?"""
 
@@ -243,9 +245,9 @@ def get_site_for_sharing(id):
     if (r[0][0] == 0): # if the site is private
         return None
 
-    return r[0][1]
+    return r[0][1:]
 
-def update_site(email, site_id, new_site):
+def update_site(email, site_id, new_site, new_comments, new_notes):
     """
     update_site: updates the site entry for the user
 
@@ -253,6 +255,8 @@ def update_site(email, site_id, new_site):
         email (string): the user
 	site_id (int): the id of the site in the database
 	new_site (string): updated markup for the site
+        new_comments (string): updated comments for the site
+        new_notes (string): updated notes for the site
     
     Returns:
         True if successful, False otherwise    
@@ -268,9 +272,9 @@ def update_site(email, site_id, new_site):
     if (len(result) == 0):
         return False
 
-    q = """UPDATE sites SET site = ?, t = ? WHERE id = ?"""
+    q = """UPDATE sites SET site = ?, comments = ?, notes = ?, t = ? WHERE id = ?"""
 
-    c.execute(q, (new_site, int(time()), site_id))
+    c.execute(q, (new_site, new_comments, new_notes, int(time()), site_id))
 
     conn.commit()
 
