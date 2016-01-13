@@ -237,7 +237,7 @@ def view_site(id):
 
 @app.route("/view/test")
 def view_test():
-    return render_template("view_one.html")
+    return render_template("view_one.html", name = session['name'])
 
 @app.route("/search", methods = ['GET'])
 @login_required
