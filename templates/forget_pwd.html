@@ -1,0 +1,44 @@
+<!-- Forget Password Page -->
+
+{% extends "master.html" %}
+
+{% block title %}Settings{% endblock %}
+
+{% block head %}
+	{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h4 class="center-align" style="padding-top:15vh">Enter your Email to Retrieve Your Password!</h4>
+	<div class="row center">
+        {% if err %}
+        <script>
+        var $toastContent = $('<span><strong>Password Change Failed!</strong> {{ err }}</span>');
+        Materialize.toast($toastContent, 5000);
+        </script>
+
+        {% elif status %}
+        <script>
+        var $toastContent = $('<span><strong>Your password has been changed!</strong> A temporary password has been sent to your address.</span>');
+        Materialize.toast($toastContent, 5000);
+        window.setTimeout(function() {
+            location.href = "/login";
+        }, 2000);
+        </script>
+        {% endif %}
+
+		<form class="col s6 offset-s3" method="post" action="/forget_pwd">
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">email</i>
+					<input id="email" name="email" type="text" class="validate" placeholder="Email">
+				</div>
+			</div>
+			<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+				<i class="material-icons right">send</i>
+			</button>
+		</form>
+	</div>
+</div>
+{% endblock %}

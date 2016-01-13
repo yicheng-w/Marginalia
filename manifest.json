@@ -1,0 +1,30 @@
+{
+  "manifest_version": 2,
+
+  "name": "Marginalia",
+  "description": "This extension takes the article from the current page and generates a popup where a user can make annotations.",
+  "version": "1.0",
+  "offline_enabled": true,
+
+  "browser_action": {
+    "default_icon": "icon.png",
+    "default_popup": "popup.html"
+  },
+
+  "content_scripts": [
+    {
+	"matches": [
+            "http://*/*",
+	    "https://*/*"
+	],
+	"js": ["content.js"],
+	"run_at": "document_end"
+    }
+   ],  		  
+
+  "permissions": [
+    "activeTab",
+    "tabs",
+    "<all_urls>"
+  ]
+}

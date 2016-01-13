@@ -9,20 +9,27 @@
 	<link type='text/css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/css/materialize.min.css' media='screen,projection'></link>
 	<link type='text/css' rel='stylesheet' href="../static/main.css"></link>
 	<meta name='viewport' content='width=device-width, initial-scale=1.0'></meta>
+	<link rel="shortcut icon" type="image/png" href="../static/favicon.png"/>
     <!-- <script src="../static/jquery.js"></script> -->
 	{% endblock %}
 </head>
 
-<body>
+<body class="grey lighten-3">
     <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
 	<script type='text/javascript' src='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js'></script>
-	<div class="navbar-fixed"><nav><div class="nav-wrapper">
+	<div class="navbar-fixed">
+        <ul id='dropdown1' class='dropdown-content'>
+            <li><a href="/change_pwd">Change Password</a></li>
+            <li><a href="/logout">Logout</a></li>
+        </ul>
+
+        <nav><div class="nav-wrapper plum">
 		<a href="/" class="brand-logo center">MARGINALIA</a>
 		<!-- List of tabs (href, id, caption) -->
 		{% set navigation_bar = [
 			('/', 'index', 'Home'),
 			('/about', 'about', 'About'),
-			('/view', 'view', 'My Pages'),
+			('/view', 'view', 'Pages'),
 		] -%}
 		{% set active_page = active_page -%}
 		<ul class="left">
@@ -33,12 +40,19 @@
 			{% endfor %}
 		</ul>
 		<ul class="right">
-			<li><form><div class="input-field">
-				<input id="search" type="search" required>
+            {% if name %}
+
+			<li><form method = 'get' action="/search"><div class="input-field">
+                <input id="search" name="search" type="search" required></input>
 				<label for="search"><i class="material-icons">search</i></label>
 				<i class="material-icons">close</i>
-			</div></form></li>
+                </div></form></li>
+            <li>
+                <a class="dropdown-button" href="#!" data-activates="dropdown1" data-beloworigin='true'>{{ name }}<i class="material-icons right">arrow_drop_down</i></a>
+            </li>
+            {% else %}
 			<li><a href="/login">Log In</a></li>
+            {% endif %}
 		</ul>
 	</div></nav></div>
 

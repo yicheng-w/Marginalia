@@ -17,6 +17,7 @@
 
 import sqlite3
 from time import time, sleep
+from search import *
 
 def new_user(email, password_hash, first, last):
     """
@@ -346,8 +347,53 @@ def delete_site(email, site_id):
 
     return True
 
+def search_user_sites(email, search_string):
+    """
+    search_user_sites: searches a specific user's pages for a specific set of
+    strings
 
+    Args:
+        email (string): the user
+	search_string (string): the string to search
+    
+    Returns:
+        a list of abstracted articles in which each element is a dictionary of
+        the form:
+        {
+            'index' : index-of-proximity (see search.py) (float),
+            'id' : site id (int),
+            'abstract' : abstracted site (string),
+            'snippet' : list of matched words (see search.py)
+        }
 
+        ordered by 'index'
+    """
+
+    ret_val = []
+    search = search_string.split()
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.id, sites.site FROM sites WHERE sites.email = ?"""
+
+    result = c.execute(q, (email,)).fetchall()
+
+    for i in result:
+        snippets = get_snippets_from_site(i[1], search)
+
+        if (len(snippets) > 0):
+            index = get_index_of_proximity(i[1], search)
+            abstract = abstract_site_from_words(i[1], snippets)
+
+            ret_val.append({
+                'index':index,
+                'id':i[0],
+                'abstract':abstract,
+                'snippet':snippets
+                })
+    
+    return sorted(ret_val, key=lambda entry: entry['index'])
 
 if __name__ == "__main__":
     print "new_user test"
@@ -389,3 +435,6 @@ if __name__ == "__main__":
     print add_to_sites("alex.wyc2098@gmail.com", "this is the new site 2")
     
     print get_list_of_sites("alex.wyc2098@gmail.com")
+
+    print "searching"
+    search_user_sites("alex.wyc2098@gmail.com", 'asdf')
