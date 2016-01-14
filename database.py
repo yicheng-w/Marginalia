@@ -317,6 +317,36 @@ def change_site_permission(email, id):
 
     conn.commit()
 
+def fork_shared_site(site_id, email):
+    """
+    fork_shared_site: this makes a copy of the shared site with a specific
+    site_id within the user's private library
+
+    Args:
+        site_id (int): the site_id of the shared site
+	email (string): the user who wishes to fork the site
+    
+    Returns:
+        True if successful, False otherwise
+    """
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.shared, sites.site, sites.comments, sites.notes
+    FROM sites
+    WHERE sites.id = ?"""
+
+    r = c.execute(q, (site_id,)).fetchall()
+
+    if (len(r) == 0):
+        return False
+
+    if r[0][0] == 0:
+        return False
+
+    return add_to_sites(email, r[0][1], r[0][2], r[0][3])
+
 def delete_site(email, site_id):
     """
     delete_site: deletes a site from the user's "library" according to id
