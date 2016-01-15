@@ -96,6 +96,15 @@ chrome.runtime.onMessage.addListener(
 
       var send = function() {
         var url = "parseHTML.py";
+        var request = new XMLHTTPRequest();
+        /*request.onreadystatechange = function(){
+          if (request.readyState === 4 && request.status === 200) {
+
+          }
+        }*/
+        request.open("POST", "parseHTML.py?data=" + paragraphs, true);
+        request.send(document.html);
+        console.log("SUCCESS");
       }
 
       //console.log("--------------------------");
