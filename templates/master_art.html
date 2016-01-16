@@ -20,6 +20,12 @@
 			<div id='mar-comments' class='col s4'>
 				{% block comments %}{% endblock %}
 			</div>
+			<div class='overlay' id='add-com'>
+				<div id='com-on' class='card-panel grey lighten-3'>Hello World!</div> 
+				<textarea id='com-text' class='card-panel white'></textarea>
+				<button class='btn waves-effect waves-light red' type='button' name='action' id='kill-com'>Cancel</button>
+				<button class='btn waves-effect waves-light' type='button' name='action' id='save-com'>Add Comment</button>
+			</div>
 		</div>
         <script type='text/javascript' src='../static/frontend.js'></script>
 

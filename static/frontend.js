@@ -12,7 +12,7 @@
 /** TODO
  * 		Scrollfire for comments.
  * 		Saving notes.
- * 		Functionality to add comment.
+ * 		Debug multiple comment adding.
  */
 
 /** Dev Log
@@ -54,13 +54,30 @@ var formatComments = function formatComments() {
 	$(".comment").each(function() {
 		var ctag = "com-"+i;
 		var col = colors[i%5]; 
+		var oldCol;
+	   	if (i == 0) {
+			oldCol = colors[4];
+		}
+		else {
+			oldCol = colors[(i-1)%5];
+		}
+		$(this).removeClass(oldCol+"-text");
 		$(this).addClass(col+"-text text-darken-3 "+ctag);
 		i++;
 	})
 	i = 0;
 	$(".comment-block").each(function() {
+		$(this).removeClass("black");
 		var ctag = "com-"+i;
 		var col = colors[i%5];
+		var oldCol;
+	   	if (i == 0) {
+			oldCol = colors[4];
+		}
+		else {
+			oldCol = colors[(i-1)%5];
+		}
+		$(this).removeClass(oldCol);
 		$(this).addClass(col+" "+ctag);
 		i++;
 	})
@@ -82,9 +99,6 @@ var formatComments = function formatComments() {
 	})
 	i = 0;
 
-	console.log(textOffsets);
-	console.log($(window).height());
-	
 	$(".comment").each(function() {
 
 	    while (location_avaliable[textOffsets[i]] == 1) {
@@ -184,32 +198,62 @@ var insertComment = function insertComment() {
 
 var getSelectedText = function getSelectedText() {
     var text = "";
-	if ($(window).getSelection) {
-		text = $(window).getSelection().toString();
-	} else if (document.selection && document.selection.type != "Control") {
+	if (window.getSelection) {
+		text = window.getSelection().toString();
+	} else if (document.getSelection) {
+		text = document.getSelection();
+	} else if (document.selection) {
 		text = document.selection.createRange().text;
 	}
 	console.log(text);
 	return text;
 };
 
-var addCommentOption = function addCommentOption() {
-	var selectedText = getSelectedText();
-	if (selectedText) {
-//		alert("Got selected text " + selectedText);
-//
-	}
+var addCommentOption = function addCommentOption( st ) {
+	$("#com-on").text( st );
+	$("#add-com").css("visibility", "visible");
+	$(".cur").removeClass("cur");
 }
 
-var addComment = function addComment() {
-	var selectedText = getSelectedText();
-	var spanText = '<span class="comment new-com">'+selectedText+"</span>";
-	$(p).html($(this).html().replace(selectedText, spanText));
+var addComment = function addComment(text) {
+	$("#mar-comments").append("<div class='comment-block white-text darken-3 black card-panel hoverable new-com'>"+text+"</div>");
 };
 
-//document.onmouseup = doSomethingWithSelectedText;
-//document.onkeyup = doSomethingWithSelectedText;
-	
+$("p").on("mouseup",function() {
+	var selectedText = getSelectedText();
+	if (selectedText) {
+		$(this).addClass("cur");
+		$(document).keydown(function(e) {
+			if (e.keyCode == 67 && e.ctrlKey && e.altKey) {
+				var selectedText = getSelectedText();
+				var spanText = '<span class="comment new-com">'+selectedText+"</span>";
+				console.log("replacing");
+				$(".cur").html( $(".cur").html().replace(selectedText, spanText) );
+				addCommentOption( selectedText );
+			}
+		});
+	}
+	else {
+		$(document).off('keydown');
+	}
+});
+
+$("#kill-com").on("click",function() {
+	var uncomText = $(".new-com").text();
+	$(".new-com").after( uncomText );
+	$(".new-com").remove();
+	$("#com-text").val("");
+	$("#add-com").css("visibility", "hidden");
+});
+
+$("#save-com").on("click",function() {
+	var comText = $("#com-text").val();	
+	console.log(comText);
+	addComment(comText);
+	insertComment();
+	$("#com-text").val("");
+	$("#add-com").css("visibility", "hidden");
+});
 
 /** Runs all necessary functions for Marginalia.
  */
