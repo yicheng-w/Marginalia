@@ -1,0 +1,54 @@
+<!-- Change Password Page -->
+
+{% extends "master.html" %}
+
+{% block title %}TITLE{% endblock %}
+
+{% block head %}
+	{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+	<h4 class="center-align" style="padding-top:15vh">Change Password</h4>
+	<div class="row center">
+        {% if err %}
+        <script>
+        var $toastContent = $('<span><strong>Password Change Failed!</strong> {{ err }}</span>');
+        Materialize.toast($toastContent, 5000);
+        </script>
+
+        {% elif status %}
+        <script>
+        var $toastContent = $('<span><strong>Your password has been changed!</strong></span>');
+        Materialize.toast($toastContent, 5000);
+        </script>
+        {% endif %}
+
+		<form class="col s6 offset-s3" method="post" action="/change_pwd">
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">lock</i>
+					<input id="password" name="oldpass" type="password" class="validate" placeholder="Current Paassword">
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">lock</i>
+					<input id="confim" name="newpass" type="password" class="validate" placeholder="New Password">
+				</div>
+			</div>
+			<div class="row">
+				<div class="input-field col s12">
+					<i class="material-icons prefix">lock_outline</i>
+					<input id="confimrm" name="confirm" type="password" class="validate" placeholder="Confirm New Password">
+				</div>
+			</div>
+
+			<button class="btn waves-effect waves-light" type="submit" name="action">Submit
+				<i class="material-icons right">send</i>
+			</button>
+		</form>
+	</div>
+</div>
+{% endblock %}
