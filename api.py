@@ -275,8 +275,10 @@ def api_add_site():
 
     email = session['email']
     site = request.form['site']
+    comments = request.form['comment']
+    notes = request.form['note']
 
-    if add_to_sites(email, site):
+    if add_to_sites(email, site, comments, notes):
         return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
 
     return json.dumps({"status": 'failure', 'msg': 'Something went wrong :('})
@@ -287,8 +289,10 @@ def api_update_site(id):
     if request.method == 'GET':
         return json.dumps({"status": 'failure', 'msg': 'Incorrect request method'})
     email = session['email']
-    new_site = request.form['new_site']
-    if update_site(email, id, new_site):
+    new_site = request.form['site']
+    new_comments = request.form['comment']
+    new_notes = request.form['note']
+    if update_site(email, id, new_site, new_comments, new_notes):
         return json.dumps({"status": 'success', 'msg': 'Your marks have been updated'})
 
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
@@ -311,6 +315,17 @@ def api_delete_site(id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
+
+@app.route("/fork/<int:id>") # copies a shared document into own's own private repo
+# relatively low priority but still on TODO
+@login_required_api
+def fork(id):
+    email = session['email']
+    
+    if fork_shared_site(id, email):
+        return json.dumps({'status': 'success', 'msg':'The site has been successfully added to your own library'})
+
+    return json.dumps({'status': 'failure', 'msg': 'Something went wrong'})
 
 if __name__ == "__main__":
     try:
