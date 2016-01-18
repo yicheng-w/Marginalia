@@ -297,3 +297,9 @@ function connect(div1, div2, thickness) { // draw a line connecting elements
     // alert(htmlLine);
     document.body.innerHTML += htmlLine;
 }
+
+/** ajax calls that sends the updated page back to the api and database
+ */
+function update_page() {
+    jQuery.ajax("/update/")
+}
