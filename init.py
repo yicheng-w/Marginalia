@@ -17,6 +17,7 @@
 
 import sqlite3
 from hashlib import sha256
+from database import *
 
 conn = sqlite3.connect("./db/infos.db")
 
@@ -28,7 +29,7 @@ create_base = "CREATE TABLE %s (%s)" # no user input needed, use %s
 c.execute(create_base % ("users", "email TEXT, password TEXT, first TEXT, last TEXT"))
 
 # note will be html source code with markup
-c.execute(create_base % ("sites", "id INTEGER, email TEXT, site TEXT, comments TEXT, notes TEXT, shared INTEGER, t INTEGER"))
+c.execute(create_base % ("sites", "id INTEGER, email TEXT, title TEXT, site TEXT, comments TEXT, notes TEXT, shared INTEGER, t INTEGER"))
 
 conn.commit()
 
@@ -42,4 +43,4 @@ c.execute(q, ('alex.wyc2098@gmail.com', hash, 'Yicheng', 'Wang'))
 
 conn.commit()
 
-q = """INSERT INTO sites VALUES (?, ?, ?, )"""
+add_to_sites("alex.wyc2098@gmail.com", "testing", "this is a site for testing. lorem ipsum blah blah blah blah blah", "", "")

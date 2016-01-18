@@ -172,12 +172,13 @@ def next_avaliable_id():
 
     return len(result)
 
-def add_to_sites(email, site, comments, notes):
+def add_to_sites(email, title, site, comments, notes):
     """
     add_to_sites: add a site to the user's list
 
     Args:
         email (string): the user
+        title (string): title of the site
 	site (string): the html of the site
         comments (string): the comments on the site
         notes (string): the notes on the site
@@ -191,7 +192,7 @@ def add_to_sites(email, site, comments, notes):
 
     q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
 
-    c.execute(q, (next_avaliable_id(), email, site, comments, notes, 0, int(time()))) # default permission is private
+    c.execute(q, (next_avaliable_id(), email, title, site, comments, notes, 0, int(time()))) # default permission is private
     conn.commit()
 
 def get_list_of_sites(email):
@@ -204,19 +205,48 @@ def get_list_of_sites(email):
     Returns:
         a list of sites formatted in the following manner ranked by last edited
         time:
-        [(site-id1, site1, permission1), (site-id2, site2, permission2), ...]
+        [(site-id1, site-title1, permission1), (site-id2, site-title2, permission2), ...]
     """
 
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id, sites.site, sites.shared
+    q = """SELECT sites.id, sites.title, sites.shared
     FROM sites
     WHERE sites.email = ?
     ORDER BY t DESC"""
 
     r = c.execute(q, (email,)).fetchall()
     return r
+
+def get_site_on_id(email, id):
+    """
+    get_site_on_id: get the site title, site, the notes and the comments
+
+    Args:
+        email (string): the user
+	id (int): the site id
+    
+    Returns:
+        a tuple in the form of:
+        (title, site, notes, comments)
+
+        or None if retrival was not successful
+    """
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.title, sites.site, sites.notes, sites.comments
+    FROM sites
+    WHERE sites.email = ? AND sites.id = ?"""
+
+    r = c.execute(q, (email, id)).fetchall()
+
+    if (len(r) != 1):
+        return None
+
+    return r[0]
 
 def get_site_for_sharing(id):
     """
