@@ -228,16 +228,18 @@ def view_static():
 @login_required
 def view_site(id):
     email = session['email']
-    list_of_sites = get_list_of_sites(email)
-    for site in list_of_sites:
-        if site[0] == id:
-            return render_template("view_one.html", site=site[1], shared=site[2], name = session['name'])
+    site = get_site_on_id(email, id)
+
+    if (site):
+        return render_template("view_one.html", site = site, name = session['name'])
+    else:
+        return "lol" # TODO
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you", name = session['name'])
 
 @app.route("/view/test")
 def view_test():
-    return render_template("view_one.html", name = session['name'])
+    return render_template("view_test.html", name = session['name'])
 
 @app.route("/search", methods = ['GET'])
 @login_required

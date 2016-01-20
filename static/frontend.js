@@ -26,6 +26,11 @@
  * 		Adds whitespace on either side of text.
  * 		Adds divs for notes and comments.
  */
+
+var href = window.location.href;
+console.log(href);
+var page_id = parseInt(href.substr(href.lastIndexOf('/') + 1), 10);
+
 var cleanPage = function cleanPage() {
 	$("#content").children().wrapAll("<div id='mar-text' />");  // original text
 	$("#content").prepend("<div id='mar-notes' />");			// left div for notes
@@ -236,6 +241,14 @@ $("p").on("mouseup",function() {
 	else {
 		$(document).off('keydown');
 	}
+	var site = {
+        'site': document.getElementById("mar-text").innerHTML,
+        'comment': document.getElementById("mar-comments").innerHTML,
+        'note': document.getElementById("note-panel").innerHTML
+    };
+    $.post("/update/" + site_id, site, function(data) {
+        Materialize.toast("Comments saved!", 4000);
+    },"json");
 });
 
 $("#kill-com").on("click",function() {

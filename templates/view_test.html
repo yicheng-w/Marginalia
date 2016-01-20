@@ -1,50 +1,17 @@
-################################################################################
-# Initializes the database for user login/storage                              #
-#                                                                              #
-# Authors                                                                      #
-#  Yicheng Wang                                                                #
-#                                                                              #
-# Description                                                                  #
-#  Initializes database in db/ for user login and storage                      #
-#                                                                              #
-################################################################################
+<!-- Display one specific site of user -->
 
-# TODO
-#  create tables
+{% extends "master_art.html" %}
 
-# Dev Log
-#  Project Created: 2015-12-19 12:42 - Yicheng W.
+{% block title %}Page View{% endblock %}
 
-import sqlite3
-from hashlib import sha256
-from database import *
+{% block head %}
+	{{ super() }}
+{% endblock %}
 
-conn = sqlite3.connect("./db/infos.db")
+{% block notes %}{% endblock %}
 
-c = conn.cursor()
-
-create_base = "CREATE TABLE %s (%s)" # no user input needed, use %s
-
- # password = hexstring of hash
-c.execute(create_base % ("users", "email TEXT, password TEXT, first TEXT, last TEXT"))
-
-# note will be html source code with markup
-c.execute(create_base % ("sites", "id INTEGER, email TEXT, title TEXT, site TEXT, comments TEXT, notes TEXT, shared INTEGER, t INTEGER"))
-
-conn.commit()
-
-m = sha256()
-m.update("12345")
-hash = m.hexdigest()
-
-q = """INSERT INTO users VALUES (?, ?, ?, ?)"""
-
-c.execute(q, ('alex.wyc2098@gmail.com', hash, 'Yicheng', 'Wang'))
-
-conn.commit()
-
-site = """
-        <h1>Lorem ipsum</h1>
+{% block text %}
+	<h1>Lorem <span class="comment">Ipsum</span></h1>
 
 	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <span class="comment">Maecenas aliquet mauris elit, id tristique est rhoncus quis. Nullam vel dolor sit amet lorem ultrices feugiat. In vitae ultrices odio, et venenatis nibh.</span> <span class="comment">Praesent</span> dignissim ornare ornare. Pellentesque tempus at elit a gravida. Maecenas non gravida neque. Suspendisse tristique mi id massa malesuada, nec malesuada velit iaculis. Fusce massa magna, elementum id tortor et, elementum blandit magna. Ut sed risus sem. Praesent ex diam, dapibus a mi sed, luctus dignissim enim.</p>
 
@@ -56,9 +23,9 @@ site = """
 
 	<p>Aenean eget nibh sit amet nulla ultricies tempor. Etiam id magna mauris. In fringilla, ligula eu venenatis euismod, magna tellus elementum dolor, et pulvinar lorem nisl eget eros. Aenean scelerisque sapien ac diam semper vulputate ac et nibh. <span class="comment">Praesent quis ante et tellus porttitor porta id quis nunc.</span> Proin sollicitudin bibendum tempus. Fusce elit nibh, commodo a lobortis ut, eleifend a elit. Pellentesque maximus nibh nunc, quis tristique mauris egestas quis. Ut massa ex, aliquet at viverra non, porta at libero. Aliquam rhoncus scelerisque dui id molestie. Vestibulum hendrerit venenatis malesuada. Vivamus id fringilla tellus, scelerisque finibus dolor. Aenean sem nunc, sollicitudin nec lorem quis, laoreet varius tortor.</p>
 
-"""
+{% endblock %}
 
-comment = """
+{% block comments %}
 <div class='comment-block white-text darken-3 black card-panel hoverable'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
 <div class='comment-block white-text darken-3 black card-panel hoverable'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
 <div class='comment-block white-text darken-3 black card-panel hoverable'>Aliquam ut velit mi.</div>
@@ -67,7 +34,4 @@ comment = """
 <div class='comment-block white-text darken-3 black card-panel hoverable'>Vivamus id fringilla tellus, scelerisque finibus dolor.</div>
 <div class='comment-block white-text darken-3 black card-panel hoverable'>Sed ultrices nunc enim, ut laoreet sem aliquam sed.</div>
 <div class='comment-block white-text darken-3 black card-panel hoverable'>Vestibulum hendrerit venenatis malesuada.</div>
-
-"""
-
-add_to_sites("alex.wyc2098@gmail.com", "testing", site, comment, "");
+{% endblock %}
