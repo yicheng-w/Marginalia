@@ -227,8 +227,8 @@ $("p").on("mouseup",function() {
 		$(document).keydown(function(e) {
 			if (e.keyCode == 67 && e.ctrlKey && e.altKey) {
 				var selectedText = getSelectedText();
-				var spanText = '<span class="comment new-com">'+selectedText+"</span>";
-				console.log("replacing");
+				var spanText = '<span class="comment new-com">'+selectedText+'</span>';
+				console.log("replacing *"+selectedText+"* with *"+spanText+"*");
 				$(".cur").html( $(".cur").html().replace(selectedText, spanText) );
 				addCommentOption( selectedText );
 			}
