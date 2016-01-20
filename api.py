@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 # API for the Annotation project, handles AJAX calls and gives out JSON        #
 #                                                                              #
 # Authors                                                                      #
@@ -294,6 +294,7 @@ def api_update_site(id):
     new_site = request.form['site']
     new_comments = request.form['comment']
     new_notes = request.form['note']
+    print new_notes
     if update_site(email, id, new_site, new_comments, new_notes):
         return json.dumps({"status": 'success', 'msg': 'Your marks have been updated'})
 

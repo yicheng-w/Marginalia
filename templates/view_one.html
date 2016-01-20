@@ -8,9 +8,7 @@
 	{{ super() }}
 {% endblock %}
 
-{% block notes %}
-{{site[2] | safe}}
-{% endblock %}
+{% block notes %}{{site[2] | safe}}{% endblock %}
 
 {% block text %}
 {{site[1] | safe}}

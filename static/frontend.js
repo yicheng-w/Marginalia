@@ -29,7 +29,7 @@
 
 var href = window.location.href;
 console.log(href);
-var page_id = parseInt(href.substr(href.lastIndexOf('/') + 1), 10);
+var site_id = parseInt(href.substr(href.lastIndexOf('/') + 1), 10);
 
 var cleanPage = function cleanPage() {
 	$("#content").children().wrapAll("<div id='mar-text' />");  // original text
@@ -242,14 +242,6 @@ $("p").on("mouseup",function() {
 	else {
 		$(document).off('keydown');
 	}
-	var site = {
-        'site': document.getElementById("mar-text").innerHTML,
-        'comment': document.getElementById("mar-comments").innerHTML,
-        'note': document.getElementById("note-panel").innerHTML
-    };
-    $.post("/update/" + site_id, site, function(data) {
-        Materialize.toast("Comments saved!", 4000);
-    },"json");
 });
 
 $("#kill-com").on("click",function() {
@@ -267,6 +259,11 @@ $("#save-com").on("click",function() {
 	insertComment();
 	$("#com-text").val("");
 	$("#add-com").css("visibility", "hidden");
+	save_site();
+});
+
+$("#save-notes").on("click", function() {
+    save_site();
 });
 
 /** Runs all necessary functions for Marginalia.
@@ -278,6 +275,17 @@ var runMarginalia = function runMarginalia() {
 	getSelectedText();
 };
 runMarginalia();
+
+var save_site = function save() {
+	var site = {
+        'site': document.getElementById("mar-text").innerHTML,
+        'comment': document.getElementById("mar-comments").innerHTML,
+        'note': document.getElementById("note-panel").value
+    };
+    $.post("/update/" + site_id, site, function(data) {
+        Materialize.toast("Comments saved!", 4000);
+    },"json");
+}
 
 function getOffset( el ) {
     var rect = el.getBoundingClientRect();
