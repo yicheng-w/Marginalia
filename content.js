@@ -102,7 +102,7 @@ chrome.runtime.onMessage.addListener(
 
           }
         }*/
-        request.open("POST", "parseHTML.py?data=" + paragraphs, true);
+        request.open("POST", "parseHTML.py?htmlPage=" + paragraphs, true);
         request.send(document.html);
         console.log("SUCCESS");
       }
