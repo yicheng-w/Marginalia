@@ -128,7 +128,6 @@ var formatComments = function formatComments() {
 var commentHoverOn = function commentHoverOn(num) {
 	var ctag = ".com-"+num;
 	$(".comment"+ctag).addClass("grey lighten-2");
-//	$(".comment-block"+ctag).css("font-style","italic");
 	$(".comment-block"+ctag).addClass("z-depth-5");
 	$(".comment-block"+ctag).animate({
 		opacity: "1"
@@ -140,7 +139,6 @@ var commentHoverOn = function commentHoverOn(num) {
 var commentHoverOff = function commentHoverOff(num) {
 	var ctag = ".com-"+num;
 	$(".comment"+ctag).removeClass("grey lighten-2");
-//	$(".comment-block"+ctag).css("font-style","normal");
 	$(".comment-block"+ctag).removeClass("z-depth-5");
 	$(".comment-block"+ctag).animate({
 		opacity: "0.85"
@@ -182,23 +180,26 @@ var insertComment = function insertComment() {
 	else {
 		$(".comment-block.com-"+(newInd-1)).after(newBlock);
 	}
-	$(".new-com").removeClass(".new-com");
+	$(".new-com").removeClass("new-com");
 	
-	// clear original indices
+	// clear original indices and hovering 
 	var i = 0;
 	$(".comment").each(function() {
-		var ctag = ".com-"+i;
-		$(this).removeClass(ctag);
+		$(this).removeClass("com-"+i);
+		$(this).removeClass("com-"+(i-1));
+		$(this).unbind("mouseenter mouseleave");
 		i++;
 	});
 	i = 0;
 	$(".comment-block").each(function() {
-		var ctag = ".com-"+i;
-		$(this).removeClass(ctag);
+		$(this).removeClass("com-"+i);
+		$(this).removeClass("com-"+(i-1));
+		$(this).unbind("mouseenter mouseleave");
 		i++;
 	});
 
 	formatComments();
+	hoverAll();
 };
 
 var getSelectedText = function getSelectedText() {
@@ -231,8 +232,8 @@ $("p").on("mouseup",function() {
 		$(document).keydown(function(e) {
 			if (e.keyCode == 67 && e.ctrlKey && e.altKey) {
 				var selectedText = getSelectedText();
-				var spanText = '<span class="comment new-com">'+selectedText+"</span>";
-				console.log("replacing");
+				var spanText = '<span class="comment new-com">'+selectedText+'</span>';
+				console.log("replacing *"+selectedText+"* with *"+spanText+"*");
 				$(".cur").html( $(".cur").html().replace(selectedText, spanText) );
 				addCommentOption( selectedText );
 			}
