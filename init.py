@@ -44,30 +44,45 @@ c.execute(q, ('alex.wyc2098@gmail.com', hash, 'Yicheng', 'Wang'))
 conn.commit()
 
 site = """
-        <h1>Lorem ipsum</h1>
+<h4>Does the Hate Crimes Bill Have 14th Amendment Problems?</h4>
+<p>By ASHBY JONES</p>
+<p>So, it looks like this hate crimes bill we&#8217;ve blogged on before (here and
+here) is going to soon become law. The Senate on Thursday
+voted 68-to-29 to approve the bill and thereby extend new federal protections to
+people who are victims of violent crime because of their sex or sexual
+orientation. The House approved the bill earlier this month. All it needs now is
+a John Hancock from President Obama, who reportedly supports the bill. Click
+here for the NYT story on the Senate vote. </p>
 
-	<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. <span class="comment">Maecenas aliquet mauris elit, id tristique est rhoncus quis. Nullam vel dolor sit amet lorem ultrices feugiat. In vitae ultrices odio, et venenatis nibh.</span> <span class="comment">Praesent</span> dignissim ornare ornare. Pellentesque tempus at elit a gravida. Maecenas non gravida neque. Suspendisse tristique mi id massa malesuada, nec malesuada velit iaculis. Fusce massa magna, elementum id tortor et, elementum blandit magna. Ut sed risus sem. Praesent ex diam, dapibus a mi sed, luctus dignissim enim.</p>
-
-	<p>Suspendisse bibendum est pharetra ligula ullamcorper, nec ultricies urna pellentesque. Nunc in laoreet elit, a tincidunt tellus. In hac habitasse platea dictumst. Nullam augue eros, tristique eu accumsan in, molestie sed urna. In auctor nec quam ut volutpat. Mauris vitae massa at ante placerat ornare. Nunc dapibus dignissim ligula. <span class="comment">Lorem ipsum</span> dolor sit amet, consectetur adipiscing elit. Proin in lectus vel urna semper pellentesque. Aliquam diam sapien, suscipit non accumsan sit amet, consequat nec leo. Morbi placerat malesuada massa ac hendrerit. Vestibulum id tristique tortor. Fusce tristique ipsum sed lectus commodo tincidunt. Nullam hendrerit mi enim, at lobortis tortor faucibus non.</p>
-
-	<p>Aliquam ut velit mi. Cras hendrerit efficitur purus. Nullam ut sapien cursus, pellentesque eros sed, faucibus enim. Curabitur arcu quam, blandit vel orci ac, ultricies pharetra quam. <span class="comment">Suspendisse sed venenatis nibh, vitae consequat metus. Integer pellentesque sit amet sem sed congue. Fusce venenatis sagittis eros, id viverra est tempus at. Nullam dictum massa enim. Nulla interdum egestas dignissim. Fusce nec dolor luctus, facilisis erat sit amet, varius dolor. Morbi mollis at lorem quis sollicitudin.</span></p>
-
-	<p>Nam ornare ac ipsum ac aliquet. Pellentesque et turpis semper, cursus purus nec, congue tortor. Quisque varius eros in nisl aliquam aliquet. Vivamus auctor cursus sapien, id pulvinar diam auctor eu. Curabitur blandit mollis dolor nec scelerisque. <span class="comment">Quisque</span> eu pulvinar est. Pellentesque vel eros purus. Cras id leo non turpis rhoncus elementum. Mauris condimentum dolor nisi, nec venenatis magna venenatis sed. Sed ultrices nunc enim, ut laoreet sem aliquam sed. Aliquam id sapien sem. Ut a purus at ligula commodo suscipit sed accumsan urna. Curabitur eu consequat erat. Praesent a massa ac nunc faucibus elementum. Maecenas eu venenatis arcu. Phasellus mattis a est at <span class="comment">pellent</span>esque.</p>
-
-	<p>Aenean eget nibh sit amet nulla ultricies tempor. Etiam id magna mauris. In fringilla, ligula eu venenatis euismod, magna tellus elementum dolor, et pulvinar lorem nisl eget eros. Aenean scelerisque sapien ac diam semper vulputate ac et nibh. <span class="comment">Praesent quis ante et tellus porttitor porta id quis nunc.</span> Proin sollicitudin bibendum tempus. Fusce elit nibh, commodo a lobortis ut, eleifend a elit. Pellentesque maximus nibh nunc, quis tristique mauris egestas quis. Ut massa ex, aliquet at viverra non, porta at libero. Aliquam rhoncus scelerisque dui id molestie. Vestibulum hendrerit venenatis malesuada. Vivamus id fringilla tellus, scelerisque finibus dolor. Aenean sem nunc, sollicitudin nec lorem quis, laoreet varius tortor.</p>
-
+<p>The measure, named after Matthew Shepard (pictured), the gay University of
+Wyoming student who was murdered in 1998, essentially broadens the definition of
+federal hate crimes to include those committed because of a victim's gender or gender identity, or sexual orientation. It gives victims the same federal protections already given to people who are victims of violent crimes because of their race, color, religion or national origin.</p>
+<p>A couple thoughts, before we leave this topic for the time being. The law got broad support from law-enforcement groups. But from where we sit, it&#8217;ll be interesting to see if the bill makes a real difference in combating crime.</p>
+<p>The bill leaves the prosecution of hate crimes mostly in the hands of the states, 45 of which have their own hate-crimes legislation to begin with. The bill simply provides money to help state and local officials with the costs of prosecuting hate crimes and provides that the federal government can step in after the Justice Department certifies that a state does not have jurisdiction or is unable to carry out justice.</p>
+<p>In a recent Washington Post &#8220;On Faith&#8221; column, College of
+Charleston mathematics professor and founder of the Secular Coalition for
+America, Herb Silverman eloquently articulates what we&#8217;ve written before
+&#8212; that at best, the law could be merely symbolic and, at worst, the law
+could lead to strange outcomes. </p>
+<p>Writes Silverman: </p>
+<blockquote><p>A crime is a crime, regardless of the victim&#8217;s race, color,
+religion, national origin or sexual orientation. A murdered white heterosexual
+male is no less dead than an Hispanic, gay Christian. Suppose three murders
+occur: one for money, another out of jealousy, and a third because the victim is
+a black, gay Wiccan. If the first two murderers are sentenced to 20 years in
+prison and the third is sentenced to 30 years, would the families of the victims
+in the first two cases feel they had received equal justice under the
+law?</p></blockquote>
+<p>It&#8217;ll also, we think, be interesting to see if on the grounds Silverman discusses, the law passes constitutional muster. Some have their doubts. </p>
+<p>Nat Hentoff, writing in 
+Real Clear Politics in August, focuses not on what might
+appear to be the bill&#8217;s most obvious potential bugaboo &#8212; that it
+runs afoul of the First Amendment &#8212; but that it might violate the
+law&#8217;s 14th Amendment guarantee of equal protection. </p>
+<p>Writes Hentoff: </p>
+<blockquote><p>Leahy&#8217;s bill, like the counterpart &#8220;hate crimes&#8221; measure of House Judiciary Chairman John Conyers, D-Mich., that passed in the House this past April, violates the 14th Amendment&#8217;s equal protection under the laws for individual Americans by setting up a special collective class of victims whose assailants, when convicted, will be given extra punishment for crimes perceived to be based on gender identity, sexual orientation or disability, among other biases. Those who attack the elderly, police or those of the poor who are not among the &#8220;protected classes&#8221; would not get lengthier &#8220;hate&#8221; sentences than the law provides for the act itself. Doesn&#8217;t this make lesser citizens of their victims?</p></blockquote>
 """
 
-comment = """
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque ex diam, lobortis ut euismod ac, congue at lacus. Lorem ipsum dolor sit amet, consectetur adipiscing elit.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Aliquam ut velit mi.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Aliquam diam sapien, suscipit non accumsan sit amet, consequat nec leo. Morbi placerat malesuada massa ac hendrerit. Vestibulum id tristique tortor. Fusce tristique ipsum sed lectus commodo tincidunt. Nullam hendrerit mi enim, at lobortis tortor faucibus non.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Fusce nec dolor luctus, facilisis erat sit amet, varius dolor. Morbi mollis at lorem quis sollicitudin.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Vivamus id fringilla tellus, scelerisque finibus dolor.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Sed ultrices nunc enim, ut laoreet sem aliquam sed.</div>
-<div class='comment-block white-text darken-3 black card-panel hoverable'>Vestibulum hendrerit venenatis malesuada.</div>
-
-"""
+comment = """"""
 
 add_to_sites("alex.wyc2098@gmail.com", "testing", site, comment, "");
