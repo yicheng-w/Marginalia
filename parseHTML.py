@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/usr/bin/env python
 # _*_ coding: utf-8 _*_
 
 #################################################################################
@@ -14,16 +14,12 @@
 #################################################################################
 
 import sqlite3
+import codecs
+import sys
 from bs4 import BeautifulSoup
 from bs4 import UnicodeDammit
 from database import *
-
-
-htmlPage = '''
-<html>
-</html>
-'''
-
+from HTMLParser import HTMLParser
 
 def pretty():
     '''
@@ -35,13 +31,27 @@ def pretty():
     Returns:
         Unicode of prettified HTML
     '''
+
+    htmlPage = '''
+    <html>
+    <body>
+    <p>&#928</p>
+    </body>
+    </html>
+    '''
+
+    UTF8Writer = codecs.getwriter('utf-8')
+    sys.stdout = UTF8Writer(sys.stdout)
+
+    parser = HTMLParser()
+    print parser.unescape(htmlPage)
+
     #Make sure it's in a single encoding
     htmlPage = UnicodeDammit.detwingle(htmlPage).decode("utf-8")
     #htmlPage should be a unicode string right now
-    soup = BeautifulSoup(htmlPage, "html.parser")
-    #Change from_encoding to the encoding you want
-    prettyString = unicode(soup.prettify(), from_encoding="utf-8")
-    print soup.prettify()
+    soup = BeautifulSoup(htmlPage, 'html.parser')
+    prettyString = soup.prettify(formatter="html")
+    print prettyString
     print "-------------"
     print soup.get_text()
     print "-------------"
