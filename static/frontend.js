@@ -202,47 +202,81 @@ var insertComment = function insertComment() {
 	hoverAll();
 };
 
-var getSelectedText = function getSelectedText() {
-    var text = "";
-	if (window.getSelection) {
-		text = window.getSelection().toString();
-	} else if (document.getSelection) {
-		text = document.getSelection();
-	} else if (document.selection) {
-		text = document.selection.createRange().text;
-	}
-	console.log(text);
-	return text;
-};
-
 var addCommentOption = function addCommentOption( st ) {
 	$("#com-on").text( st );
 	$("#add-com").css("visibility", "visible");
-	$(".cur").removeClass("cur");
 }
 
 var addComment = function addComment(text) {
 	$("#mar-comments").append("<div class='comment-block white-text darken-3 black card-panel hoverable new-com'>"+text+"</div>");
 };
 
-$("p").on("mouseup",function() {
-	var selectedText = getSelectedText();
-	if (selectedText) {
-		$(this).addClass("cur");
+var surround = function(textNode, surroundings) {
+    if (textNode.rangeCount) {
+        var range = textNode.getRangeAt(0).cloneRange();
+        range.surroundContents(surroundings);
+        textNode.removeAllRanges();
+        textNode.addRange(range);
+        return true;
+    }
+    return false;
+}
+
+var addCommentMaster = function(selectedText) {
+    var spanText = document.createElement("span");
+    spanText.classList.add("comment");
+    spanText.classList.add("new-com");
+    surround(selectedText, spanText);
+    addCommentOption( selectedText );
+    $('#cursor_menu').css('visibility', 'hidden');
+    save_site();
+}
+
+var highlight = function(selectedText) {
+    var spanText = document.createElement("span");
+    spanText.classList.add("highlight");
+    surround(selectedText, spanText);
+    $('#cursor_menu').css('visibility', 'hidden');
+    save_site();
+}
+
+$("#mar-text").on("mouseup",function(f) {
+	var selectedText = window.getSelection();
+	if (selectedText.toString()) {
+	    console.log(selectedText.toString());
 		$(document).keydown(function(e) {
-			if (e.keyCode == 67 && e.ctrlKey && e.altKey) {
-				var selectedText = getSelectedText();
-				var spanText = '<span class="comment new-com">'+selectedText+'</span>';
-				console.log("replacing *"+selectedText+"* with *"+spanText+"*");
-				$(".cur").html( $(".cur").html().replace(selectedText, spanText) );
-				addCommentOption( selectedText );
+			if (e.keyCode == 67 && e.ctrlKey && e.altKey) { // comment
+			    addCommentMaster(selectedText);
 			}
+            else if (e.keyCode == 72 && e.ctrlKey && e.altKey) { // highlight
+                highlight(selectedText);
+            }
 		});
+		$('#cursor_menu').css('visibility', 'visible');
+		$('#cursor_menu').css({
+            left: f.pageX + 20,
+            top: f.pageY
+        });
 	}
 	else {
-		$(document).off('keydown');
+	    $("#cursor_menu").css('visibility', 'hidden');
+        $(document).off('keydown');
 	}
 });
+
+$('#add-com').on('click', function() {
+    var selectedText = window.getSelection();
+    if (selectedText) {
+        addCommentMaster(selectedText);
+    }
+});
+
+$('#add-hi').on('click', function() {
+    var selectedText = window.getSelection();
+    if (selectedText) {
+        highlight(selectedText);
+    }
+})
 
 $("#kill-com").on("click",function() {
 	var uncomText = $(".new-com").text();
@@ -272,7 +306,6 @@ var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
 	hoverAll();
-	getSelectedText();
 };
 runMarginalia();
 

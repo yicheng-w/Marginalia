@@ -8,6 +8,13 @@
 {% endblock %}
 
         {% block content %}
+            <div class="plum" id="cursor_menu"
+                style="visibility:hidden" width=100px>
+            <a href="#" id="add-com"><img src='../static/comment.png'
+                width=30px></a>
+            <a href="#" id="add-hi"><img src='../static/highlight.png'
+                width=30px></a>
+            </div>
 		<div class="row">
 			<div id='mar-notes' class='col s4'>
 				<textarea id='note-panel' class="card-panel yellow lighten-4 scroll">{% block notes %}{% endblock %}</textarea>
