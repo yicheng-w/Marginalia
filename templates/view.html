@@ -6,20 +6,33 @@
 {% block title %}Pages{% endblock %}
 
 {% block head %}
-	{{ super() }}
+{{ super() }}
 {% endblock %}
 
 {% block content %}
 <div class="container">
-	<h4 style="padding-top:5vh">Pages</h4>
-
-	<div class="collection scroll" style="height:65vh">
+    <ul class="collection">
+        <li class="collection-header"><h4>Your Sites</h4></li>
         {% for site in sites %}
-        <a href="/view/{{site[0]}}" class="collection-item avatar">
-            <i class="material-icons circle teal lighten-2">comment</i>
-            <h5 class="black-text">{{site[1]}}</h5>
-        </a>
+        <li class="collection-item">
+        <div>
+            <a href="/view/{{site[0]}}">
+                <span class="view-title black-text">{{site[1]}}</span>
+                <a href="#" class="secondary-content">
+                    <i class="material-icons red-text">delete</i>
+                </a>
+                <div class='switch sharing secondary-content'
+                    style='margin-right:20px' id='shared-{{site[0]}}'>
+                    <label>Private<input type="checkbox"
+                        {% if site[2] %}
+                        checked="checked"
+                        {% endif %}>
+                        <span class="lever"></span>Public</label>
+                </div>
+            </a>
+        </div>
         {% endfor %}
-	</div>
+    </ul>
 </div>
+<script type="/text/javascript" src='../static/view.js'></script>
 {% endblock %}

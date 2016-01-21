@@ -263,8 +263,12 @@ var highlight = function(selectedText) {
 
 $("#mar-text").on("mouseup",function(f) {
 	var selectedText = window.getSelection();
-	if (selectedText.toString()) {
-	    console.log(selectedText.toString());
+	if ($.trim(selectedText.toString()).length === 0) {
+	    $("#cursor_menu").css('visibility', 'hidden');
+        $(document).off('keydown');
+	}
+	else {
+	    console.log("***" + selectedText.toString() + "***");
 		$(document).keydown(function(e) {
 			if (e.keyCode == 67 && e.ctrlKey && e.altKey) { // comment
 			    addCommentMaster(selectedText);
@@ -278,10 +282,6 @@ $("#mar-text").on("mouseup",function(f) {
             left: f.pageX + 20,
             top: f.pageY
         });
-	}
-	else {
-	    $("#cursor_menu").css('visibility', 'hidden');
-        $(document).off('keydown');
 	}
 });
 

@@ -83,6 +83,6 @@ law&#8217;s 14th Amendment guarantee of equal protection. </p>
 <blockquote><p>Leahy&#8217;s bill, like the counterpart &#8220;hate crimes&#8221; measure of House Judiciary Chairman John Conyers, D-Mich., that passed in the House this past April, violates the 14th Amendment&#8217;s equal protection under the laws for individual Americans by setting up a special collective class of victims whose assailants, when convicted, will be given extra punishment for crimes perceived to be based on gender identity, sexual orientation or disability, among other biases. Those who attack the elderly, police or those of the poor who are not among the &#8220;protected classes&#8221; would not get lengthier &#8220;hate&#8221; sentences than the law provides for the act itself. Doesn&#8217;t this make lesser citizens of their victims?</p></blockquote>
 """
 
-comment = """"""
+title='Does the Hate Crimes Bill Have 14th Amendment Problems?'
 
-add_to_sites("alex.wyc2098@gmail.com", "testing", site, comment, "");
+add_to_sites("alex.wyc2098@gmail.com", title, site, '', "");
