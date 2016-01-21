@@ -14,8 +14,6 @@
 #################################################################################
 
 import sqlite3
-import codecs
-import sys
 from bs4 import BeautifulSoup
 from bs4 import UnicodeDammit
 from database import *
@@ -35,26 +33,18 @@ def pretty():
     htmlPage = '''
     <html>
     <body>
-    <p>&#928</p>
+    <p>sacr&#233; bleu &#582;</p>
     </body>
     </html>
     '''
-
-    UTF8Writer = codecs.getwriter('utf-8')
-    sys.stdout = UTF8Writer(sys.stdout)
-
     parser = HTMLParser()
-    print parser.unescape(htmlPage)
 
     #Make sure it's in a single encoding
-    htmlPage = UnicodeDammit.detwingle(htmlPage).decode("utf-8")
+    htmlPage = UnicodeDammit.detwingle(htmlPage)
     #htmlPage should be a unicode string right now
     soup = BeautifulSoup(htmlPage, 'html.parser')
-    prettyString = soup.prettify(formatter="html")
-    print prettyString
-    print "-------------"
-    print soup.get_text()
-    print "-------------"
+    prettyString = soup.prettify(formatter='html')
+    texts = soup.get_text()
     #return soup.prettify()
 
 def updateDatabase(email, htmlPage, site_id, comments, notes):
