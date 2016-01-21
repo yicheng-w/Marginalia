@@ -233,11 +233,27 @@ var addCommentMaster = function(selectedText) {
 }
 
 var highlight = function(selectedText) {
-    var spanText = document.createElement("span");
-    spanText.classList.add("highlight");
-    surround(selectedText, spanText);
+    if (selectedText.rangeCount) {
+        var parentEl = selectedText.getRangeAt(0).commonAncestorContainer;
+        if (parentEl.nodeType != -1) {
+            parentEl = parentEl.parentNode;
+        }
+    }
+
+    if (parentEl.classList.contains("highlight")) {
+        // if it is already highlighted, this function shall unhighligt
+        var pparent = parentEl.parentNode;
+        while (parentEl.firstChild) pparent.insertBefore(parentEl.firstChild, parentEl);
+        pparent.removeChild(parentEl);
+    }
+    else { // otherwise highlight it
+        var spanText = document.createElement("span");
+        spanText.classList.add("highlight");
+        surround(selectedText, spanText);
+    }
     $('#cursor_menu').css('visibility', 'hidden');
     save_site();
+
 }
 
 $("#mar-text").on("mouseup",function(f) {
@@ -253,7 +269,7 @@ $("#mar-text").on("mouseup",function(f) {
             }
 		});
 		$('#cursor_menu').css('visibility', 'visible');
-		$('#cursor_menu').css({
+		$('#cursor_menu').offset({
             left: f.pageX + 20,
             top: f.pageY
         });
@@ -264,7 +280,7 @@ $("#mar-text").on("mouseup",function(f) {
 	}
 });
 
-$('#add-com').on('click', function() {
+$('#add-com-b').on('click', function() {
     var selectedText = window.getSelection();
     if (selectedText) {
         addCommentMaster(selectedText);
@@ -307,6 +323,7 @@ var runMarginalia = function runMarginalia() {
 	formatComments();
 	hoverAll();
 };
+
 runMarginalia();
 
 var save_site = function save() {
@@ -316,7 +333,7 @@ var save_site = function save() {
         'note': document.getElementById("note-panel").value
     };
     $.post("/update/" + site_id, site, function(data) {
-        Materialize.toast("Comments saved!", 4000);
+        Materialize.toast("Comments saved!", 1000);
     },"json");
 }
 
@@ -351,10 +368,4 @@ function connect(div1, div2, thickness) { // draw a line connecting elements
     //
     // alert(htmlLine);
     document.body.innerHTML += htmlLine;
-}
-
-/** ajax calls that sends the updated page back to the api and database
- */
-function update_page() {
-    jQuery.ajax("/update/")
 }

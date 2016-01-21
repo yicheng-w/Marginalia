@@ -107,3 +107,8 @@
 .highlight {
     background-color: #f3f315
 }
+
+.cur_panel {
+    width: 95px;
+    padding: 10px;
+}
