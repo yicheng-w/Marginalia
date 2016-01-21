@@ -208,7 +208,12 @@ var addCommentOption = function addCommentOption( st ) {
 }
 
 var addComment = function addComment(text) {
-	$("#mar-comments").append("<div class='comment-block white-text darken-3 black card-panel hoverable new-com'>"+text+"</div>");
+	var div = "<div class='comment-block white-text darken-3 black card-panel hoverable new-com'>"; 
+	div += "<i class='material-icons right del-com'>close</i>";	
+	div += text;
+	div += "</div>";
+	$("#mar-comments").append(div);
+	delClick();
 };
 
 var surround = function(textNode, surroundings) {
@@ -316,12 +321,27 @@ $("#save-notes").on("click", function() {
     save_site();
 });
 
+var delClick = function delClick() {
+	$(".del-com").on("click", function() {
+		var com = $(this).parent();	
+		var num = $(".comment-block").index( $(this).parent() );
+		console.log(num);
+		var ctag = ".com-"+num;
+		$(".comment-block"+ctag).remove();
+		var comText = $(".comment"+ctag).text();
+		$(".comment"+ctag).after( comText );
+		$(".comment"+ctag).remove();
+		formatComments();
+	});
+}
+
 /** Runs all necessary functions for Marginalia.
  */
 var runMarginalia = function runMarginalia() {
 //	cleanPage();
 	formatComments();
 	hoverAll();
+	delClick();
 };
 
 runMarginalia();
