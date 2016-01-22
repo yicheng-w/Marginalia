@@ -1,54 +1,18 @@
 <!DOCTYPE html>
+{% extends "master.html" %}
 
-<html>
+{% block title %}{% endblock %}
 
-<head>
-	{% block head %}
-	<title>{% block title %}{% endblock %} - Marginalia</title>
-	<link href='http://fonts.googleapis.com/icon?family=Material+Icons' rel='stylesheet'></link>
-	<link type='text/css' rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/css/materialize.min.css' media='screen,projection'></link>
-	<meta name='viewport' content='width=device-width, initial-scale=1.0'></meta>
-	<script src="../static/jquery.js"></script>
-	<link type='text/css' rel='stylesheet' href="../static/main.css"></link>
-	{% endblock %}
-</head>
+{% block head %}
+    {{ super() }}
+{% endblock %}
 
-<body class="grey lighten-3">
-	<div class="navbar-fixed"><nav><div class="nav-wrapper">
-		<a href="/" class="brand-logo center">MARGINALIA</a>
-		<!-- List of tabs (href, id, caption) -->
-		{% set navigation_bar = [
-			('/', 'index', 'Home'),
-			('/about', 'about', 'About'),
-			('/view', 'view', 'My Pages'),
-		] -%}
-		{% set active_page = active_page -%}
-		<ul class="left">
-			{% for href, id, caption in navigation_bar %}
-				<li{% if id == active_page %} class="active"{% endif %}>
-					<a href="{{ href|e }}">{{ caption|e }}</a>
-				</li>
-			{% endfor %}
-		</ul>
-		<ul class="right">
-			<li><form><div class="input-field">
-				<input id="search" type="search" required>
-				<label for="search"><i class="material-icons">search</i></label>
-				<i class="material-icons">close</i>
-			</div></form></li>
-			<li><a href="/login">Log In</a></li>
-		</ul>
-	</div></nav></div>
-
-	<div id="content" class="grey lighten-3">
+        {% block content %}
 		<div class="row">
 			<div id='mar-notes' class='col s4'>
-				<button class="btn waves-effect waves-light" type="button" name="action" id="add-note">Add Note
-					<i class="material-icons right">create</i>
+				<textarea id='note-panel' class="card-panel yellow lighten-4 scroll">{% block notes %}{% endblock %}</textarea>
+				<button class="btn waves-effect waves-light" type="button" name="action" id="save-notes" style="width:100%">Save Notes
 				</button>
-				<div id='note-panel' class="card-panel yellow lighten-3 scroll">
-					{% block notes %}{% endblock %}
-				</div>
 			</div>
 			<div id='mar-text' class='col s4 offset-s4 white'>
 				{% block text %}{% endblock %}
@@ -56,11 +20,27 @@
 			<div id='mar-comments' class='col s4'>
 				{% block comments %}{% endblock %}
 			</div>
+			<div class='overlay' id='add-com'>
+				<div id='com-on' class='card-panel grey lighten-3'>Hello World!</div> 
+				<textarea id='com-text' class='card-panel white'></textarea>
+				<button class='btn waves-effect waves-light red' type='button' name='action' id='kill-com'>Cancel</button>
+				<button class='btn waves-effect waves-light' type='button' name='action' id='save-com'>Add Comment</button>
+			</div>
 		</div>
-	</div>
+        <div class="plum cur_panel" id="cursor_menu"
+            style="visibility:hidden" width=100px>
+        <a href="#" id="add-com-b"><img src='../static/comment.png'
+                    class="tooltipped" data-position="top" data-delay="400"
+                    data-tooltip="Add a Comment" width=40px></a>
+        <a href="#" id="add-hi"><img src='../static/highlight.png'
+                    class="tooltipped" data-position="top"
+                    data-delay="400" data-tooltip="Highlight"
+                    width=30px style="position: relative; top: -5px"></a>
+        </div>
 
-	<script type='text/javascript' src='../static/frontend.js'></script>
-	<script type='text/javascript' href='https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.4/js/materialize.min.js'></script>
+        <script type='text/javascript' src='../static/frontend.js'></script>
+
+        {% endblock %}
 </body>
 
 </html>

@@ -1,4 +1,4 @@
-################################################################################
+###############################################################################
 # API for the Annotation project, handles AJAX calls and gives out JSON        #
 #                                                                              #
 # Authors                                                                      #
@@ -40,9 +40,18 @@ def login_required(f):
     @wraps(f)
     def decorated_function(*args, **kwargs):
         if "email" not in session:
+            return render_template("login.html", err = "You must login to continue.")
+        return f(*args, **kwargs)
+    return decorated_function
+
+def login_required_api(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        if "email" not in session:
             return json.dumps({'status': 'failure', 'error': 'Login Required'})
         return f(*args, **kwargs)
     return decorated_function
+
 
 co_email = "marginalia.overlords@gmail.com"
 co_pass = open("password.txt", 'r').read()[:-1]
@@ -106,11 +115,9 @@ def register():
         passhash = m.hexdigest()
 
         if new_user(email, passhash, first, last):
-            print "success"
             return render_template("register.html", status = "success")
             # in register.html redirect them to login
         else:
-            print "failed"
             return render_template("register.html", err = "Email already in use!")
 
 @app.route("/login", methods = ["GET", "POST"])
@@ -146,8 +153,6 @@ def forget_pwd():
         email = request.form['email']
         new_pass = ''.join(choice(alphabet) for i in range(10))
 
-        print "asdjfhasjdklfhal"
-
         m = sha256()
         m.update(new_pass)
         passhash = m.hexdigest()
@@ -177,7 +182,6 @@ The Marginalia Overlords""" % (email, co_email, get_name_from_email(email), new_
         s.sendmail(co_email, email, msg)
         s.close()
 
-        print "adjksfhsalkjd"
         return render_template("forget_pwd.html", status = "success")
 
 @app.route("/change_pwd")
@@ -226,12 +230,25 @@ def view_static():
 @login_required
 def view_site(id):
     email = session['email']
-    list_of_sites = get_list_of_sites(email)
-    for site in list_of_sites:
-        if site[0] == id:
-            return render_template("view_one.html", site=site[1], shared=site[2], name = session['name'])
+    site = get_site_on_id(email, id)
+
+    if (site):
+        return render_template("view_one.html", site = site, name = session['name'])
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you", name = session['name'])
+
+@app.route("/view/test")
+def view_test():
+    return render_template("view_test.html", name = session['name'])
+
+@app.route("/search", methods = ['GET'])
+@login_required
+def search():
+    search_string = request.args.get('search', '')
+    result = search_user_sites(session['email'], search_string)
+
+    print result
+    return "lol"
 
 @app.route("/logout")
 @login_required
@@ -245,15 +262,21 @@ def share(id):
     site = get_site_for_sharing(id)
 
     if site:
-        return render_template("view_one.html", site = site, name = session['name'])
+        if 'name' in session:
+            return render_template("view_one.html", site = site, name = session['name'])
+        else:
+            return render_template("view_one.html", site = site)
 
+    elif 'name' in session:
+        return render_template("error.html", msg = "Sorry this site is not up for sharing &nbsp;:(", name = session['name']);
+    
     else:
-        return render_template("error.html", msg = "Sorry this site is not up for sharing :(", name = session['name']);
+        return render_template("error.html", msg = "Sorry this site is not up for sharing:(")
 
 ### API CALLS -------------------------------------------------------------####
 
 @app.route("/new/", methods = ['GET', 'POST']) # adds a site to a user's collection, site passed via POST request, user info stored in session
-@login_required
+@login_required_api
 def api_add_site():
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
@@ -263,42 +286,73 @@ def api_add_site():
     author = request.form['author']
     date = request.form['date']
     site = request.form['site']
-    site = BeautifulSoup(site).encode('utf-8')
-    if add_to_sites(email, site):
+
+    soup = BeautifulSoup(site, 'html.parser')
+
+    site = soup.get_text(u'', False)
+    plist = site.split('\n')
+    htmlsite = u""
+    for i in plist:
+        htmlsite += "<p>" + i + "</p>"
+
+    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + "(" + date + ")"+ '</p>' + htmlsite
+
+    if add_to_sites(email, title, htmlsite, "", ""):
         return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
 
     return json.dumps({"status": 'failure', 'msg': 'Something went wrong :('})
 
 @app.route("/update/<int:id>", methods = ["GET", 'POST']) # update a specific site based on id, new site content passed via POST request, user info stored in session
-@login_required
+@login_required_api
 def api_update_site(id):
     if request.method == 'GET':
         return json.dumps({"status": 'failure', 'msg': 'Incorrect request method'})
     email = session['email']
-    new_site = request.form['new_site']
-    if update_site(email, id, new_site):
+    new_site = request.form['site']
+    new_comments = request.form['comment']
+    new_notes = request.form['note']
+    if update_site(email, id, new_site, new_comments, new_notes):
         return json.dumps({"status": 'success', 'msg': 'Your marks have been updated'})
 
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
 
-@app.route("/change_perm/<int:id>") # changes sharing permission for a site, user info stored in session
-@login_required
-def api_change_perm(id):
+@app.route("/change_perm/", methods = ['GET', 'POST']) # changes sharing permission for a site, user info stored in session
+@login_required_api
+def api_change_perm():
+    if request.method == 'GET':
+        return json.dumps({'status':'failure', 'msg': 'Something went wrong :('})
+
     email = session['email']
+    id = int(request.form['id'])
     if change_site_permission(email, id):
-        return json.dumps({"status": 'success', 'msg': "The permission of your site has been successfully changed"})
+        return json.dumps({"status": 'success', 'msg': "The permission of your site has been successfully changed", 'to': request.form['to'], 'id': id})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
-@app.route("/delete/<int:id>") # deletes a story based on id, user data stored in session
-@login_required
-def api_delete_site(id):
+@app.route("/delete/", methods = ['GET', 'POST']) # deletes a story based on id, user data stored in session
+@login_required_api
+def api_delete_site():
+    if request.method == 'GET':
+        return json.dumps({'status':'failure', 'msg': 'Something went wrong :('})
+
     email = session['email']
-    
+    id = request.form['id']
+
     if delete_site(email, id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
+
+@app.route("/fork/<int:id>") # copies a shared document into own's own private repo
+# relatively low priority but still on TODO
+@login_required_api
+def fork(id):
+    email = session['email']
+    
+    if fork_shared_site(id, email):
+        return json.dumps({'status': 'success', 'msg':'The site has been successfully added to your own library'})
+
+    return json.dumps({'status': 'failure', 'msg': 'Something went wrong'})
 
 if __name__ == "__main__":
     try:

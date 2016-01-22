@@ -17,6 +17,7 @@
 
 import sqlite3
 from time import time, sleep
+from search import *
 
 def new_user(email, password_hash, first, last):
     """
@@ -171,13 +172,16 @@ def next_avaliable_id():
 
     return len(result)
 
-def add_to_sites(email, site):
+def add_to_sites(email, title, site, comments, notes):
     """
     add_to_sites: add a site to the user's list
 
     Args:
         email (string): the user
-	site (string): the marked up html of the site
+        title (string): title of the site
+	site (string): the html of the site
+        comments (string): the comments on the site
+        notes (string): the notes on the site
     
     Returns:
         True if successful, False otherwise
@@ -186,9 +190,9 @@ def add_to_sites(email, site):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?)"""
+    q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
 
-    c.execute(q, (next_avaliable_id(), email, site, 0, int(time()))) # default permission is private
+    c.execute(q, (next_avaliable_id(), email, title, site, comments, notes, 0, int(time()))) # default permission is private
     conn.commit()
 
 def get_list_of_sites(email):
@@ -201,19 +205,48 @@ def get_list_of_sites(email):
     Returns:
         a list of sites formatted in the following manner ranked by last edited
         time:
-        [(site-id1, site1, permission1), (site-id2, site2, permission2), ...]
+        [(site-id1, site-title1, permission1), (site-id2, site-title2, permission2), ...]
     """
 
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id, sites.site, sites.shared
+    q = """SELECT sites.id, sites.title, sites.shared
     FROM sites
     WHERE sites.email = ?
     ORDER BY t DESC"""
 
     r = c.execute(q, (email,)).fetchall()
     return r
+
+def get_site_on_id(email, id):
+    """
+    get_site_on_id: get the site title, site, the notes and the comments
+
+    Args:
+        email (string): the user
+	id (int): the site id
+    
+    Returns:
+        a tuple in the form of:
+        (title, site, notes, comments)
+
+        or none if retrival was not successful
+    """
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.title, sites.site, sites.notes, sites.comments
+    FROM sites
+    WHERE sites.email = ? AND sites.id = ?"""
+
+    r = c.execute(q, (email, id)).fetchall()
+
+    if (len(r) != 1):
+        return None
+
+    return r[0]
 
 def get_site_for_sharing(id):
     """
@@ -224,28 +257,29 @@ def get_site_for_sharing(id):
         id (int): the ID of the site
     
     Returns:
-        the content of the site if the retrival was successful, None if the
-        site-id doesn't exist or is private    
+        a tuple in the form of:
+        (title, site, notes, comments)
+
+        or none if retrival was not successful
     """
 
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.shared, sites.site
+    q = """SELECT sites.title, sites.site, sites.notes,
+    sites.comments
     FROM sites
-    WHERE sites.id = ?"""
+    WHERE sites.id = ? AND sites.shared = 1"""
 
     r = c.execute(q, (id, )).fetchall()
 
     if (len(r) == 0):
         return None
 
-    if (r[0][0] == 0): # if the site is private
-        return None
+    else:
+        return r[0]
 
-    return r[0][1]
-
-def update_site(email, site_id, new_site):
+def update_site(email, site_id, new_site, new_comments, new_notes):
     """
     update_site: updates the site entry for the user
 
@@ -253,6 +287,8 @@ def update_site(email, site_id, new_site):
         email (string): the user
 	site_id (int): the id of the site in the database
 	new_site (string): updated markup for the site
+        new_comments (string): updated comments for the site
+        new_notes (string): updated notes for the site
     
     Returns:
         True if successful, False otherwise    
@@ -268,9 +304,9 @@ def update_site(email, site_id, new_site):
     if (len(result) == 0):
         return False
 
-    q = """UPDATE sites SET site = ?, t = ? WHERE id = ?"""
+    q = """UPDATE sites SET site = ?, comments = ?, notes = ?, t = ? WHERE id = ?"""
 
-    c.execute(q, (new_site, int(time()), site_id))
+    c.execute(q, (new_site, new_comments, new_notes, int(time()), site_id))
 
     conn.commit()
 
@@ -296,9 +332,9 @@ def change_site_permission(email, id):
     FROM sites
     WHERE sites.email = ? AND sites.id = ?"""
 
-    r = c.execute(q).fetchall()
+    r = c.execute(q, (email, id)).fetchall()
 
-    if (len(r) != 1):
+    if (len(r) == 0):
         return False
 
     q = """UPDATE sites
@@ -311,6 +347,38 @@ def change_site_permission(email, id):
         c.execute(q, (0, id))
 
     conn.commit()
+
+    return True
+
+def fork_shared_site(site_id, email):
+    """
+    fork_shared_site: this makes a copy of the shared site with a specific
+    site_id within the user's private library
+
+    Args:
+        site_id (int): the site_id of the shared site
+	email (string): the user who wishes to fork the site
+    
+    Returns:
+        True if successful, False otherwise
+    """
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.shared, sites.site, sites.comments, sites.notes
+    FROM sites
+    WHERE sites.id = ?"""
+
+    r = c.execute(q, (site_id,)).fetchall()
+
+    if (len(r) == 0):
+        return False
+
+    if r[0][0] == 0:
+        return False
+
+    return add_to_sites(email, r[0][1], r[0][2], r[0][3])
 
 def delete_site(email, site_id):
     """
@@ -342,8 +410,53 @@ def delete_site(email, site_id):
 
     return True
 
+def search_user_sites(email, search_string):
+    """
+    search_user_sites: searches a specific user's pages for a specific set of
+    strings
 
+    Args:
+        email (string): the user
+	search_string (string): the string to search
+    
+    Returns:
+        a list of abstracted articles in which each element is a dictionary of
+        the form:
+        {
+            'index' : index-of-proximity (see search.py) (float),
+            'id' : site id (int),
+            'abstract' : abstracted site (string),
+            'snippet' : list of matched words (see search.py)
+        }
 
+        ordered by 'index'
+    """
+
+    ret_val = []
+    search = search_string.split()
+
+    conn = sqlite3.connect("./db/infos.db")
+    c = conn.cursor()
+
+    q = """SELECT sites.id, sites.site FROM sites WHERE sites.email = ?"""
+
+    result = c.execute(q, (email,)).fetchall()
+
+    for i in result:
+        snippets = get_snippets_from_site(i[1], search)
+
+        if (len(snippets) > 0):
+            index = get_index_of_proximity(i[1], search)
+            abstract = abstract_site_from_words(i[1], snippets)
+
+            ret_val.append({
+                'index':index,
+                'id':i[0],
+                'abstract':abstract,
+                'snippet':snippets
+                })
+    
+    return sorted(ret_val, key=lambda entry: entry['index'])
 
 if __name__ == "__main__":
     print "new_user test"
@@ -385,3 +498,6 @@ if __name__ == "__main__":
     print add_to_sites("alex.wyc2098@gmail.com", "this is the new site 2")
     
     print get_list_of_sites("alex.wyc2098@gmail.com")
+
+    print "searching"
+    search_user_sites("alex.wyc2098@gmail.com", 'asdf')

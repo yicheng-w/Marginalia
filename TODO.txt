@@ -1,9 +1,8 @@
-crapping website - ALICE
+TODO
+scrapping website - ALICE
 Connecting frontend/backend - YEECH
 Writing Chrome extension - ALICE/JEFF
-Notes textarea - ARIEL
 Scrollfire - ARIEL
-Comment overlaps - ARIEL
 Researchy? - combining comments - YEECH
 Sharing articles - JEFF
 Search article feature - ?
@@ -11,4 +10,8 @@ Materialize logo (for extension button) - ARIEL
 little button dropdown menu - ALICE/JEFF
 Change Log In button once logged in - YEECH
 Change password page - ARIEL
+
+DONE
 New color scheme - ARIEL -_-
+Notes textarea - ARIEL
+Comment overlaps - YEECH

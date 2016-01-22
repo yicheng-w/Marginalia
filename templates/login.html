@@ -2,7 +2,7 @@
 
 {% extends "master.html" %}
 
-{% block title %}TITLE{% endblock %}
+{% block title %}Login{% endblock %}
 
 {% block head %}
 	{{ super() }}
@@ -19,7 +19,7 @@
         </script>
         {% endif %}
 
-		<form class="col s6 offset-s3" method="post">
+		<form class="col s6 offset-s3" method="post" action="/login">
 			<div class="row">
 				<div class="input-field col s12">
 					<i class="material-icons prefix">email</i>
@@ -36,7 +36,7 @@
 				<i class="material-icons right">send</i>
 			</button>
 			<p class="center-align">Or, <a href="/register">register</a> for a new account.</p>
-            <p class="center-align">Or, did you <a href="/forget_pwd">forget your password?</a>
+            <p class="center-align">Or, did you <a href="/forget_pwd">forget your password</a>?
 		</form>
 	</div>
 </div>

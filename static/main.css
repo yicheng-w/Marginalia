@@ -1,3 +1,27 @@
+.plum {
+	background-color: #5e0231;
+}
+.plum-text {
+	color: #5e0231;
+}
+
+.mint {
+	background-color: #c0dfd9;
+}
+
+.lav {
+	background-color: #dbc3d0;
+}
+
+#main-head {
+	background-image:url('../static/back2.png');
+	background-size:cover;
+}
+
+.ad-col {
+	background-color: rgba(255,255,255, 0.75);
+}
+
 .ad-col i {
 	padding-top: 30px;
 }
@@ -30,14 +54,71 @@
 	clear: both;
 }
 
-#note-list li {
-	border-bottom: 1px solid SkyBlue;
-}
-
 .comment {
 	text-decoration: underline;
 }
 
+#mar-comments .comment-block {
+	opacity: 0.85;
+}
+
 #content #mar-comments {
 	min-height: 100vh;
+}
+
+.overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 10;
+	background-color: rgba(0,0,0, 0.8); 
+}
+
+#add-com {
+	visibility: hidden;
+}
+
+#add-com #com-on {
+	margin: 150px 25% 0px;
+	max-height: 150px;
+	width: 50%;
+}
+
+#add-com #com-text {
+	margin: 10px 25% 0px;
+	height: 200px;
+	width: 50%;
+}
+
+#add-com #kill-com {
+	margin: 0px 1% 0px 25%;
+	width: 24%;
+	float: left;
+}
+
+#add-com #save-com {
+	margin: 0px 25% 0px 1%;
+	width: 24%;
+	float: left;
+}
+
+.highlight {
+    background-color: #f3f315
+}
+
+.cur_panel {
+    width: 95px;
+    padding: 10px;
+}
+
+.view-title {
+    font-size: 20px;
+}
+
+.sharing-link {
+    font-size:15px;
+    color: gray; 
+    margin-top:5px;
 }

@@ -72,7 +72,7 @@ chrome.runtime.onMessage.addListener(
 	    var data = {
 		title:title,
 		author:author,
-		p:pText,
+		p:document.body.outerHTML,
 		method:"getHTML"
 	    };
             sendResponse(data);
