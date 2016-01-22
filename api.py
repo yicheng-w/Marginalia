@@ -232,8 +232,6 @@ def view_site(id):
 
     if (site):
         return render_template("view_one.html", site = site, name = session['name'])
-    else:
-        return "lol" # TODO
 
     return render_template("error.html", msg = "Sorry but the site you're looking for does not exist or belong to you", name = session['name'])
 
@@ -268,7 +266,7 @@ def share(id):
             return render_template("view_one.html", site = site)
 
     elif 'name' in session:
-        return render_template("error.html", msg = "Sorry this site is not up for sharing :(", name = session['name']);
+        return render_template("error.html", msg = "Sorry this site is not up for sharing &nbsp;:(", name = session['name']);
     
     else:
         return render_template("error.html", msg = "Sorry this site is not up for sharing:(")
