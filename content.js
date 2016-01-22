@@ -27,7 +27,7 @@ chrome.runtime.onMessage.addListener(
   	    dates = document.querySelectorAll("time, [itemprop=datePublished], span[class=timeago], span[class=timestamp]");
   	    authors = document.querySelectorAll("[name=author], .byline-author, [itemprop=author], h3[class=article-author-title] > a");
   	    //paragraphs = document.querySelectorAll("p[itemprop=articleBody], p[class=p1], div[itemprop=articleBody] p, div[id=article-body] p, div[class=article-entry] p, span[class=focusParagraph] > p, span[id=articleText] > p");
-
+	    
   	    for (i=0;i<dates.length;i++) {
   		datePublished = dates[i].innerText;
   		if (typeof datePublished == "undefined" || datePublished == "" || datePublished == null) {
@@ -59,19 +59,20 @@ chrome.runtime.onMessage.addListener(
 			datePublished = metadata[i].getAttribute("content");
 			if (datePublished.length > 10) {
 			    datePublished = datePublished.substring(0,10);
-			              }
+			}
 		    }
 		}
 	    }
 	    
 	    console.log("---------title------------");
 	    console.log(title);
+	    
 	    console.log("---------Date------------");
 	    console.log(datePublished);
 	    console.log("---------Author------------");
 	    console.log(author);
 	    
-
+	    
 	    var data = {
 		title:title,
 		author:author,
