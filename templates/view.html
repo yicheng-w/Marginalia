@@ -14,25 +14,48 @@
     <ul class="collection">
         <li class="collection-header"><h4>Your Sites</h4></li>
         {% for site in sites %}
-        <li class="collection-item">
-        <div>
+        <li class="collection-item" id='entry-{{site[0]}}'>
             <a href="/view/{{site[0]}}">
-                <span class="view-title black-text">{{site[1]}}</span>
-                <a href="#" class="secondary-content">
-                    <i class="material-icons red-text">delete</i>
-                </a>
-                <div class='switch sharing secondary-content'
-                    style='margin-right:20px' id='shared-{{site[0]}}'>
-                    <label>Private<input type="checkbox"
-                        {% if site[2] %}
-                        checked="checked"
-                        {% endif %}>
-                        <span class="lever"></span>Public</label>
-                </div>
+                <span class="title view-title black-text">{{site[1]}}</span>
+
+            <a href="#" id='remove-{{site[0]}}'class="secondary-content removal
+                tooltipped" data-position='top' data-delay='400'
+                data-tooltip='Delete'>
+                <i class="material-icons red-text">delete</i>
             </a>
-        </div>
+
+            <div class='switch sharing secondary-content tooltipped'
+                style='margin-right:20px' data-position='top' data-delay='400'
+                data-tooltip='Viewing Permissions'>
+                <label>Private<input type="checkbox" class='actual-switch'
+                                     id='{{site[0]}}'
+                    {% if site[2] %}
+                    checked="checked"
+                    {% endif %}>
+                    <span class="lever"></span>Public</label>
+            </div>
+            <p class = 'sharing-link' style="visibility:{% if site[2] %} visibile {% else %} hidden
+            {% endif %}" id='sharing-link-{{site[0]}}'>Sharing Link:
+            <span class ='slink'>localhost:8000/share/{{site[0]}}</span></p>
+            <!-- FIXME -->
+            </a>
+
+        </li>
         {% endfor %}
     </ul>
+    <!-- are you sure modal -->
+    <div id="are-you-sure" class="modal">
+        <div class="modal-content">
+            <h4>Are You Sure?</h4>
+            <p>You <strong>cannot undo a deletion!</strong> Your works will be
+            permenantly lost!</p>
+            <input type='checkbox' id='not-again'/>
+            <label for='not-again'>Do not show this again</label>
+            <hr>
+            <a class='btn waves-effect waves-light red' id='sure'>Delete Page</a>
+            <a class='btn waves-effect waves-light' id='nvm'>Keep Page</a>
+        </div>
+    </div>
+    <script type="text/javascript" src='../static/view.js'></script>
 </div>
-<script type="/text/javascript" src='../static/view.js'></script>
 {% endblock %}

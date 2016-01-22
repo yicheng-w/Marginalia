@@ -231,7 +231,7 @@ def get_site_on_id(email, id):
         a tuple in the form of:
         (title, site, notes, comments)
 
-        or None if retrival was not successful
+        or none if retrival was not successful
     """
 
     conn = sqlite3.connect("./db/infos.db")
@@ -257,26 +257,27 @@ def get_site_for_sharing(id):
         id (int): the ID of the site
     
     Returns:
-        the content of the site if the retrival was successful, None if the
-        site-id doesn't exist or is private    
+        a tuple in the form of:
+        (title, site, notes, comments)
+
+        or none if retrival was not successful
     """
 
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.shared, sites.site, sites.comments, sites.notes
+    q = """SELECT sites.title, sites.site, sites.notes,
+    sites.comments
     FROM sites
-    WHERE sites.id = ?"""
+    WHERE sites.id = ? AND sites.shared = 1"""
 
     r = c.execute(q, (id, )).fetchall()
 
     if (len(r) == 0):
         return None
 
-    if (r[0][0] == 0): # if the site is private
-        return None
-
-    return r[0][1:]
+    else:
+        return r[0]
 
 def update_site(email, site_id, new_site, new_comments, new_notes):
     """
@@ -331,9 +332,9 @@ def change_site_permission(email, id):
     FROM sites
     WHERE sites.email = ? AND sites.id = ?"""
 
-    r = c.execute(q).fetchall()
+    r = c.execute(q, (email, id)).fetchall()
 
-    if (len(r) != 1):
+    if (len(r) == 0):
         return False
 
     q = """UPDATE sites
@@ -346,6 +347,8 @@ def change_site_permission(email, id):
         c.execute(q, (0, id))
 
     conn.commit()
+
+    return True
 
 def fork_shared_site(site_id, email):
     """

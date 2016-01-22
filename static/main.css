@@ -116,3 +116,9 @@
 .view-title {
     font-size: 20px;
 }
+
+.sharing-link {
+    font-size:15px;
+    color: gray; 
+    margin-top:5px;
+}

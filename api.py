@@ -262,10 +262,16 @@ def share(id):
     site = get_site_for_sharing(id)
 
     if site:
-        return render_template("view_one.html", site = site, name = session['name'])
+        if 'name' in session:
+            return render_template("view_one.html", site = site, name = session['name'])
+        else:
+            return render_template("view_one.html", site = site)
 
-    else:
+    elif 'name' in session:
         return render_template("error.html", msg = "Sorry this site is not up for sharing :(", name = session['name']);
+    
+    else:
+        return render_template("error.html", msg = "Sorry this site is not up for sharing:(")
 
 ### API CALLS -------------------------------------------------------------####
 
@@ -299,19 +305,27 @@ def api_update_site(id):
 
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
 
-@app.route("/change_perm/<int:id>") # changes sharing permission for a site, user info stored in session
+@app.route("/change_perm/", methods = ['GET', 'POST']) # changes sharing permission for a site, user info stored in session
 @login_required_api
-def api_change_perm(id):
+def api_change_perm():
+    if request.method == 'GET':
+        return json.dumps({'status':'failure', 'msg': 'Something went wrong :('})
+
     email = session['email']
+    id = int(request.form['id'])
     if change_site_permission(email, id):
-        return json.dumps({"status": 'success', 'msg': "The permission of your site has been successfully changed"})
+        return json.dumps({"status": 'success', 'msg': "The permission of your site has been successfully changed", 'to': request.form['to'], 'id': id})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
-@app.route("/delete/<int:id>") # deletes a story based on id, user data stored in session
+@app.route("/delete/", methods = ['GET', 'POST']) # deletes a story based on id, user data stored in session
 @login_required_api
-def api_delete_site(id):
+def api_delete_site():
+    if request.method == 'GET':
+        return json.dumps({'status':'failure', 'msg': 'Something went wrong :('})
+
     email = session['email']
+    id = request.form['id']
 
     if delete_site(email, id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})

@@ -205,11 +205,12 @@ var insertComment = function insertComment() {
 var addCommentOption = function addCommentOption( st ) {
 	$("#com-on").text( st );
 	$("#add-com").css("visibility", "visible");
+	$("#com-text").focus();
 }
 
 var addComment = function addComment(text) {
 	var div = "<div class='comment-block white-text darken-3 black card-panel hoverable new-com'>"; 
-	div += "<i class='material-icons right del-com'>close</i>";	
+	div += "<a href='#' class='white-text right del-com'><i class='material-icons'>close</i></a>";	
 	div += text;
 	div += "</div>";
 	$("#mar-comments").append(div);
@@ -234,7 +235,6 @@ var addCommentMaster = function(selectedText) {
     surround(selectedText, spanText);
     addCommentOption( selectedText );
     $('#cursor_menu').css('visibility', 'hidden');
-    save_site();
 }
 
 var highlight = function(selectedText) {
@@ -332,6 +332,7 @@ var delClick = function delClick() {
 		$(".comment"+ctag).after( comText );
 		$(".comment"+ctag).remove();
 		formatComments();
+		save_site();
 	});
 }
 
@@ -353,7 +354,12 @@ var save_site = function save() {
         'note': document.getElementById("note-panel").value
     };
     $.post("/update/" + site_id, site, function(data) {
-        Materialize.toast("Comments saved!", 1000);
+        if (data['status'] == 'success') {
+            Materialize.toast(data['msg'], 1000);
+        }
+        else {
+            Materialize.toast("<strong>Saving Failed!</strong> " + data['msg'], 1000);
+        }
     },"json");
 }
 

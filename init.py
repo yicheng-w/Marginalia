@@ -86,3 +86,4 @@ law&#8217;s 14th Amendment guarantee of equal protection. </p>
 title='Does the Hate Crimes Bill Have 14th Amendment Problems?'
 
 add_to_sites("alex.wyc2098@gmail.com", title, site, '', "");
+add_to_sites("alex.wyc2098@gmail.com", title, site, '', "");
