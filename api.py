@@ -2,7 +2,7 @@
 # API for the Annotation project, handles AJAX calls and gives out JSON        #
 #                                                                              #
 # Authors                                                                      #
-#  Yicheng Wang, Jeffrey Zou                                                   #
+#  Yicheng Wang, Jeffrey Zou, Alice Xue                                        #
 #                                                                              #
 # Description                                                                  #
 #  Handles AJAX calls and database management                                  #
@@ -19,6 +19,7 @@
 #  Project Created: 2015-12-19 14:57 - Yicheng W.
 #  Most API stuff are done: 2015-12-20 18:23 - Yicheng W.
 #  Template inheritance and basic HTML setup: 2015-12-27 17:17 - Ariel L.
+#  Connected to the chrome extension: 2016-1-21 20:52 - Alice X.
 
 from flask import Flask, request, render_template, session, redirect, url_for
 from database import *
@@ -31,6 +32,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from random import choice
 from string import ascii_letters, digits
+from bs4 import BeautifulSoup
 
 app = Flask(__name__)
 
@@ -255,10 +257,13 @@ def share(id):
 def api_add_site():
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
-
+    print "helloooo"
     email = session['email']
+    title = request.form['title']
+    author = request.form['author']
+    date = request.form['date']
     site = request.form['site']
-
+    site = BeautifulSoup(site).encode('utf-8')
     if add_to_sites(email, site):
         return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
 
@@ -289,7 +294,7 @@ def api_change_perm(id):
 @login_required
 def api_delete_site(id):
     email = session['email']
-
+    
     if delete_site(email, id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})
 
