@@ -43,7 +43,9 @@
             {% if name %}
 
 			<li><form method = 'get' action="/search"><div class="input-field">
-                <input id="search" name="search" type="search" required></input>
+                        <input id="search" name="search" type="search"
+                                                         required
+                                                         value="{{search}}"></input>
 				<label for="search"><i class="material-icons">search</i></label>
 				<i class="material-icons">close</i>
                 </div></form></li>

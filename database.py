@@ -18,6 +18,7 @@
 import sqlite3
 from time import time, sleep
 from search import *
+from bs4 import BeautifulSoup
 
 def new_user(email, password_hash, first, last):
     """
@@ -438,22 +439,25 @@ def search_user_sites(email, search_string):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id, sites.site FROM sites WHERE sites.email = ?"""
+    q = """SELECT sites.id, sites.site, sites.title FROM sites WHERE sites.email = ?"""
 
     result = c.execute(q, (email,)).fetchall()
 
     for i in result:
-        snippets = get_snippets_from_site(i[1], search)
+        soup = BeautifulSoup(i[1])
+        site_cleaned = soup.get_text()
+        snippets = get_snippets_from_site(site_cleaned, search)
 
         if (len(snippets) > 0):
-            index = get_index_of_proximity(i[1], search)
-            abstract = abstract_site_from_words(i[1], snippets)
+            index = get_index_of_proximity(site_cleaned, search)
+            abstract = abstract_site_from_words(site_cleaned, snippets)
 
             ret_val.append({
                 'index':index,
                 'id':i[0],
                 'abstract':abstract,
-                'snippet':snippets
+                'snippet':snippets,
+                'title':i[2]
                 })
     
     return sorted(ret_val, key=lambda entry: entry['index'])

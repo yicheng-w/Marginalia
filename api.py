@@ -248,7 +248,7 @@ def search():
     result = search_user_sites(session['email'], search_string)
 
     print result
-    return "lol"
+    return render_template("result.html", name = session['name'], search = search_string, result = result)
 
 @app.route("/logout")
 @login_required

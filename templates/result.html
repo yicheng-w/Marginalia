@@ -1,0 +1,26 @@
+<!-- Displays all sites of user -->
+
+{% extends "master.html" %}
+{% set active_page="view" %}
+
+{% block title %}Pages{% endblock %}
+
+{% block head %}
+{{ super() }}
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <ul class="collection">
+        <li class="collection-header"><h4>Search Results for: "{{search}}"</h4></li>
+        {% for entry in result %}
+        <li class='collection-item'>
+            <a href="/view/{{entry['id']}}" class='black-text'>
+                <span class='title view-title'>{{entry['title']}}</span>
+                <p style='font-size:13px;color:gray'>{{entry['abstract']}}</p>
+            </a>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}
