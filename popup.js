@@ -20,17 +20,8 @@ chrome.tabs.query({currentWindow: true, active: true}, function(tabArray) {
 	    author = response.author;
 	    date = response.date;
 	    var send = function() {
-		var url = "parseHTML.py";
+		//var url = "parseHTML.py";
 		var request = new XMLHttpRequest();
-		/*
-		  request.onreadystatechange = function(){
-		  if (request.readyState === 4 && request.status === 200) {
-		  alert('worked');
-		  } else if (request.readyState == 4) {
-		  alert('did not work :(' + request.status);
-		  }
-		  }
-		*/
 		request.open("POST", "http://localhost:8000/new/", true);
 		request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
 		request.send('title='+encodeURIComponent(title)+'&author='+encodeURIComponent(author)+'&date='+encodeURIComponent(date)+'&site=' + encodeURIComponent(html));

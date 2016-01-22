@@ -20,14 +20,13 @@ chrome.runtime.onMessage.addListener(
 	if(request.method == "getHTML"){
   	    var metadata = document.getElementsByTagName("meta");
   	    var divs = document.getElementsByTagName("div");
-            //var paragraphs = document.getElementsByTagName("p");
             var title = document.title;
   	    var datePublished = "";
-	    
+
   	    dates = document.querySelectorAll("time, [itemprop=datePublished], span[class=timeago], span[class=timestamp]");
   	    authors = document.querySelectorAll("[name=author], .byline-author, [itemprop=author], h3[class=article-author-title] > a");
   	    //paragraphs = document.querySelectorAll("p[itemprop=articleBody], p[class=p1], div[itemprop=articleBody] p, div[id=article-body] p, div[class=article-entry] p, span[class=focusParagraph] > p, span[id=articleText] > p");
-	    
+
   	    for (i=0;i<dates.length;i++) {
   		datePublished = dates[i].innerText;
   		if (typeof datePublished == "undefined" || datePublished == "" || datePublished == null) {
@@ -37,11 +36,8 @@ chrome.runtime.onMessage.addListener(
   		    break;
   		}
   	    }
-	    
+
             var that = document.body.outerHTML;
-  	    console.log("---------------------------------------------------------");
-            console.log(typeof that);
-            console.log("---------------------------------------------------------");
   	    var author = "";
   	    for (i=0;i<authors.length;i++) {
   		author = authors[i].innerText;
@@ -52,7 +48,7 @@ chrome.runtime.onMessage.addListener(
 		    break;
 		}
 	    }
-	    
+
 	    if (datePublished == "") {
 		for (i=0;i<metadata.length;i++) {
 		    if (metadata[i].getAttribute("property") == "article:published_time") {
@@ -63,16 +59,16 @@ chrome.runtime.onMessage.addListener(
 		    }
 		}
 	    }
-	    
+
 	    console.log("---------title------------");
 	    console.log(title);
-	    
+
 	    console.log("---------Date------------");
 	    console.log(datePublished);
 	    console.log("---------Author------------");
 	    console.log(author);
-	    
-	    
+
+
 	    var data = {
 		title:title,
 		author:author,
@@ -82,5 +78,5 @@ chrome.runtime.onMessage.addListener(
             sendResponse(data);
 	}
     }
-    
+
 );
