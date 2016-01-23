@@ -295,6 +295,7 @@ def api_add_site():
     title = request.form['title']
     author = request.form['author']
     date = request.form['date']
+    url = request.form['url']
 
     if date == 'undefined':
         date = ''
