@@ -7,17 +7,17 @@ annotate articles online.
 
 ###Summary
 This is a chrome extension used to annotate articles. There are many extensions
-and webapps that allows people to take notes on articles, however, almost none
-of them allows for annotation. With this extension, you can freely markup the
+and webapps that allow people to take notes on articles. However, almost none
+of them allow for annotation. With this extension, you can freely markup the
 text as well as take general notes on a side panel.
 
 ###Features:
 
-- Reformats articles in ad-free, easy to read manner
+- Reformats articles in an ad-free, easy to read manner
 
-- Allows users highlight/comment on the article
+- Allows users to highlight/comment on the article
 
-- Allows users to take general note on the side
+- Allows users to take general notes on the side
 
 - Allows users to save their annotated article in an account on the cloud
 
@@ -30,14 +30,20 @@ text as well as take general notes on a side panel.
 
 - Save a user's articles locally so one can read/comment offline
 
-- Allowing users to use Marginalia on pdf's
+- Allow users to use Marginalia on pdf's
 
 - Add an abstraction/summarization tool that compiles a summary of the article
    based on the highlighted/commented text
 
 - Add formatting to comments and notes
 
-- Exporting the document to pdf or to print
+- Export the document to pdf or to print
+ 
+- Allow users to organize articles into folders
+ 
+- Incorporate pictures from webpages into the saved articles in Marginalia
+
+- Develop bibliography cites for a user's articles
 
 ###Toolset
 
