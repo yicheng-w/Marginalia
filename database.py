@@ -185,7 +185,7 @@ def add_to_sites(email, title, site, comments, notes):
         notes (string): the notes on the site
     
     Returns:
-        True if successful, False otherwise
+        the id of the new site if successful, -1 otherwise
     """
 
     conn = sqlite3.connect("./db/infos.db")
@@ -193,8 +193,10 @@ def add_to_sites(email, title, site, comments, notes):
 
     q = """INSERT INTO sites VALUES (?, ?, ?, ?, ?, ?, ?, ?)"""
 
-    c.execute(q, (next_avaliable_id(), email, title, site, comments, notes, 0, int(time()))) # default permission is private
+    id = next_avaliable_id()
+    c.execute(q, (id, email, title, site, comments, notes, 0, int(time()))) # default permission is private
     conn.commit()
+    return id
 
 def get_list_of_sites(email):
     """

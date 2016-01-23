@@ -282,8 +282,11 @@ def share(id):
 ### API CALLS -------------------------------------------------------------####
 
 @app.route("/new/", methods = ['GET', 'POST']) # adds a site to a user's collection, site passed via POST request, user info stored in session
-@login_required_api
+#@login_required_api
 def api_add_site():
+    if 'name' not in session:
+        return "login"
+
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
     email = session['email']
@@ -318,10 +321,13 @@ def api_add_site():
 
     htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p>'
 
-    if add_to_sites(email, title, htmlsite, "", ""):
-        return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
+    new_id = add_to_sites(email, title, htmlsite, "", "")
+    print new_id
 
-    return json.dumps({"status": 'failure', 'msg': 'Something went wrong :('})
+    if new_id != -1:
+        return str(new_id)
+
+    return 'failure'
 
 @app.route("/update/<int:id>", methods = ["GET", 'POST']) # update a specific site based on id, new site content passed via POST request, user info stored in session
 @login_required_api
