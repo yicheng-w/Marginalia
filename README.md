@@ -13,21 +13,27 @@ text as well as take general notes on a side panel.
 
 ###Features:
 
-1. Reformats articles in ad-free, easy to read manner
+- Reformats articles in ad-free, easy to read manner
 
-2. Allows users highlight/comment on the article
+- Allows users highlight/comment on the article
 
-4. Allows users to take general note on the side
+- Allows users to take general note on the side
 
-5. Allows users to save their annotated article in an account both on the cloud
-   and locally
+- Allows users to save their annotated article in an account on the cloud
 
-6. Compiles for the user a summary of their annotation
-
-7. Export/print an annotated version of the article
-
-8. Allows users to get a permlink of their annotated article to share with the
+- Allows users to get a permlink of their annotated article to share with the
    world
+
+###Features Under Development
+
+- Save a user's articles locally so one can read/comment offline
+
+- Allowing users to use Marginalia on pdf's
+
+- Add an abstraction/summarization tool that compiles a summary of the article
+   based on the highlighted/commented text
+
+- Add formatting to comments and notes
 
 ###Toolset
 
@@ -35,7 +41,7 @@ The login/user data system is written in sqlite3 and python
 
 The front end is written with the help of [Materialize CSS](http://materializecss.com/)
 
-The javascript is written with the help of TODO
+The javascript is written with the help of Materialize and jQuery
 
 ###Demo
 
@@ -46,7 +52,3 @@ TODO
 **Leader** - Yicheng Wang  
 **Frontend** - Ariel Levy  
 **Middleware & Backend** - Jeffrey Zou, Alice Xue
-
-## Development Log
-- 2015-12-18: Project created, README.md added -- All
-- 2015-12-19: Database Manager completed, started API -- Yicheng W.
