@@ -69,7 +69,10 @@ def get_index_of_proximity(site, to_search):
         for i in range(1,len(indices)):
             total_distance += indices[i] - indices[i - 1]
 
-        return len(indices) / float(total_distance)
+        average_distance = total_distance / float(len(indices) - 1)
+        print average_distance
+
+        return (len(indices) ** 5) / float(average_distance)
 
 def abstract_site_from_words(text, list_of_words):
     """

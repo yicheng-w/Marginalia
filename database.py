@@ -155,11 +155,11 @@ def next_avaliable_id():
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id FROM sites"""
+    q = """SELECT sites.id FROM sites ORDER BY sites.id"""
 
     result = c.execute(q).fetchall()
 
-    print result
+    #print result
 
     if (len(result) == 0):
         return 0
@@ -243,6 +243,12 @@ def get_site_on_id(email, id):
     WHERE sites.email = ? AND sites.id = ?"""
 
     r = c.execute(q, (email, id)).fetchall()
+    
+    #print len(r)
+
+    #for i in r:
+    #    print i[0]
+    #print r
 
     if (len(r) != 1):
         return None
@@ -460,7 +466,7 @@ def search_user_sites(email, search_string):
                 'title':i[2]
                 })
     
-    return sorted(ret_val, key=lambda entry: entry['index'])
+    return sorted(ret_val, key=lambda entry: entry['index'], reverse=True)
 
 if __name__ == "__main__":
     print "new_user test"

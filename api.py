@@ -33,6 +33,7 @@ from email.mime.text import MIMEText
 from random import choice
 from string import ascii_letters, digits
 from bs4 import BeautifulSoup
+import re
 
 app = Flask(__name__)
 
@@ -52,6 +53,12 @@ def login_required_api(f):
         return f(*args, **kwargs)
     return decorated_function
 
+def visible(element):
+    if element.parent.name in ['style', 'script', '[document]', 'head', 'title']:
+        return False
+    elif re.match('<!--.*-->', str(element)):
+        return False
+    return True
 
 co_email = "marginalia.overlords@gmail.com"
 co_pass = open("password.txt", 'r').read()[:-1]
@@ -247,7 +254,6 @@ def search():
     search_string = request.args.get('search', '')
     result = search_user_sites(session['email'], search_string)
 
-    print result
     return render_template("result.html", name = session['name'], search = search_string, result = result)
 
 @app.route("/logout")
@@ -280,22 +286,37 @@ def share(id):
 def api_add_site():
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
-    print "helloooo"
     email = session['email']
     title = request.form['title']
     author = request.form['author']
     date = request.form['date']
+
+    if date == 'undefined':
+        date = ''
+
+    else:
+        date = '(%s)' % date
+
     site = request.form['site']
 
-    soup = BeautifulSoup(site, 'html.parser')
+    soup = BeautifulSoup(site, 'lxml')
 
-    site = soup.get_text(u'', False)
-    plist = site.split('\n')
-    htmlsite = u""
-    for i in plist:
-        htmlsite += "<p>" + i + "</p>"
+    [s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title', 'li', 'ul'])]
+    
+    text =[''.join(s.findAll(text=True))for s in soup.findAll('p')]
 
-    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + "(" + date + ")"+ '</p>' + htmlsite
+    htmlsite = '</p><p>'.join(text)
+
+    htmlsite = htmlsite[:-3]
+
+    #html = [''.join(s.findAll()) for s in soup.findAll('div', {'class':re.compile("")})]
+    #site = soup.get_text(u'', False)
+    #plist = site.split('\n')
+    #htmlsite = u""
+    #for i in plist:
+    #    htmlsite += "<p>" + i + "</p>"
+
+    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p>'
 
     if add_to_sites(email, title, htmlsite, "", ""):
         return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
