@@ -33,6 +33,7 @@ from email.mime.text import MIMEText
 from random import choice
 from string import ascii_letters, digits
 from bs4 import BeautifulSoup
+import unicodedata
 
 app = Flask(__name__)
 
@@ -280,23 +281,37 @@ def share(id):
 def api_add_site():
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
-    print "helloooo"
+    
     email = session['email']
     title = request.form['title']
     author = request.form['author']
     date = request.form['date']
     site = request.form['site']
+    url = request.form['url']
 
     soup = BeautifulSoup(site, 'html.parser')
-
-    site = soup.get_text(u'', False)
-    plist = site.split('\n')
-    htmlsite = u""
-    for i in plist:
-        htmlsite += "<p>" + i + "</p>"
-
-    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + "(" + date + ")"+ '</p>' + htmlsite
-
+    articles = soup.find_all("article")
+    
+    maxArticle = articles[0]
+    for i in articles:
+        if len(str(i)) > len(str(maxArticle)):
+            maxArticle = i
+    
+    paragraphs = maxArticle.find_all("p")
+    
+ 
+    site = "<p>"
+    for i in paragraphs:
+        #print type(i)
+        #print i.contents
+        #print type(i.text)
+        
+        site = site + i.text + "</p>\n<p>"  
+        
+    
+    htmlsite = "<a href=" + url + "><h4>" + title + "</h4></a>\n<p>" + author + "</p><p>" + date + "</p>" + site + "</p>"
+    
+     
     if add_to_sites(email, title, htmlsite, "", ""):
         return json.dumps({"status": 'success', 'msg': 'Your site has been successfully added'})
 

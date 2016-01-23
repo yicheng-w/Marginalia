@@ -19,12 +19,12 @@ chrome.tabs.query({currentWindow: true, active: true}, function(tabArray) {
             title = response.title;
 	    author = response.author;
 	    date = response.date;
+	    url = response.url;
 	    var send = function() {
-		//var url = "parseHTML.py";
 		var request = new XMLHttpRequest();
 		request.open("POST", "http://localhost:8000/new/", true);
 		request.setRequestHeader('Content-type','application/x-www-form-urlencoded');
-		request.send('title='+encodeURIComponent(title)+'&author='+encodeURIComponent(author)+'&date='+encodeURIComponent(date)+'&site=' + encodeURIComponent(html));
+		request.send('title='+encodeURIComponent(title)+'&author='+encodeURIComponent(author)+'&date='+encodeURIComponent(date)+'&url='+url+'&site=' + encodeURIComponent(html));
 	    }
 	    send();
         }
