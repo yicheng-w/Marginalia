@@ -34,6 +34,7 @@ from random import choice
 from string import ascii_letters, digits
 from bs4 import BeautifulSoup
 import re
+import unicodedata
 
 app = Flask(__name__)
 
@@ -289,6 +290,7 @@ def api_add_site():
 
     if request.method == 'GET':
         return json.dumps({'status': 'failure', 'msg': 'Incorrect request method'})
+
     email = session['email']
     title = request.form['title']
     author = request.form['author']
@@ -301,6 +303,7 @@ def api_add_site():
         date = '(%s)' % date
 
     site = request.form['site']
+    url = request.form['url']
 
     soup = BeautifulSoup(site, 'lxml')
 
@@ -319,7 +322,7 @@ def api_add_site():
     #for i in plist:
     #    htmlsite += "<p>" + i + "</p>"
 
-    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p>'
+    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p><p><a href="' + url + '">' + 'Original Site</a></p>'
 
     new_id = add_to_sites(email, title, htmlsite, "", "")
     print new_id

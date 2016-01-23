@@ -24,7 +24,7 @@ chrome.runtime.onMessage.addListener(
   	    var datePublished = "";
 
   	    dates = document.querySelectorAll("time, [itemprop=datePublished], span[class=timeago], span[class=timestamp]");
-  	    authors = document.querySelectorAll("[name=author], .byline-author, [itemprop=author], h3[class=article-author-title] > a");
+  	    authors = document.querySelectorAll("[name=author], .byline-author, [itemprop=author], h3[class=article-author-title] > a, a[class=author-name]");
   	    //paragraphs = document.querySelectorAll("p[itemprop=articleBody], p[class=p1], div[itemprop=articleBody] p, div[id=article-body] p, div[class=article-entry] p, span[class=focusParagraph] > p, span[id=articleText] > p");
 
   	    for (i=0;i<dates.length;i++) {
@@ -68,10 +68,11 @@ chrome.runtime.onMessage.addListener(
 	    console.log("---------Author------------");
 	    console.log(author);
 
-
 	    var data = {
 		title:title,
 		author:author,
+		date:datePublished,
+		url:document.URL,
 		p:document.body.outerHTML,
 		method:"getHTML"
 	    };
