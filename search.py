@@ -1,3 +1,14 @@
+################################################################################
+# Search engine for the project                                                #
+#                                                                              #
+# Authors                                                                      #
+#  Yicheng Wang                                                                #
+#                                                                              #
+# Description                                                                  #
+#  search function of the marginalia project                                   #
+#                                                                              #
+################################################################################
+
 from string import ascii_letters
 
 def get_snippets_from_site(site, to_search):

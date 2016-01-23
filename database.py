@@ -447,13 +447,14 @@ def search_user_sites(email, search_string):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.id, sites.site, sites.title FROM sites WHERE sites.email = ?"""
+    q = """SELECT sites.id, sites.site, sites.title, sites.comments, sites.notes
+    FROM sites WHERE sites.email = ?"""
 
     result = c.execute(q, (email,)).fetchall()
 
     for i in result:
-        soup = BeautifulSoup(i[1])
-        site_cleaned = soup.get_text()
+        soup = BeautifulSoup(i[1] + i[3])
+        site_cleaned = i[2] + ' ' + soup.get_text() + i[4]
         snippets = get_snippets_from_site(site_cleaned, search)
 
         if (len(snippets) > 0):

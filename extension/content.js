@@ -2,7 +2,7 @@
  * Content Script
  *
  * Authors
- *  Alice Xue, Jeffrey Zou
+ *  Alice Xue, Jeffrey Zou, Yicheng Wang
  *
  * Description
  *  Runs in the context of the webpage, makes changes to the webpage

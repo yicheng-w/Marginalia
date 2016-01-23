@@ -17,7 +17,6 @@
             "http://*/*",
 	    "https://*/*"
 	],
-	"css": ["materialize.min.css"],
 	"js": ["content.js"],
 	"run_at": "document_end"
     }

@@ -24,7 +24,9 @@ text as well as take general notes on a side panel.
 - Allows users to get a permlink of their annotated article to share with the
    world
 
-###Features Under Development
+- Allows users to search for keywords in their sites
+
+###Features For Future Development
 
 - Save a user's articles locally so one can read/comment offline
 
@@ -34,6 +36,8 @@ text as well as take general notes on a side panel.
    based on the highlighted/commented text
 
 - Add formatting to comments and notes
+
+- Exporting the document to pdf or to print
 
 ###Toolset
 
@@ -46,6 +50,23 @@ The javascript is written with the help of Materialize and jQuery
 ###Demo
 
 TODO
+
+## Files and Folders
+
+api.py/api-gunicorn.py - The main server file, powered by flask
+
+database.py - The database management program, powered by python and sqlite3
+
+search.py - The search engine used by the program, written in python
+
+init.py - Builds and initializes the database
+
+restart.sh - Wipes the database and creates a new one, also starts the server
+with green unicorn in the background
+
+db/ - The folder that houses the database, which will be created by init.py
+
+extension/ - The folder for the unpacked extension
 
 ## Project Members
 

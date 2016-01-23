@@ -2,7 +2,7 @@
  * Popup Script
  *
  * Authors
- *  Alice Xue, Jeffrey Zou
+ *  Alice Xue, Jeffrey Zou, Yicheng Wang
  *
  * Description
  *  Receives HTML from content.js when the extension is clicked
