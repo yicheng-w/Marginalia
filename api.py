@@ -1,4 +1,4 @@
-###############################################################################
+##############################################################################
 # API for the Annotation project, handles AJAX calls and gives out JSON        #
 #                                                                              #
 # Authors                                                                      #
@@ -22,6 +22,7 @@
 #  Connected to the chrome extension: 2016-1-21 20:52 - Alice X.
 
 from flask import Flask, request, render_template, session, redirect, url_for
+from werkzeug.contrib.fixers import ProxyFix
 from database import *
 from functools import wraps
 from hashlib import sha256
@@ -385,10 +386,14 @@ def fork(id):
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong'})
 
-if __name__ == "__main__":
-    try:
-        app.secret_key = argv[argv.index('--key') + 1]
-    except ValueError:
-        app.secret_key = "nvm ariel i was dumb"
+app.wsgi_app = ProxyFix(app.wsgi_app)
 
-    app.run(host = "0.0.0.0", port = 8000, debug = ("--debug" in argv))
+try:
+    app.secret_key = argv[argv.index('--key') + 1]
+except ValueError:
+    app.secret_key = "nvm ariel i was dumb"
+
+app.debug = ("--debug" in argv)
+
+if __name__ == "__main__":
+    app.run()

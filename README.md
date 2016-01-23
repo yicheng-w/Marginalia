@@ -53,7 +53,7 @@ TODO
 
 ## Files and Folders
 
-api.py/api-gunicorn.py - The main server file, powered by flask
+api.py - The main server file, powered by flask
 
 database.py - The database management program, powered by python and sqlite3
 
