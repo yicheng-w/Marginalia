@@ -159,19 +159,20 @@ def next_avaliable_id():
 
     result = c.execute(q).fetchall()
 
-    #print result
+    ##print result
 
     if (len(result) == 0):
         return 0
 
-    if result[0] != 0:
+    if result[0][0] != 0:
+        #print "0 index: " + str(result[0][0])
         return 0
 
     if (len(result) == 1):
        return 1
    
     for i in range(1, len(result)):
-        if result[i][0] - result[i - 1][0] != 1:
+        if result[i][0] - result[i - 1][0] > 1:
             return result[i - 1][0] + 1
 
     return len(result)
@@ -249,11 +250,11 @@ def get_site_on_id(email, id):
 
     r = c.execute(q, (email, id)).fetchall()
     
-    #print len(r)
+    ##print len(r)
 
     #for i in r:
-    #    print i[0]
-    #print r
+    #    #print i[0]
+    ##print r
 
     if (len(r) != 1):
         return None
@@ -475,45 +476,45 @@ def search_user_sites(email, search_string):
     return sorted(ret_val, key=lambda entry: entry['index'], reverse=True)
 
 if __name__ == "__main__":
-    print "new_user test"
-    print new_user("alex.wyc2098@gmail.com", "12345", "Yicheng", "Wang")
-    print new_user("alex.wyc2098@gmail.com", "dgjsadkfhsa", "Yicheng", "Wang")
-    print new_user("alex.wyc2098@protonmail.ch", "ajdfsadfk", "Yicheng", "Wang")
+    #print "new_user test"
+    #print new_user("alex.wyc2098@gmail.com", "12345", "Yicheng", "Wang")
+    #print new_user("alex.wyc2098@gmail.com", "dgjsadkfhsa", "Yicheng", "Wang")
+    #print new_user("alex.wyc2098@protonmail.ch", "ajdfsadfk", "Yicheng", "Wang")
 
-    print "\nauthentication test"
-    print authenticate("alex.wyc2098@gmail.com", "12345")
-    print authenticate("alex.wyc2098@protonmail.ch", "12345")
-    print authenticate("asdf@asdf.asdf", "12435")
+    #print "\nauthentication test"
+    #print authenticate("alex.wyc2098@gmail.com", "12345")
+    #print authenticate("alex.wyc2098@protonmail.ch", "12345")
+    #print authenticate("asdf@asdf.asdf", "12435")
 
-    print "\nchange password test"
-    print update_pwd("alex.wyc2098@gmail.com", "54321")
-    print update_pwd("asdf@asdf.com", "12345")
+    #print "\nchange password test"
+    #print update_pwd("alex.wyc2098@gmail.com", "54321")
+    #print update_pwd("asdf@asdf.com", "12345")
 
-    print authenticate("alex.wyc2098@gmail.com", "12345")
-    print authenticate("alex.wyc2098@gmail.com", "54321")
+    #print authenticate("alex.wyc2098@gmail.com", "12345")
+    #print authenticate("alex.wyc2098@gmail.com", "54321")
 
-    print "\nadd_to_sites test"
-    print add_to_sites("alex.wyc2098@gmail.com", "123456789")
-    print add_to_sites("alex.wyc2098@protonmail.ch", "fkjhsadgfkvasv")
-    print add_to_sites("alex.wyc2098@gmail.com", "12hsadffghas")
+    #print "\nadd_to_sites test"
+    #print add_to_sites("alex.wyc2098@gmail.com", "123456789")
+    #print add_to_sites("alex.wyc2098@protonmail.ch", "fkjhsadgfkvasv")
+    #print add_to_sites("alex.wyc2098@gmail.com", "12hsadffghas")
 
-    print get_list_of_sites("alex.wyc2098@gmail.com")
-    print get_list_of_sites("alex.wyc2098@protonmail.ch")
+    #print get_list_of_sites("alex.wyc2098@gmail.com")
+    #print get_list_of_sites("alex.wyc2098@protonmail.ch")
 
     sleep(1)
 
-    print "\nupdate_site test"
-    print update_site("alex.wyc2098@gmail.com", "0", "new_site!")
+    #print "\nupdate_site test"
+    #print update_site("alex.wyc2098@gmail.com", "0", "new_site!")
 
-    print get_list_of_sites("alex.wyc2098@gmail.com")
+    #print get_list_of_sites("alex.wyc2098@gmail.com")
 
-    print "\ndelete_site test"
-    print delete_site("alex.wyc2098@gmail.com", 2)
-    print delete_site("alex.wyc2098@gmail.com", 3)
+    #print "\ndelete_site test"
+    #print delete_site("alex.wyc2098@gmail.com", 2)
+    #print delete_site("alex.wyc2098@gmail.com", 3)
     
-    print add_to_sites("alex.wyc2098@gmail.com", "this is the new site 2")
+    #print add_to_sites("alex.wyc2098@gmail.com", "this is the new site 2")
     
-    print get_list_of_sites("alex.wyc2098@gmail.com")
+    #print get_list_of_sites("alex.wyc2098@gmail.com")
 
-    print "searching"
+    #print "searching"
     search_user_sites("alex.wyc2098@gmail.com", 'asdf')
