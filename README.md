@@ -3,6 +3,9 @@
 "Marginalia," or marginal notes in Latin, is an application that lets people
 annotate articles online.
 
+The main site is up and running [here](http://104.236.86.43:8000), and the
+chrome extension is "extension.crx"
+
 ## Project Description
 
 ###Summary
