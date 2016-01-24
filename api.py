@@ -89,11 +89,11 @@ def about():
 
 @app.route("/regist") # this is actually the register page
 def register_page():
-    return render_template("register.html") 
+    return render_template("register.html")
 
 @app.route("/login") # login page
 def login_page():
-    return render_template("login.html") 
+    return render_template("login.html")
 
 @app.route("/register", methods = ["GET", 'POST'])
 def register():
@@ -110,6 +110,9 @@ def register():
         if email == "":
             return render_template("register.html", err = "Please enter your email!")
 
+        if '@' not in email:
+            return render_template("register.html", err = "Please enter a valid email!")
+            
         if password == "":
             return render_template("register.html", err = "Password cannot be empty!")
 
@@ -277,7 +280,7 @@ def share(id):
 
     elif 'name' in session:
         return render_template("error.html", msg = "Sorry this site is not up for sharing &nbsp;:(", name = session['name']);
-    
+
     else:
         return render_template("error.html", msg = "Sorry this site is not up for sharing:(")
 
@@ -310,7 +313,7 @@ def api_add_site():
     soup = BeautifulSoup(site, 'lxml')
 
     [s.extract() for s in soup(['style', 'script', '[document]', 'head', 'title', 'li', 'ul'])]
-    
+
     text =[''.join(s.findAll(text=True))for s in soup.findAll('p')]
 
     htmlsite = '</p><p>'.join(text)
@@ -381,7 +384,7 @@ def api_delete_site():
 def fork():
     email = session['email']
     id = int(request.form['id'])
-    
+
     new_id = fork_shared_site(id, email)
 
     if new_id != -1:
