@@ -122,3 +122,12 @@
     color: gray; 
     margin-top:5px;
 }
+
+h4, h5 {
+	clear: both;
+}
+
+img.about {
+	float: left;
+	padding: 0px 10px 15px;
+}
