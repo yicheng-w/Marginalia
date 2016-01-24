@@ -15,6 +15,7 @@
 import sqlite3
 from hashlib import sha256
 from database import *
+from sys import argv
 
 conn = sqlite3.connect("./db/infos.db")
 
@@ -27,5 +28,13 @@ c.execute(create_base % ("users", "email TEXT, password TEXT, first TEXT, last T
 
 # note will be html source code with markup
 c.execute(create_base % ("sites", "id INTEGER, email TEXT, title TEXT, site TEXT, comments TEXT, notes TEXT, shared INTEGER, t INTEGER"))
+
+if '--test' in argv or '-t' in argv:
+    m = sha256()
+    m.update("12345")
+    password = m.hexdigest()
+
+    c.execute('insert into users values("alex.wyc2098@gmail.com", "%s", "Yicheng", "Wang")' % password)
+    c.execute('insert into sites values(0, "alex.wyc2098@gmail.com", "test", "test", "", "", 0, 0)')
 
 conn.commit()
