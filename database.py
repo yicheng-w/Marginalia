@@ -375,7 +375,7 @@ def fork_shared_site(site_id, email):
     conn = sqlite3.connect("./db/infos.db")
     c = conn.cursor()
 
-    q = """SELECT sites.shared, sites.site, sites.comments, sites.notes
+    q = """SELECT sites.shared, sites.title, sites.site, sites.comments, sites.notes
     FROM sites
     WHERE sites.id = ?"""
 
@@ -387,7 +387,7 @@ def fork_shared_site(site_id, email):
     if r[0][0] == 0:
         return -1
 
-    return add_to_sites(email, r[0][1], r[0][2], r[0][3])
+    return add_to_sites(email, r[0][1], r[0][2], r[0][3], r[0][4])
 
 def delete_site(email, site_id):
     """

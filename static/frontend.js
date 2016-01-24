@@ -28,7 +28,7 @@
  */
 
 var href = window.location.href;
-console.log(href);
+//console.log(href);
 var site_id = parseInt(href.substr(href.lastIndexOf('/') + 1), 10);
 
 var cleanPage = function cleanPage() {
@@ -268,7 +268,7 @@ $("#mar-text").on("mouseup",function(f) {
         $(document).off('keydown');
 	}
 	else {
-	    console.log("***" + selectedText.toString() + "***");
+	    //console.log("***" + selectedText.toString() + "***");
 		$(document).keydown(function(e) {
 			if (e.keyCode == 67 && e.ctrlKey && e.altKey) { // comment
 			    addCommentMaster(selectedText);
@@ -311,7 +311,7 @@ $("#kill-com").on("click",function() {
 
 $("#save-com").on("click",function() {
 	var comText = $("#com-text").val();	
-	console.log(comText);
+	//console.log(comText);
 	addComment(comText);
 	insertComment();
 	$("#com-text").val("");
@@ -327,7 +327,7 @@ var delClick = function delClick() {
 	$(".del-com").on("click", function() {
 		var com = $(this).parent();	
 		var num = $(".comment-block").index( $(this).parent() );
-		console.log(num);
+		//console.log(num);
 		var ctag = ".com-"+num;
 		$(".comment-block"+ctag).remove();
 		var comText = $(".comment"+ctag).text();
@@ -401,10 +401,10 @@ function connect(div1, div2, thickness) { // draw a line connecting elements
 $('#fork').on('click', function() {
     $.post("/fork/", {'id': site_id}, function(data) {
         if (data['status'] == 'success') {
-            window.location.replace("/view/" + data['id']);
+            window.location = "/view/" + data['id'];
         }
         else {
             Materialize.toast("<strong>Saving Failed!</strong> " + data['msg'], 1000);
         }
-    });
+    }, 'json');
 })

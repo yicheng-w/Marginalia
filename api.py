@@ -378,7 +378,7 @@ def api_delete_site():
 @app.route("/fork/", methods = ['GET' , 'POST']) # copies a shared document into own's own private repo
 # relatively low priority but still on TODO
 @login_required_api
-def fork(id):
+def fork():
     email = session['email']
     id = int(request.form['id'])
     
