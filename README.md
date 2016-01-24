@@ -70,6 +70,8 @@ init.py - Builds and initializes the database
 restart.sh - Wipes the database and creates a new one, also starts the server
 with green unicorn in the background
 
+extension.crx - packed chrome extension
+
 db/ - The folder that houses the database, which will be created by init.py
 
 extension/ - The folder for the unpacked extension
