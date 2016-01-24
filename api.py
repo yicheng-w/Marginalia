@@ -271,9 +271,9 @@ def share(id):
 
     if site:
         if 'name' in session:
-            return render_template("view_one.html", site = site, name = session['name'])
+            return render_template("view_one.html", site = site, name = session['name'], sharing = True)
         else:
-            return render_template("view_one.html", site = site)
+            return render_template("view_one.html", site = site, sharing = True)
 
     elif 'name' in session:
         return render_template("error.html", msg = "Sorry this site is not up for sharing &nbsp;:(", name = session['name']);
@@ -375,14 +375,17 @@ def api_delete_site():
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
 
-@app.route("/fork/<int:id>") # copies a shared document into own's own private repo
+@app.route("/fork/", methods = ['GET' , 'POST']) # copies a shared document into own's own private repo
 # relatively low priority but still on TODO
 @login_required_api
 def fork(id):
     email = session['email']
+    id = int(request.form['id'])
     
-    if fork_shared_site(id, email):
-        return json.dumps({'status': 'success', 'msg':'The site has been successfully added to your own library'})
+    new_id = fork_shared_site(id, email)
+
+    if new_id != -1:
+        return json.dumps({'status': 'success', 'msg':'The site has been successfully added to your own library', 'id': new_id})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong'})
 

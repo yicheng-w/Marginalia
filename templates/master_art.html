@@ -10,9 +10,18 @@
         {% block content %}
 		<div class="row">
 			<div id='mar-notes' class='col s4'>
-				<textarea id='note-panel' class="card-panel yellow lighten-4 scroll">{% block notes %}{% endblock %}</textarea>
+				<textarea id='note-panel' class="card-panel yellow lighten-4 scroll"
+                              {% if sharing %}
+                              readonly="readonly"
+                              {% endif %}>{% block notes %}{% endblock %}</textarea>
+                {% if sharing and name %}
+                <button class='btn waves-effect waves-light' type='button' id='fork' style='width:100'>
+                    Make a Personal Copy
+                </button>
+                {% else %}
 				<button class="btn waves-effect waves-light" type="button" name="action" id="save-notes" style="width:100%">Save Notes
 				</button>
+                {% endif %}
 			</div>
 			<div id='mar-text' class='col s4 offset-s4 white'>
 				{% block text %}{% endblock %}
@@ -20,6 +29,7 @@
 			<div id='mar-comments' class='col s4'>
 				{% block comments %}{% endblock %}
 			</div>
+        {% if not sharing %}
 			<div class='overlay' id='add-com'>
 				<div id='com-on' class='card-panel grey lighten-3'>Hello World!</div> 
 				<textarea id='com-text' class='card-panel white'></textarea>
@@ -27,6 +37,7 @@
 				<button class='btn waves-effect waves-light' type='button' name='action' id='save-com'>Add Comment</button>
 			</div>
 		</div>
+
         <div class="plum cur_panel" id="cursor_menu"
             style="visibility:hidden" width=100px>
         <a href="#" id="add-com-b"><img src='../static/comment.png'
@@ -37,6 +48,7 @@
                     data-delay="400" data-tooltip="Highlight"
                     width=30px style="position: relative; top: -5px"></a>
         </div>
+        {% endif %}
 
         <script type='text/javascript' src='../static/frontend.js'></script>
 

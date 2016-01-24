@@ -369,7 +369,7 @@ def fork_shared_site(site_id, email):
 	email (string): the user who wishes to fork the site
     
     Returns:
-        True if successful, False otherwise
+        The new ID of the forked site, or -1 if unsuccessful
     """
 
     conn = sqlite3.connect("./db/infos.db")
@@ -382,10 +382,10 @@ def fork_shared_site(site_id, email):
     r = c.execute(q, (site_id,)).fetchall()
 
     if (len(r) == 0):
-        return False
+        return -1
 
     if r[0][0] == 0:
-        return False
+        return -1
 
     return add_to_sites(email, r[0][1], r[0][2], r[0][3])
 

@@ -290,6 +290,7 @@ $('#add-com-b').on('click', function() {
     if (selectedText) {
         addCommentMaster(selectedText);
     }
+    return false;
 });
 
 $('#add-hi').on('click', function() {
@@ -297,7 +298,8 @@ $('#add-hi').on('click', function() {
     if (selectedText) {
         highlight(selectedText);
     }
-})
+    return false;
+});
 
 $("#kill-com").on("click",function() {
 	var uncomText = $(".new-com").text();
@@ -395,3 +397,14 @@ function connect(div1, div2, thickness) { // draw a line connecting elements
     // alert(htmlLine);
     document.body.innerHTML += htmlLine;
 }
+
+$('#fork').on('click', function() {
+    $.post("/fork/", {'id': site_id}, function(data) {
+        if (data['status'] == 'success') {
+            window.location.replace("/view/" + data['id']);
+        }
+        else {
+            Materialize.toast("<strong>Saving Failed!</strong> " + data['msg'], 1000);
+        }
+    });
+})
