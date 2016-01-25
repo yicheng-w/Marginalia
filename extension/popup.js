@@ -11,7 +11,7 @@
 
 console.log("loaded popup.js");
 
-var viewBase = "http://104.236.86.43:8000/view/";
+var viewBase = "http://marginalia.alex-wyc.me/view/";
 var id = '0';
 
 document.getElementById('link').addEventListener('click', function() {
@@ -41,7 +41,7 @@ chrome.tabs.query({currentWindow: true, active: true}, function(tabArray) {
                 }
                 else if (request.response == 'login' || request.response == '') {
                     document.getElementById('status').innerHTML = "Please log in";
-                    window.open("http://104.236.86.43:8000/login");
+                    window.open("http://marginalia.alex-wyc.me/login");
                 }
                 else {
                     document.getElementById('status').innerHTML = "<b>Added to Marginalia!</b>";
