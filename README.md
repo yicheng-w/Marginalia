@@ -13,7 +13,7 @@ This is a chrome extension used to annotate articles. There are many extensions
 and webapps that allow people to take notes on articles. However, almost none
 of them allow for annotation. With this extension, you can freely markup the
 text as well as take general notes on a side panel. For more information, click
-[here](http://marginalia.alex-wyc.me:8000/about)
+[here](http://marginalia.alex-wyc.me:8000/about).
 To watch a demo video, click [here](https://www.youtube.com/watch?v=OBCynq96As0&feature=youtu.be)
 
 ###Features:
