@@ -335,6 +335,7 @@ var delClick = function delClick() {
 		$(".comment"+ctag).remove();
 		formatComments();
 		save_site();
+		return false;
 	});
 }
 

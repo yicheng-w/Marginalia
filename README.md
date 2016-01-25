@@ -12,7 +12,8 @@ chrome extension is "extension.crx"
 This is a chrome extension used to annotate articles. There are many extensions
 and webapps that allow people to take notes on articles. However, almost none
 of them allow for annotation. With this extension, you can freely markup the
-text as well as take general notes on a side panel.
+text as well as take general notes on a side panel. For more information, click
+[here](http://104.236.86.43:8000/about)
 
 ###Features:
 
@@ -55,10 +56,6 @@ The login/user data system is written in sqlite3 and python
 The front end is written with the help of [Materialize CSS](http://materializecss.com/)
 
 The javascript is written with the help of Materialize and jQuery
-
-###Demo
-
-TODO
 
 ## Files and Folders
 

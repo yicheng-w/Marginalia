@@ -1,3 +1,15 @@
+/*-----------------------------------------------------
+ * Javascript for general view page
+ * 
+ * Authors
+ *  Yicheng Wang
+ *
+ * Description
+ *  Ajax calls to delete/change permission of websites
+ *
+ *-----------------------------------------------------*/
+
+
 console.log("loaded view.js");
 
 $('.actual-switch').on('click', function() {
@@ -40,6 +52,7 @@ $('.slink').click(function() {
         $this.show();
         $input.remove();
     });
+    return false;
 });
 
 var deleteSite = function(id) {
@@ -49,6 +62,7 @@ var deleteSite = function(id) {
             document.getElementById('entry-'+id).style.display = 'none';
         }
     }, 'json');
+    return false;
 }
 
 $('.removal').click(function() {
@@ -73,4 +87,5 @@ $('.removal').click(function() {
             deleteSite(id);
         });
     }
+    return false;
 });
