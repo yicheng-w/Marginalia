@@ -1,5 +1,6 @@
 <html>
 <head>
+<link href='http://fonts.googleapis.com/css?family=Roboto' rel='stylesheet' type='text/css'>
     <style>
 html {
     width: 150px;
@@ -9,13 +10,37 @@ html {
 #status {
     text-align: center;    
 }
+
+.takeNotes {
+	-moz-box-shadow:inset 0px 39px 0px -24px #4db6ac;
+	-webkit-box-shadow:inset 0px 39px 0px -24px #4db6ac;
+	box-shadow:inset 0px 39px 0px -24px #4db6ac;
+	background-color:#4db6ac;
+	-moz-border-radius:4px;
+	-webkit-border-radius:4px;
+	border-radius:4px;
+	border:1px solid #4db6ac;
+	display:inline-block;
+	cursor:pointer;
+	color:#fff;
+	font-family:'Roboto', Sans-Serif;
+	font-size:15px;
+	padding:6px 15px;
+        margin-top: 5px;
+	text-decoration:none;
+}
+
+.takeNotes:active {
+	position:relative;
+	top:5px;
+}
     </style>
 </head>
 <body>
-    <span id='status'></span>
+    <center><span id='status' style="color:#5e0231; font-size: 10pt; font-family:'Roboto', Sans-Serif"></span></center>
 
-    <button id='link'
-            style='visibility:hidden'>Take Notes Now!</a>
+    <button class="takeNotes" id="link"
+            style='visibility:hidden'>TAKE NOTES NOW!</a>
 
 <script src = "popup.js"></script>
 </body>
