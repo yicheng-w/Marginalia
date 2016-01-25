@@ -327,7 +327,7 @@ def api_add_site():
     #for i in plist:
     #    htmlsite += "<p>" + i + "</p>"
 
-    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p><p><a href="' + url + '">' + 'Original Site</a></p>'
+    htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p><p><a target="_blank" href="' + url + '">' + 'Original Site</a></p>'
 
     new_id = add_to_sites(email, title, htmlsite, "", "")
     #print new_id
