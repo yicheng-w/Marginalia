@@ -14,6 +14,7 @@ and webapps that allow people to take notes on articles. However, almost none
 of them allow for annotation. With this extension, you can freely markup the
 text as well as take general notes on a side panel. For more information, click
 [here](http://marginalia.alex-wyc.me:8000/about)
+To watch a demo video, click [here](https://www.youtube.com/watch?v=OBCynq96As0&feature=youtu.be)
 
 ###Features:
 
@@ -30,7 +31,7 @@ text as well as take general notes on a side panel. For more information, click
 
 - Allows users to search for keywords in their sites
 
-###Features For Future Development
+###Features For Future Development:
 
 - Save a user's articles locally so one can read/comment offline
 
@@ -49,7 +50,7 @@ text as well as take general notes on a side panel. For more information, click
 
 - Develop bibliography cites for a user's articles
 
-###Toolset
+###Toolset:
 
 The login/user data system is written in sqlite3 and python
 
@@ -57,7 +58,7 @@ The front end is written with the help of [Materialize CSS](http://materializecs
 
 The javascript is written with the help of Materialize and jQuery
 
-## Files and Folders
+## Files and Folders:
 
 api.py - The main server file, powered by flask
 
@@ -76,7 +77,7 @@ db/ - The folder that houses the database, which will be created by init.py
 
 extension/ - The folder for the unpacked extension
 
-## Project Members
+## Project Members:
 
 **Leader** - Yicheng Wang  
 **Frontend** - Ariel Levy  
