@@ -66,8 +66,6 @@ chrome.runtime.onMessage.addListener(
 	    console.log(datePublished);
 	    console.log("---------Author------------");
 	    console.log(author);
-      console.log("---------outer------");
-      console.log(document.body.outerHTML);
 
 	    var data = {
 		title:title,
