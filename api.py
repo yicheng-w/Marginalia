@@ -23,7 +23,7 @@
 
 from flask import Flask, request, render_template, session, redirect, url_for
 from werkzeug.contrib.fixers import ProxyFix
-from database import *
+from database import DBManager
 from functools import wraps
 from hashlib import sha256
 import json
@@ -38,6 +38,7 @@ import re
 import unicodedata
 
 app = Flask(__name__)
+database = DBManager("marginalia", "users", "sites")
 
 def login_required(f):
     @wraps(f)
@@ -126,7 +127,7 @@ def register():
         m.update(password)
         passhash = m.hexdigest()
 
-        if new_user(email, passhash, first, last):
+        if database.new_user(email, passhash, first, last):
             return render_template("register.html", status = "success")
             # in register.html redirect them to login
         else:
@@ -145,9 +146,9 @@ def login():
         m.update(password)
         passhash = m.hexdigest()
 
-        if (authenticate(email, passhash)):
+        if (database.authenticate(email, passhash)):
             session["email"] = email
-            session['name'] = get_name_from_email(email)
+            session['name'] = database.get_name_from_email(email)
             return redirect(url_for("home"))
         else:
             return render_template("login.html", err = "Incorrect email/password combination")
@@ -169,7 +170,7 @@ def forget_pwd():
         m.update(new_pass)
         passhash = m.hexdigest()
 
-        if not update_pwd(email, passhash):
+        if not database.update_pwd(email, passhash):
             return render_template("forget_pwd.html", err = "The email you entered is not registered")
 
         s = SMTP("smtp.gmail.com", 587)
@@ -213,7 +214,7 @@ def change_pwd():
         m = sha256()
         m.update(old_password)
         passhash = m.hexdigest()
-        if (authenticate(email,passhash)):
+        if (database.authenticate(email,passhash)):
             new_password = request.form['newpass']
             confirmed = request.form['confirm']
 
@@ -223,7 +224,7 @@ def change_pwd():
             m = sha256()
             m.update(new_password)
             newhashed = m.hexdigest()
-            changed = update_pwd(email, newhashed)
+            changed = database.update_pwd(email, newhashed)
             if changed:
                 return render_template("change_pwd.html", status = "success", name = session['name'])
             else:
@@ -235,14 +236,14 @@ def change_pwd():
 @login_required
 def view_static():
     email = session['email']
-    list_of_sites = get_list_of_sites(email)
+    list_of_sites = database.get_list_of_sites(email)
     return render_template("view.html", sites = list_of_sites, name = session['name'])
 
 @app.route("/view/<int:id>") # grab a specific story based on id
 @login_required
 def view_site(id):
     email = session['email']
-    site = get_site_on_id(email, id)
+    site = database.get_site_on_id(email, id)
 
     if (site):
         return render_template("view_one.html", site = site, name = session['name'])
@@ -270,7 +271,7 @@ def logout():
 
 @app.route("/share/<int:id>") # reders the site if shares, gives out error otherwise
 def share(id):
-    site = get_site_for_sharing(id)
+    site = database.get_site_for_sharing(id)
 
     if site:
         if 'name' in session:
@@ -329,7 +330,7 @@ def api_add_site():
 
     htmlsite = '<h4>' + title + "</h4>\n<p>" + author + '</p><p>' + htmlsite + '</p><p><a target="_blank" href="' + url + '">' + 'Original Site</a></p>'
 
-    new_id = add_to_sites(email, title, htmlsite, "", "")
+    new_id = database.add_to_sites(email, title, htmlsite, "", "")
     #print new_id
 
     if new_id != -1:
@@ -346,7 +347,7 @@ def api_update_site(id):
     new_site = request.form['site']
     new_comments = request.form['comment']
     new_notes = request.form['note']
-    if update_site(email, id, new_site, new_comments, new_notes):
+    if database.update_site(email, id, new_site, new_comments, new_notes):
         return json.dumps({"status": 'success', 'msg': 'Your marks have been updated'})
 
     return json.dumps({'status': 'failure', 'msg': "Something went wrong :("})
@@ -359,7 +360,7 @@ def api_change_perm():
 
     email = session['email']
     id = int(request.form['id'])
-    if change_site_permission(email, id):
+    if database.change_site_permission(email, id):
         return json.dumps({"status": 'success', 'msg': "The permission of your site has been successfully changed", 'to': request.form['to'], 'id': id})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
@@ -373,7 +374,7 @@ def api_delete_site():
     email = session['email']
     id = request.form['id']
 
-    if delete_site(email, id):
+    if database.delete_site(email, id):
         return json.dumps({'status': 'success', 'msg': 'Your site has been successfully deleted'})
 
     return json.dumps({'status': 'failure', 'msg': 'Something went wrong :('})
@@ -385,7 +386,7 @@ def fork():
     email = session['email']
     id = int(request.form['id'])
 
-    new_id = fork_shared_site(id, email)
+    new_id = database.fork_shared_site(id, email)
 
     if new_id != -1:
         return json.dumps({'status': 'success', 'msg':'The site has been successfully added to your own library', 'id': new_id})
